@@ -441,16 +441,23 @@ async function gistPush(){
   const token = lsGet(GIST_KEY);
   const gistId = lsGet(GIST_ID_KEY);
   if(!token) return showSyncModal();
+  // Always save to localStorage first
+  lsSet(KEY, JSON.stringify(state));
   const body = {files:{[GIST_FILE]:{content:JSON.stringify(state,null,2)}}};
   const url = gistId ? 'https://api.github.com/gists/'+gistId : 'https://api.github.com/gists';
   const method = gistId ? 'PATCH' : 'POST';
   if(!gistId){body.description='Jataya Portfolio Data';body.public=false;}
   try{
+    showToast('Pushing to Gist...');
     const r = await fetch(url,{method,headers:{'Authorization':'token '+token,'Content-Type':'application/json'},body:JSON.stringify(body)});
+    if(!r.ok){
+      const err = await r.json().catch(()=>({}));
+      return showToast('Push failed — '+(err.message||'HTTP '+r.status), true);
+    }
     const data = await r.json();
     if(data.id){ lsSet(GIST_ID_KEY, data.id); }
-    showToast('Synced to GitHub Gist');
-  } catch(e){ showToast('Sync failed — check your token', true); }
+    showToast('✓ Pushed to GitHub Gist');
+  } catch(e){ showToast('Push failed — '+e.message, true); }
 }
 
 async function gistPull(){
@@ -458,15 +465,50 @@ async function gistPull(){
   const gistId = lsGet(GIST_ID_KEY);
   if(!token || !gistId) return showToast('Set up Gist sync first', true);
   try{
-    const r = await fetch('https://api.github.com/gists/'+gistId,{headers:{'Authorization':'token '+token}});
+    // Add cache-busting timestamp to prevent stale responses
+    const r = await fetch('https://api.github.com/gists/'+gistId+'?t='+Date.now(),{
+      headers:{
+        'Authorization':'token '+token,
+        'Cache-Control':'no-cache',
+        'If-None-Match':''
+      }
+    });
+    if(!r.ok) return showToast('Pull failed — HTTP '+r.status, true);
     const data = await r.json();
     const content = data.files?.[GIST_FILE]?.content;
     if(!content) return showToast('No data found in Gist', true);
-    state = JSON.parse(content);
+    // Parse and validate before overwriting
+    let pulled;
+    try{ pulled = JSON.parse(content); }
+    catch{ return showToast('Gist data corrupted', true); }
+    // Deep merge pulled data into state so no keys are lost
+    state = Object.assign(structuredClone(DEFAULT), pulled);
     lsSet(KEY, JSON.stringify(state));
-    navigate(tab);
-    showToast('Pulled latest data from Gist');
-  } catch(e){ showToast('Pull failed — check your token', true); }
+    // Force full re-render of current tab
+    const currentTab = tab;
+    tab = null;
+    tab = currentTab;
+    document.getElementById('main').innerHTML = TABS[tab].render();
+    document.querySelectorAll('.n-item').forEach(el=>el.classList.toggle('active',el.dataset.tab===tab));
+    showToast('✓ Data pulled successfully');
+  } catch(e){ showToast('Pull failed — '+e.message, true); }
+}
+
+async function gistPushAndConfirm(){
+  const token = lsGet(GIST_KEY);
+  const gistId = lsGet(GIST_ID_KEY);
+  if(!token) return showSyncModal();
+  const body = {files:{[GIST_FILE]:{content:JSON.stringify(state,null,2)}}};
+  const url = gistId ? 'https://api.github.com/gists/'+gistId : 'https://api.github.com/gists';
+  const method = gistId ? 'PATCH' : 'POST';
+  if(!gistId){body.description='Jataya Portfolio Data';body.public=false;}
+  try{
+    const r = await fetch(url,{method,headers:{'Authorization':'token '+token,'Content-Type':'application/json'},body:JSON.stringify(body)});
+    if(!r.ok) return showToast('Push failed — HTTP '+r.status, true);
+    const data = await r.json();
+    if(data.id){ lsSet(GIST_ID_KEY, data.id); }
+    showToast('✓ Pushed to GitHub Gist');
+  } catch(e){ showToast('Push failed — '+e.message, true); }
 }
 
 function showToast(msg, isError=false){
