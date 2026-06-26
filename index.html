@@ -465,13 +465,14 @@ async function gistPull(){
   const gistId = lsGet(GIST_ID_KEY);
   if(!token || !gistId) return showToast('Set up Gist sync first', true);
   try{
-    // Add cache-busting timestamp to prevent stale responses
-    const r = await fetch('https://api.github.com/gists/'+gistId+'?t='+Date.now(),{
+    // Safari-compatible fetch — no custom cache headers
+    const r = await fetch('https://api.github.com/gists/'+gistId,{
+      method:'GET',
       headers:{
         'Authorization':'token '+token,
-        'Cache-Control':'no-cache',
-        'If-None-Match':''
-      }
+        'Accept':'application/vnd.github+json'
+      },
+      cache:'no-store'
     });
     if(!r.ok) return showToast('Pull failed — HTTP '+r.status, true);
     const data = await r.json();
