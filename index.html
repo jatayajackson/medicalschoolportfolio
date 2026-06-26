@@ -449,12 +449,25 @@ async function gistPush(){
   if(!gistId){body.description='Jataya Portfolio Data';body.public=false;}
   try{
     showToast('Pushing to Gist...');
-    const r = await fetch(url,{method,headers:{'Authorization':'token '+token,'Content-Type':'application/json'},body:JSON.stringify(body)});
-    if(!r.ok){
-      const err = await r.json().catch(()=>({}));
-      return showToast('Push failed — '+(err.message||'HTTP '+r.status), true);
-    }
-    const data = await r.json();
+    const data = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open(method, url, true);
+      xhr.setRequestHeader('Authorization', 'token '+token);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.setRequestHeader('Accept', 'application/vnd.github+json');
+      xhr.onload = () => {
+        if(xhr.status >= 200 && xhr.status < 300){
+          try{ resolve(JSON.parse(xhr.responseText)); }
+          catch{ reject(new Error('Invalid response')); }
+        } else {
+          reject(new Error('HTTP '+xhr.status));
+        }
+      };
+      xhr.onerror = () => reject(new Error('Network error'));
+      xhr.timeout = 15000;
+      xhr.ontimeout = () => reject(new Error('Timed out'));
+      xhr.send(JSON.stringify(body));
+    });
     if(data.id){ lsSet(GIST_ID_KEY, data.id); }
     showToast('✓ Pushed to GitHub Gist');
   } catch(e){ showToast('Push failed — '+e.message, true); }
@@ -465,30 +478,32 @@ async function gistPull(){
   const gistId = lsGet(GIST_ID_KEY);
   if(!token || !gistId) return showToast('Set up Gist sync first', true);
   try{
-    // Safari-compatible fetch — no custom cache headers
-    const r = await fetch('https://api.github.com/gists/'+gistId,{
-      method:'GET',
-      headers:{
-        'Authorization':'token '+token,
-        'Accept':'application/vnd.github+json'
-      },
-      cache:'no-store'
+    // Use XMLHttpRequest for maximum Safari/iOS compatibility
+    const data = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', 'https://api.github.com/gists/'+gistId, true);
+      xhr.setRequestHeader('Authorization', 'token '+token);
+      xhr.setRequestHeader('Accept', 'application/vnd.github+json');
+      xhr.onload = () => {
+        if(xhr.status >= 200 && xhr.status < 300){
+          try{ resolve(JSON.parse(xhr.responseText)); }
+          catch{ reject(new Error('Invalid JSON response')); }
+        } else {
+          reject(new Error('HTTP '+xhr.status));
+        }
+      };
+      xhr.onerror = () => reject(new Error('Network error — check your connection'));
+      xhr.ontimeout = () => reject(new Error('Request timed out'));
+      xhr.timeout = 15000;
+      xhr.send();
     });
-    if(!r.ok) return showToast('Pull failed — HTTP '+r.status, true);
-    const data = await r.json();
     const content = data.files?.[GIST_FILE]?.content;
     if(!content) return showToast('No data found in Gist', true);
-    // Parse and validate before overwriting
     let pulled;
     try{ pulled = JSON.parse(content); }
     catch{ return showToast('Gist data corrupted', true); }
-    // Deep merge pulled data into state so no keys are lost
     state = Object.assign(structuredClone(DEFAULT), pulled);
     lsSet(KEY, JSON.stringify(state));
-    // Force full re-render of current tab
-    const currentTab = tab;
-    tab = null;
-    tab = currentTab;
     document.getElementById('main').innerHTML = TABS[tab].render();
     document.querySelectorAll('.n-item').forEach(el=>el.classList.toggle('active',el.dataset.tab===tab));
     showToast('✓ Data pulled successfully');
