@@ -361,12 +361,108 @@ const DEFAULT = {
 let state = null;
 let tab = 'home';
 
+/* ---- STORAGE (localStorage + GitHub Gist sync) ---- */
+const GIST_KEY = 'jataya_gist_token';
+const GIST_ID_KEY = 'jataya_gist_id';
+const GIST_FILE = 'jataya_portfolio.json';
+
+function lsGet(k){try{return localStorage.getItem(k);}catch{return null;}}
+function lsSet(k,v){try{localStorage.setItem(k,v);}catch{}}
+
 async function load(){
-  try{const r=await window.storage.get(KEY);state=r?JSON.parse(r.value):structuredClone(DEFAULT);}
-  catch{state=structuredClone(DEFAULT);}
+  try{
+    const raw = lsGet(KEY);
+    state = raw ? JSON.parse(raw) : structuredClone(DEFAULT);
+  } catch{state=structuredClone(DEFAULT);}
 }
+
 async function save(){
-  try{await window.storage.set(KEY,JSON.stringify(state));}catch{}
+  try{lsSet(KEY, JSON.stringify(state));}catch{}
+}
+
+/* ---- GIST SYNC ---- */
+async function gistPush(){
+  const token = lsGet(GIST_KEY);
+  const gistId = lsGet(GIST_ID_KEY);
+  if(!token) return showSyncModal();
+  const body = {files:{[GIST_FILE]:{content:JSON.stringify(state,null,2)}}};
+  const url = gistId ? 'https://api.github.com/gists/'+gistId : 'https://api.github.com/gists';
+  const method = gistId ? 'PATCH' : 'POST';
+  if(!gistId){body.description='Jataya Portfolio Data';body.public=false;}
+  try{
+    const r = await fetch(url,{method,headers:{'Authorization':'token '+token,'Content-Type':'application/json'},body:JSON.stringify(body)});
+    const data = await r.json();
+    if(data.id){ lsSet(GIST_ID_KEY, data.id); }
+    showToast('Synced to GitHub Gist');
+  } catch(e){ showToast('Sync failed — check your token', true); }
+}
+
+async function gistPull(){
+  const token = lsGet(GIST_KEY);
+  const gistId = lsGet(GIST_ID_KEY);
+  if(!token || !gistId) return showToast('Set up Gist sync first', true);
+  try{
+    const r = await fetch('https://api.github.com/gists/'+gistId,{headers:{'Authorization':'token '+token}});
+    const data = await r.json();
+    const content = data.files?.[GIST_FILE]?.content;
+    if(!content) return showToast('No data found in Gist', true);
+    state = JSON.parse(content);
+    lsSet(KEY, JSON.stringify(state));
+    navigate(tab);
+    showToast('Pulled latest data from Gist');
+  } catch(e){ showToast('Pull failed — check your token', true); }
+}
+
+function showToast(msg, isError=false){
+  const t = document.createElement('div');
+  t.style.cssText='position:fixed;bottom:24px;right:24px;z-index:9999;padding:10px 18px;border-radius:8px;font-size:13px;font-family:Inter,sans-serif;font-weight:500;box-shadow:0 4px 16px rgba(0,0,0,0.2);background:'+(isError?'#8B3028':'#486840')+';color:#fff';
+  t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity 0.4s';setTimeout(()=>t.remove(),400);},2800);
+}
+
+function showSyncModal(){
+  const existingToken = lsGet(GIST_KEY)||'';
+  const existingId = lsGet(GIST_ID_KEY)||'';
+  document.getElementById('mTitle').textContent='GitHub Gist Sync';
+  document.getElementById('mBody').innerHTML=
+    '<div style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:14px">'+
+    'Gist sync saves your portfolio data to a <strong>private GitHub Gist</strong> so it works on any device.<br><br>'+
+    '<strong>To get your token:</strong><br>'+
+    '1. Go to <a href="https://github.com/settings/tokens/new" target="_blank" style="color:var(--clay)">github.com/settings/tokens/new</a><br>'+
+    '2. Name it <em>Portfolio Sync</em><br>'+
+    '3. Check the <strong>gist</strong> scope only<br>'+
+    '4. Click Generate token and paste it below</div>'+
+    '<div class="field"><label>GitHub Personal Access Token</label>'+
+    '<input type="password" id="f_token" placeholder="ghp_..." value="'+existingToken+'"></div>'+
+    (existingId?'<div style="font-size:11px;color:var(--text2);margin-bottom:10px">Gist ID on file: '+existingId+'</div>':'')+
+    '<div style="font-size:11px;color:var(--text3)">Token is stored only in this browser and sent only to GitHub.</div>';
+  document.getElementById('mSave').textContent='Save & Sync';
+  document.getElementById('mSave').onclick=async()=>{
+    const t=document.getElementById('f_token').value.trim();
+    if(!t)return;
+    lsSet(GIST_KEY,t);
+    closeModal();
+    await gistPush();
+  };
+  document.getElementById('overlay').classList.add('open');
+}
+
+function exportData(){
+  const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='portfolio_backup.json';a.click();
+}
+
+function importData(){
+  const input=document.createElement('input');input.type='file';input.accept='.json';
+  input.onchange=e=>{
+    const file=e.target.files[0];if(!file)return;
+    const reader=new FileReader();
+    reader.onload=ev=>{
+      try{state=JSON.parse(ev.target.result);lsSet(KEY,JSON.stringify(state));navigate(tab);showToast('Data imported successfully');}
+      catch{showToast('Invalid file',true);}
+    };reader.readAsText(file);
+  };input.click();
 }
 
 function badgeClass(s){
@@ -1416,7 +1512,28 @@ function initSidebar(){
     ${g.items.map(k=>`<button class="n-item${tab===k?' active':''}" data-tab="${k}" onclick="navigate('${k}')">
       <i class="ti ${TABS[k].icon}"></i>${TABS[k].label}
     </button>`).join('')}
-  `).join('');
+  `).join('')+`
+    <div class="n-sect" style="margin-top:0.5rem">Data & Sync</div>
+    <div style="padding:0.5rem 1rem 0.75rem;display:flex;flex-direction:column;gap:7px">
+      <button onclick="gistPush()" style="display:flex;align-items:center;gap:9px;width:100%;padding:9px 14px;border-radius:8px;border:1px solid rgba(175,139,87,0.45);background:linear-gradient(135deg,rgba(175,139,87,0.18),rgba(175,139,87,0.08));color:#D4B87A;font-size:12px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;letter-spacing:0.03em;transition:all 0.15s" onmouseover="this.style.background='linear-gradient(135deg,rgba(175,139,87,0.32),rgba(175,139,87,0.16))';this.style.borderColor='rgba(175,139,87,0.7)'" onmouseout="this.style.background='linear-gradient(135deg,rgba(175,139,87,0.18),rgba(175,139,87,0.08))';this.style.borderColor='rgba(175,139,87,0.45)'">
+        <i class="ti ti-cloud-upload" style="font-size:15px"></i>Push to Gist
+      </button>
+      <button onclick="gistPull()" style="display:flex;align-items:center;gap:9px;width:100%;padding:9px 14px;border-radius:8px;border:1px solid rgba(106,138,104,0.45);background:linear-gradient(135deg,rgba(106,138,104,0.18),rgba(106,138,104,0.08));color:#8DB88A;font-size:12px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;letter-spacing:0.03em;transition:all 0.15s" onmouseover="this.style.background='linear-gradient(135deg,rgba(106,138,104,0.32),rgba(106,138,104,0.16))';this.style.borderColor='rgba(106,138,104,0.7)'" onmouseout="this.style.background='linear-gradient(135deg,rgba(106,138,104,0.18),rgba(106,138,104,0.08))';this.style.borderColor='rgba(106,138,104,0.45)'">
+        <i class="ti ti-cloud-download" style="font-size:15px"></i>Pull from Gist
+      </button>
+      <div style="display:flex;gap:6px;margin-top:1px">
+        <button onclick="showSyncModal()" title="Sync Settings" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:7px 8px;border-radius:7px;border:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.04);color:var(--sb-dim);font-size:11px;font-family:'Inter',sans-serif;cursor:pointer;transition:all 0.15s" onmouseover="this.style.background='rgba(255,255,255,0.09)';this.style.color='var(--sb-text)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.color='var(--sb-dim)'">
+          <i class="ti ti-settings" style="font-size:13px"></i>Settings
+        </button>
+        <button onclick="exportData()" title="Export Backup" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:7px 8px;border-radius:7px;border:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.04);color:var(--sb-dim);font-size:11px;font-family:'Inter',sans-serif;cursor:pointer;transition:all 0.15s" onmouseover="this.style.background='rgba(255,255,255,0.09)';this.style.color='var(--sb-text)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.color='var(--sb-dim)'">
+          <i class="ti ti-download" style="font-size:13px"></i>Export
+        </button>
+        <button onclick="importData()" title="Import Backup" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:7px 8px;border-radius:7px;border:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.04);color:var(--sb-dim);font-size:11px;font-family:'Inter',sans-serif;cursor:pointer;transition:all 0.15s" onmouseover="this.style.background='rgba(255,255,255,0.09)';this.style.color='var(--sb-text)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.color='var(--sb-dim)'">
+          <i class="ti ti-upload" style="font-size:13px"></i>Import
+        </button>
+      </div>
+    </div>
+  `;
 }
 
 /* ---- INIT ---- */
