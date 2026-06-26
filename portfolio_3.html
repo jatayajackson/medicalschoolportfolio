@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jataya Jackson — Medical Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+:root{
+  /* Natural Elegance — Sherwin-Williams */
+  --bg:#EAE3D6;            /* Creamy */
+  --surface:#F4EDE0;       /* Lighter napery */
+  --card:#F6EFE4;          /* Card surface */
+  --sidebar:#3D2C1E;       /* Grounded deepened */
+  --sb-hover:#4D3C2C;
+  --sb-active:#5D4A38;
+  --sb-text:#DDD0B8;       /* Creamy on dark */
+  --sb-dim:#8A7260;
+  --clay:#AF8B57;          /* Warm Clay — primary accent */
+  --clay-d:#8A6C3A;
+  --clay-l:#EDE0C6;        /* Napery light */
+  --sage:#6A8A68;          /* Jadite deepened */
+  --sage-l:#C4D8C0;        /* Easy Green light */
+  --gold:#AF8B57;          /* Same as clay */
+  --gold-l:#EDE0C6;
+  --slate:#5A6E7A;         /* Smoky Blue */
+  --navy:#2B415F;          /* Deep Slate */
+  --text:#3D2C1E;          /* Grounded — body text */
+  --text2:#7A6450;         /* Khaki/taupe */
+  --text3:#A89278;
+  --border:#CCC0A8;        /* Khaki border */
+  --border-l:#DDD4C0;
+  --danger:#8B3028;--danger-l:#F5E0D8;
+  --ok:#486840;--ok-l:#D8EED0;
+  --warn:#8B5E28;--warn-l:#F0E4D0;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);display:flex;font-size:14px;line-height:1.6}
+
+/* Sidebar */
+aside{width:230px;flex-shrink:0;background:var(--sidebar);display:flex;flex-direction:column;height:100vh;overflow-y:auto;border-right:1px solid rgba(0,0,0,0.3)}
+aside::before{content:'';display:block;height:3px;background:linear-gradient(90deg,#AF8B57,#8DA487,#5A6E7A);flex-shrink:0}
+.s-profile{padding:0 1.25rem 1.25rem;border-bottom:1px solid rgba(255,255,255,0.07)}
+.avatar{width:112px;height:112px;border-radius:50%;object-fit:cover;object-position:top center;margin-bottom:14px;flex-shrink:0;display:block;border:3px solid rgba(255,255,255,0.22);box-shadow:0 4px 16px rgba(0,0,0,0.45);}
+.s-name{font-family:'Playfair Display',serif;font-size:16px;color:#EDE6D4;letter-spacing:0.01em;line-height:1.3}
+.s-sub{font-size:11px;color:var(--sb-dim);margin-top:3px;line-height:1.6}
+.s-sub em{color:var(--clay);font-style:normal;font-weight:500}
+
+/* Journey */
+.journey{padding:1.25rem;border-bottom:1px solid rgba(255,255,255,0.06)}
+.j-title{font-size:9px;text-transform:uppercase;letter-spacing:0.12em;color:var(--sb-dim);margin-bottom:14px}
+.j-wrap{position:relative;padding-left:22px}
+.j-wrap::before{content:'';position:absolute;left:7px;top:8px;bottom:8px;width:1px;background:linear-gradient(to bottom,#AF8B57 0%,rgba(109,138,103,0.3) 60%,rgba(255,255,255,0.04) 100%)}
+.j-stop{position:relative;margin-bottom:14px}
+.j-stop:last-child{margin-bottom:0}
+.j-dot{position:absolute;left:-22px;top:5px;width:13px;height:13px;border-radius:50%;border:2px solid rgba(255,255,255,0.1);background:var(--sidebar)}
+.j-stop.now .j-dot{background:var(--clay);border-color:var(--clay);box-shadow:0 0 10px rgba(175,139,87,0.6)}
+.j-lbl{font-size:12px;color:var(--sb-dim)}
+.j-stop.now .j-lbl{color:#EEE4D4;font-weight:500}
+.j-date{font-size:10px;color:var(--sb-dim);opacity:0.55;margin-top:1px}
+.j-stop.now .j-date{color:var(--clay);opacity:1}
+
+/* Countdown */
+.countdown{padding:0.875rem 1.25rem;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:baseline;gap:6px}
+.cd-num{font-family:'Playfair Display',serif;font-size:28px;color:var(--clay);line-height:1}
+.cd-lbl{font-size:10px;color:var(--sb-dim);text-transform:uppercase;letter-spacing:0.07em}
+
+/* Nav */
+nav{padding:0.5rem 0;flex:1}
+.n-sect{font-size:9px;text-transform:uppercase;letter-spacing:0.12em;color:var(--sb-dim);padding:0.875rem 1.25rem 0.3rem}
+.n-item{display:flex;align-items:center;gap:10px;width:100%;padding:8px 1.25rem;font-size:13px;color:var(--sb-dim);background:none;border:none;border-left:2px solid transparent;cursor:pointer;text-align:left;transition:all 0.15s;font-family:'Inter',sans-serif}
+.n-item:hover{background:var(--sb-hover);color:var(--sb-text)}
+.n-item.active{background:var(--sb-active);color:#F0E8D4;border-left-color:var(--clay);font-weight:500;letter-spacing:0.01em}
+.n-item i{font-size:16px;width:18px;text-align:center}
+
+/* Main */
+main{flex:1;overflow-y:auto;height:100vh;padding:2.25rem 2.5rem;background:var(--bg);letter-spacing:0.005em;min-width:0}
+.pg-head{margin-bottom:1.75rem}
+.pg-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:500;color:var(--text);margin-bottom:3px;letter-spacing:0.01em}
+.pg-sub{color:var(--text2);font-size:13px}
+.sec-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem}
+
+/* Cards */
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.25rem;margin-bottom:1rem;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.card:last-child{margin-bottom:0}
+.card-title{font-weight:500;font-size:14px;margin-bottom:3px}
+.card-sub{font-size:12px;color:var(--text2)}
+
+/* Stats */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:1.75rem}
+.stat{background:var(--surface);border:1px solid var(--border-l);border-radius:8px;padding:1rem;border-top:2px solid var(--border)}
+.stat-lbl{font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:var(--text2);margin-bottom:5px}
+.stat-val{font-family:'Playfair Display',serif;font-size:27px;color:var(--text);line-height:1}
+.stat-hint{font-size:11px;color:var(--text3);margin-top:4px}
+
+/* Progress */
+.prog-wrap{background:var(--border-l);border-radius:999px;height:6px;overflow:hidden;margin:7px 0}
+.prog-bar{height:100%;border-radius:999px;background:var(--clay);transition:width 0.5s ease}
+.prog-bar.sage{background:#6A8A68}
+.prog-bar.gold{background:#AF8B57}
+.prog-meta{display:flex;justify-content:space-between;font-size:11px;color:var(--text2)}
+
+/* Tags */
+.tag{display:inline-block;border-radius:4px;font-size:11px;font-weight:500;padding:2px 8px;white-space:nowrap}
+.t-Research{background:#F3E8E0;color:#7A3520}
+.t-Shadowing{background:#E2EDD8;color:#3A5825}
+.t-Conferences{background:#E8E0F0;color:#4A2878}
+.t-Boards{background:#F5E0DC;color:#7A2020}
+.t-LORs{background:var(--gold-l);color:#6A5010}
+.t-Clinical{background:#D8EEF0;color:#1A5060}
+.t-Networking{background:#F0E0D8;color:#6A3010}
+.t-Application{background:#E8E8E0;color:#404038}
+
+/* Badges */
+.badge{display:inline-block;border-radius:4px;font-size:11px;font-weight:500;padding:2px 8px;white-space:nowrap}
+.b-ok{background:#D8EED0;color:#3A5830}
+.b-warn{background:#F0E4D0;color:#7A5028}
+.b-neutral{background:#E4DDD0;color:#7A6450}
+.b-danger{background:#F5E0D8;color:#8B3028}
+
+/* List */
+.list-row{display:flex;align-items:flex-start;gap:12px;padding:11px 0;border-bottom:1px solid var(--border-l)}
+.list-row:last-child{border-bottom:none;padding-bottom:0}
+.list-row:first-child{padding-top:0}
+.list-main{flex:1;min-width:0}
+.list-title{font-size:13px;font-weight:500;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis}
+.list-meta{font-size:11px;color:var(--text2)}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:6px;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s;white-space:nowrap}
+.btn-outline{background:none;border:1px solid #CCC0A8;color:#7A6450}
+.btn-outline:hover{border-color:#AF8B57;color:#8A6C3A;background:#EDE0C6}
+.btn-primary{background:#AF8B57;border:1px solid #9A7A48;color:#fff;font-weight:500}
+.btn-primary:hover{background:#8A6C3A}
+.btn-ghost{background:none;border:none;cursor:pointer;color:var(--text3);padding:3px;font-size:15px;border-radius:4px;line-height:1;transition:all 0.15s;flex-shrink:0}
+.btn-ghost:hover{color:var(--danger);background:var(--danger-l)}
+.btn-edit{background:none;border:none;cursor:pointer;color:var(--text3);padding:3px;font-size:15px;border-radius:4px;line-height:1;transition:all 0.15s;flex-shrink:0}
+.btn-edit:hover{color:var(--clay);background:var(--clay-l)}
+
+/* Checkbox */
+input[type=checkbox]{accent-color:#AF8B57;width:15px;height:15px;cursor:pointer;flex-shrink:0;margin-top:3px}
+
+/* Done text */
+.done-text{text-decoration:line-through;color:var(--text2)}
+
+/* Urgent */
+.pill{border-radius:6px;padding:3px 8px;font-size:12px;font-weight:500;text-align:center;min-width:48px}
+.pill-urgent{background:#F5E0D8;color:#8B3028}
+.pill-normal{background:#E0D8C8;color:#7A6450}
+.pill-done{background:#D4EAD0;color:#486840}
+
+/* Alert */
+.alert{border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:1.25rem;display:flex;align-items:flex-start;gap:8px;line-height:1.5}
+.alert-warn{background:#F0E8D4;color:#6A4A20;border:1px solid #C4A878}
+.alert i{font-size:15px;margin-top:1px;flex-shrink:0}
+
+/* Empty */
+.empty{text-align:center;padding:2rem;color:var(--text2);font-size:13px;font-style:italic}
+
+/* Board score rows */
+.board-row{display:flex;align-items:center;gap:12px;margin-top:10px;flex-wrap:wrap}
+.board-input{padding:7px 10px;border:1px solid var(--border);border-radius:6px;font-size:14px;font-family:'Inter',sans-serif;background:var(--surface);color:var(--text);width:170px;transition:border-color 0.15s}
+.board-input:focus{outline:none;border-color:#AF8B57}
+.score-ok{color:#486840;font-size:12px;font-weight:500}
+.score-low{color:#8B3028;font-size:12px;font-weight:500}
+
+/* Detail block */
+.detail-block{border-left:2px solid var(--border);padding-left:12px;margin-top:8px;font-size:12px;color:var(--text2);line-height:1.7}
+.detail-kv{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;font-size:12px;margin-bottom:6px}
+.detail-kv dt{color:var(--text2);font-weight:500;white-space:nowrap}
+.detail-kv dd{color:var(--text)}
+
+/* Modal */
+.m-overlay{position:fixed;inset:0;background:rgba(30,18,9,0.55);display:none;align-items:flex-start;justify-content:center;padding-top:50px;z-index:1000;overflow-y:auto}
+.m-overlay.open{display:flex}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;width:90%;max-width:510px;margin-bottom:3rem}
+.m-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:500;margin-bottom:1.25rem;color:var(--text)}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:11px;font-weight:500;color:var(--text2);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.05em}
+.field input,.field select,.field textarea{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--surface);color:var(--text);font-family:'Inter',sans-serif;transition:border-color 0.15s}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:#AF8B57}
+.field textarea{resize:vertical;min-height:72px}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.m-foot{display:flex;gap:8px;justify-content:flex-end;margin-top:4px}
+
+/* Phase header */
+.phase-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
+.phase-name{font-family:'Playfair Display',serif;font-size:15px;font-weight:500}
+.phase-pct{font-size:12px;color:var(--text2)}
+
+/* Home page */
+.home-hero{display:flex;gap:2.5rem;align-items:flex-start;margin-bottom:2rem;padding-bottom:2rem;border-bottom:1px solid var(--border)}
+.home-photo{width:160px;height:160px;border-radius:50%;object-fit:cover;object-position:top center;flex-shrink:0;border:4px solid var(--card);box-shadow:0 6px 24px rgba(0,0,0,0.15);margin-top:4px}
+.home-name{font-family:'Playfair Display',serif;font-size:28px;font-weight:500;line-height:1.2;margin-bottom:6px;color:var(--text)}
+.home-tag{display:inline-block;font-size:12px;color:var(--clay);font-weight:500;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:14px}
+.home-bio{font-size:14px;line-height:1.85;color:var(--text2);max-width:580px}
+.home-section{margin-bottom:1.75rem}
+.home-section-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:500;margin-bottom:1rem;color:var(--text);display:flex;align-items:center;gap:10px}
+.home-section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.edu-item{display:flex;gap:1rem;padding:0.875rem 0;border-bottom:1px solid var(--border-l)}
+.edu-item:last-child{border-bottom:none}
+.edu-dot{width:10px;height:10px;border-radius:50%;background:var(--clay);flex-shrink:0;margin-top:5px}
+.edu-school{font-weight:500;font-size:14px;margin-bottom:2px}
+.edu-detail{font-size:12px;color:var(--text2);line-height:1.6}
+.home-edit-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;color:var(--text2);cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s}
+.home-edit-btn:hover{border-color:var(--clay);color:var(--clay)}
+.focus-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.25rem;display:flex;gap:1rem;align-items:flex-start;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.focus-icon{width:40px;height:40px;border-radius:8px;background:var(--clay-l);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--clay);flex-shrink:0}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:999px}
+</style>
+</head>
+<body>
+
+<aside>
+  <div class="s-profile" style="text-align:center;padding:1.5rem 1rem 1.25rem">
+  <img src="data:image/jpeg;base64,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" class="avatar" alt="Jataya Jackson OMS-II">
+  <div class="s-name" style="font-size:16px;letter-spacing:0.02em;margin-top:4px;color:#EEE8D8">Jataya Jackson</div>
+  <div class="s-sub" style="line-height:1.9;margin-top:5px;font-size:11px">
+    OMS-II &middot; Class of 2029<br>
+    NSU Kiran C. Patel COM<br>
+    <em style="color:var(--clay);font-style:normal;font-weight:500;letter-spacing:0.02em">→ Dermatology</em>
+  </div>
+  <div style="width:28px;height:1.5px;background:var(--clay);border-radius:1px;margin:12px auto 0;opacity:0.6"></div>
+  </div>
+
+  <div class="journey">
+    <div class="j-title">Your Journey</div>
+    <div class="j-wrap" id="jWrap"></div>
+  </div>
+
+  <div class="countdown">
+    <div class="cd-num" id="cdNum">—</div>
+    <div class="cd-lbl">days to match day</div>
+  </div>
+
+  <nav id="nav"></nav>
+</aside>
+
+<main id="main"></main>
+
+<div class="m-overlay" id="overlay">
+  <div class="modal">
+    <div class="m-title" id="mTitle"></div>
+    <div id="mBody"></div>
+    <div class="m-foot">
+      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" id="mSave">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const KEY = 'jataya_portfolio_v2';
+const uid = () => Math.random().toString(36).substr(2,9);
+const val = id => (document.getElementById(id)||{}).value||'';
+const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+const PHASES = ['M1 Summer','M2 Fall','M2 Spring','M3','M4'];
+const CATS = ['Research','Shadowing','Conferences','Boards','LORs','Clinical','Networking','Application'];
+const STATUSES = {
+  research:['In Progress','Submitted','Under Review','Revision','Accepted','Published','Completed'],
+  conference:['Planned','Abstract Submitted','Accepted — Poster','Accepted — Oral','Attended','Declined'],
+  pub:['In Progress','Submitted','Under Review','Revision','Accepted','Published'],
+  lor:['Pending Shadowing','Will Request in M3','Requested','Received','Declined'],
+};
+
+const EXAMS_DEFAULT = [
+  {id:'e1',course:'Renal System',type:'Midterm Exam',date:'2026-07-30',time:'9:10 AM',location:'FTL: Morris | TBR: 1803',notes:'',done:false},
+  {id:'e2',course:'Endocrine System',type:'Midterm Exam',date:'2026-08-10',time:'9:10 AM',location:'FTL: Morris | TBR: 1803',notes:'',done:false},
+  {id:'e3',course:'Renal System',type:'Final Exam',date:'2026-08-17',time:'9:10 AM',location:'FTL: Morris | TBR: 1803',notes:'',done:false},
+  {id:'e4',course:'Endocrine System',type:'Final Exam',date:'2026-08-26',time:'9:10 AM',location:'FTL: Morris | TBR: 1803',notes:'',done:false},
+  {id:'e5',course:'MSK & Rheumatology',type:'Midterm Exam',date:'2026-09-02',time:'9:10 AM',location:'FTL: Morris | TBR: 1803',notes:'',done:false},
+  {id:'e6',course:'OPP IV',type:'Written Midterm',date:'2026-09-11',time:'8:10 AM',location:'FTL: Morris | TBR: 1803',notes:'',done:false},
+  {id:'e7',course:'OPP IV',type:'Practical Midterm',date:'2026-09-11',time:'10:10 AM',location:'FTL & TBR: OPP Lab',notes:'',done:false},
+  {id:'e8',course:'MEP IV',type:'Exam #1',date:'2026-09-11',time:'5:00 PM (window opens)',location:'Online',notes:'Window: Sept 11 5:00 PM – Sept 13 11:59 PM',done:false},
+  {id:'e9',course:'PCM I',type:'CSE 1 — Clinical Skills',date:'2026-09-14',time:'8:10 AM',location:'SP Lab (FTL & TBR)',notes:'Two-day assessment window: Sept 14–15',done:false},
+  {id:'e10',course:'MSK & Rheumatology',type:'Final Exam',date:'2026-09-16',time:'9:10 AM',location:'FTL: Morris | TBR: 1803',notes:'',done:false},
+  {id:'e11',course:'Medical Neuroanatomy',type:'Midterm Exam',date:'2026-10-13',time:'9:10 AM',location:'FTL: Morris | TBR: 1803',notes:'',done:false},
+  {id:'e12',course:'Clinical Reasoning I',type:'Exam',date:'2026-10-23',time:'1:10 PM',location:'FTL: Morris | TBR: 1803',notes:'',done:false},
+  {id:'e13',course:'Neuroanatomy & Nervous System',type:'Integrated Exam',date:'2026-10-29',time:'9:10 AM',location:'FTL: Morris | TBR: 1803',notes:'Neuroanatomy Final + Nervous System Midterm combined into one integrated exam',done:false},
+  {id:'e14',course:'MEP IV',type:'Exam #2',date:'2026-10-30',time:'5:00 PM (window opens)',location:'Online',notes:'Window: Oct 30 5:00 PM – Nov 1 11:59 PM',done:false},
+  {id:'e15',course:'PCM I',type:'CSE 2 — Clinical Skills',date:'2026-11-02',time:'8:10 AM',location:'SP Lab (FTL & TBR)',notes:'Multi-day assessment window: Nov 2–5',done:false},
+  {id:'e16',course:'OPP IV',type:'Written Final',date:'2026-11-06',time:'8:10 AM',location:'FTL: Morris | TBR: 1803',notes:'',done:false},
+  {id:'e17',course:'OPP IV',type:'Practical Final',date:'2026-11-06',time:'10:10 AM',location:'FTL & TBR: OPP Lab',notes:'',done:false},
+  {id:'e18',course:'Nervous System',type:'Final Exam',date:'2026-12-01',time:'9:10 AM',location:'FTL: Morris | TBR: 1803',notes:'',done:false},
+  {id:'e19',course:'Human Sexuality',type:'Final Exam',date:'2026-12-02',time:'9:10 AM',location:'FTL: Morris | TBR: 1803',notes:'',done:false},
+];
+
+const DEFAULT = {
+  goals:[
+    {id:'g1',phase:'M1 Summer',category:'Research',text:'Finalize PICO framework and search keywords',dueDate:'2026-06-28',completed:false},
+    {id:'g2',phase:'M1 Summer',category:'Research',text:'Set up shared Google Drive with Dr. Riskin (riskinsuzanne@gmail.com)',dueDate:'2026-06-28',completed:false},
+    {id:'g3',phase:'M1 Summer',category:'Networking',text:'Join AOCD as student member (aocd.org)',dueDate:'2026-07-15',completed:false},
+    {id:'g4',phase:'M1 Summer',category:'Shadowing',text:'Call and email Dr. Richard Miller DO — Bay Dermatology Lutz (727-585-8591)',dueDate:'2026-06-25',completed:false},
+    {id:'g5',phase:'M1 Summer',category:'Shadowing',text:'Call and email Dr. Kristin Witfill DO — Bay Dermatology Lutz (727-585-8591)',dueDate:'2026-06-25',completed:false},
+    {id:'g6',phase:'M1 Summer',category:'Research',text:'Complete ALM literature review and build annotated reference library',dueDate:'2026-07-19',completed:false},
+    {id:'g7',phase:'M1 Summer',category:'Research',text:'Run full database search (Embase/PubMed) and screen abstracts',dueDate:'2026-07-26',completed:false},
+    {id:'g8',phase:'M1 Summer',category:'Research',text:'Build search history log file with date, string, database, and hit counts',dueDate:'2026-07-26',completed:false},
+    {id:'g9',phase:'M2 Fall',category:'Research',text:'Submit NCDB data access application through Dr. Riskin',dueDate:'2026-08-15',completed:false},
+    {id:'g10',phase:'M2 Fall',category:'Research',text:'Complete data extraction, cleaning, and statistical analysis',dueDate:'2026-10-15',completed:false},
+    {id:'g11',phase:'M2 Fall',category:'Research',text:'Complete first full draft of ALM/NCDB manuscript',dueDate:'2026-10-31',completed:false},
+    {id:'g12',phase:'M2 Fall',category:'Conferences',text:'Submit abstract to AOCD 2027 Spring Meeting — West Palm Beach (deadline ~Nov 2026)',dueDate:'2026-11-30',completed:false},
+    {id:'g13',phase:'M2 Fall',category:'Shadowing',text:'Accumulate 50+ dermatology shadowing hours',dueDate:'2026-12-31',completed:false},
+    {id:'g14',phase:'M2 Spring',category:'Boards',text:'Pass COMLEX Level 1 on first attempt (target 550+)',dueDate:'2027-06-30',completed:false},
+    {id:'g15',phase:'M2 Spring',category:'Boards',text:'Pass USMLE Step 1 on first attempt',dueDate:'2027-06-30',completed:false},
+    {id:'g16',phase:'M3',category:'Conferences',text:'Present at AOCD 2027 Spring Meeting — Hilton West Palm Beach (Mar 4–7)',dueDate:'2027-03-07',completed:false},
+    {id:'g17',phase:'M3',category:'Networking',text:'Meet derm residency program directors at AOCD 2027 student session',dueDate:'2027-03-07',completed:false},
+    {id:'g18',phase:'M3',category:'Clinical',text:'Complete M3 dermatology rotation — perform exceptionally',dueDate:'2027-12-31',completed:false},
+    {id:'g19',phase:'M3',category:'LORs',text:'Request and secure derm-specific LOR #1 from dermatology attending',dueDate:'2027-12-31',completed:false},
+    {id:'g20',phase:'M3',category:'LORs',text:'Request and secure derm-specific LOR #2 from dermatology attending',dueDate:'2027-12-31',completed:false},
+    {id:'g21',phase:'M3',category:'Research',text:'Submit ALM/NCDB manuscript to peer-reviewed journal',dueDate:'2027-09-30',completed:false},
+    {id:'g22',phase:'M3',category:'Shadowing',text:'Accumulate 100+ total dermatology shadowing hours',dueDate:'2027-12-31',completed:false},
+    {id:'g23',phase:'M4',category:'Clinical',text:'Complete 2–3 away rotations at DO-friendly derm programs',dueDate:'2028-09-30',completed:false},
+    {id:'g24',phase:'M4',category:'Boards',text:'Score 260+ on USMLE Step 2 CK (competitive minimum); target 265+ (2026 matched derm avg was 267)',dueDate:'2028-09-30',completed:false},
+    {id:'g25',phase:'M4',category:'Boards',text:'Score 550+ on COMLEX Level 2',dueDate:'2028-09-30',completed:false},
+    {id:'g26',phase:'M4',category:'Application',text:'Draft and finalize personal statement (leverage ALM equity research narrative)',dueDate:'2028-08-31',completed:false},
+    {id:'g27',phase:'M4',category:'Application',text:'Submit ERAS application',dueDate:'2028-09-01',completed:false},
+    {id:'g28',phase:'M4',category:'Application',text:'Apply to 60–80 DO-friendly dermatology programs',dueDate:'2028-10-01',completed:false},
+  ],
+  research:[{
+    id:'r1',title:'Racial and Ethnic Disparities in Stage at Melanoma Diagnosis and Time to Treatment',
+    subtitle:'A National Cancer Database Analysis',
+    mentor:'Dr. Riskin (Internal Medicine, NSU-COM)',
+    database:'National Cancer Database (NCDB)',status:'In Progress',
+    startDate:'June 2026',targetVenue:'AOCD 2027 Spring Meeting + Peer-Reviewed Journal',
+    description:'Retrospective cohort study examining racial/ethnic disparities in ALM stage at diagnosis and time to first treatment. Aims: (1) stage at diagnosis by race/ethnicity; (2) time from diagnosis to first treatment; (3) ALM subtype distribution; (4) insurance status as mediating factor.',
+  }],
+  shadowing:[],
+  conferences:[
+    {id:'c1',name:'AOCD 2027 Spring Meeting',date:'2027-03-04',location:'Hilton West Palm Beach, FL',presentationType:'Poster / Oral Presentation',presentationTitle:'Racial and Ethnic Disparities in Stage at Melanoma Diagnosis and Time to Treatment',status:'Planned',notes:'Primary target. Abstract deadline ~Nov 2026. Residency PD networking session Saturday — attend even if abstract not accepted.'},
+    {id:'c2',name:'ODAC Dermatology Conference 2027',date:'2027-01-15',location:'Orlando, FL',presentationType:'Attendee / Poster',presentationTitle:'',status:'Planned',notes:'Annual Florida derm conference. Apply for student scholarship at orlandoderm.org.'},
+    {id:'c3',name:'Florida Academy of Dermatology (FAD) Annual Meeting',date:'2027-05-15',location:'Florida',presentationType:'Attendee',presentationTitle:'',status:'Planned',notes:'State-level meeting. More intimate than national conferences — excellent local networking.'},
+  ],
+  publications:[],
+  boardScores:{step1:'',comlex1:'',step2:'',comlex2:''},
+  lors:[
+    {id:'l1',name:'Dr. Riskin',specialty:'Internal Medicine',institution:'NSU-COM',relationship:'Research Mentor',dateRequested:'',dateReceived:'',status:'Future — Request after publication',notes:'Primary research mentor. Request LOR after manuscript acceptance (M3 year).'},
+    {id:'l2',name:'Dr. Richard Miller, DO',specialty:'Dermatology / Mohs Surgery',institution:'Bay Dermatology / NSU-COM Derm Residency PD',relationship:'Shadowing Supervisor (Pending)',dateRequested:'',dateReceived:'',status:'Pending Shadowing',notes:'Former AOCD President. NSU-COM Derm Residency PD at Largo Medical Center. Most important LOR contact in your network. Call 727-585-8591.'},
+    {id:'l3',name:'Dr. Kristin Witfill, DO',specialty:'Dermatology / Cosmetic Surgery',institution:'Bay Dermatology / NSU-COM Clinical Faculty',relationship:'Shadowing Supervisor (Pending)',dateRequested:'',dateReceived:'',status:'Pending Shadowing',notes:'NSU-COM Clinical Faculty. Director of Cosmetic Surgery for HCA/USF Morsani derm residency. Call 727-585-8591.'},
+  ],
+  awards:[],
+  exams: EXAMS_DEFAULT,
+  portfolio:[],
+  signals:[],
+  prelim:[],
+  researchLog:[],
+  bio:{
+    about:`Jataya Jackson is a second-year osteopathic medical student at Nova Southeastern University Kiran C. Patel College of Osteopathic Medicine, Class of 2029. A Tampa native, she holds dual bachelor's degrees in Biomedical Sciences and Public Health from the University of South Florida, along with a Master of Science in Medical Sciences — a multidisciplinary foundation that anchors her commitment to both rigorous clinical training and evidence-based preventive care.\n\nDrawn to dermatology for its visual precision, clear clinical pathways, and meaningful continuity of care, Jataya is passionate about delivering results that are both medically significant and tangible — a specialty where treatment transforms health outcomes and quality of life in ways a patient can see and feel. That commitment to visible, lasting impact extends directly to her research, where she is investigating racial and ethnic disparities in acral lentiginous melanoma diagnosis and time to treatment — working to ensure that dermatologic care serves every patient equitably, regardless of skin tone.`,
+    interests:'',
+    vision:'',
+    quote:''
+  },
+};
+
+let state = null;
+let tab = 'home';
+
+async function load(){
+  try{const r=await window.storage.get(KEY);state=r?JSON.parse(r.value):structuredClone(DEFAULT);}
+  catch{state=structuredClone(DEFAULT);}
+}
+async function save(){
+  try{await window.storage.set(KEY,JSON.stringify(state));}catch{}
+}
+
+function badgeClass(s){
+  if(!s) return 'b-neutral';
+  if(/Published|Pass|Complet|Receiv|Accept/.test(s)) return 'b-ok';
+  if(/Progress|Review|Revision|Submit|Planned/.test(s)) return 'b-warn';
+  if(/Fail|Declin/.test(s)) return 'b-danger';
+  return 'b-neutral';
+}
+function tag(cat){return`<span class="tag t-${esc(cat)}">${esc(cat)}</span>`;}
+function badge(s){return`<span class="badge ${badgeClass(s)}">${esc(s)}</span>`;}
+function fmt(d){if(!d)return'';try{return new Date(d+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}catch{return d;}}
+function opts(arr,sel){return arr.map(o=>`<option${o===sel?' selected':''}>${esc(o)}</option>`).join('');}
+function fld(label,id,type,extra='',v=''){return`<div class="field"><label>${label}</label><input type="${type}" id="${id}" value="${esc(v)}" ${extra}></div>`;}
+function fsel(label,id,options,sel=''){return`<div class="field"><label>${label}</label><select id="${id}"><option value="">Select…</option>${opts(options,sel)}</select></div>`;}
+function ftxt(label,id,val=''){return`<div class="field"><label>${label}</label><textarea id="${id}">${esc(val)}</textarea></div>`;}
+
+/* ---- RENDERS ---- */
+function pgHead(title,sub,btnLabel,btnAction){
+  return`<div class="pg-head">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start">
+      <div><div class="pg-title">${title}</div>${sub?`<div class="pg-sub">${sub}</div>`:''}  </div>
+      ${btnLabel?`<button class="btn btn-outline" onclick="${btnAction}" style="flex-shrink:0"><i class="ti ti-plus"></i>${btnLabel}</button>`:''}
+    </div>
+  </div>`;
+}
+
+function getPhoto(){const img=document.querySelector('aside img.avatar');return img?img.src:'';}
+
+function renderHome(){
+  const hours=state.shadowing.reduce((s,x)=>s+parseFloat(x.hours||0),0);
+  const outputs=state.portfolio.length;
+  const done=state.goals.filter(g=>g.completed).length;
+  const matchDay=new Date('2029-03-21');
+  const daysLeft=Math.max(0,Math.ceil((matchDay-new Date())/864e5));
+  const bio=state.bio||{};
+  const about=bio.about||'';
+  const interests=bio.interests||'';
+  const vision=bio.vision||'';
+  const quote=bio.quote||'';
+  const photo=getPhoto();
+
+  return`
+  <!-- Hero -->
+  <div class="home-hero">
+    ${photo?`<img src="${photo}" class="home-photo" alt="Jataya Jackson">`:''}
+    <div style="flex:1;min-width:0">
+      <div class="home-name">Jataya Jackson, OMS-II</div>
+      <div class="home-tag">Dermatology &nbsp;·&nbsp; Class of 2029 &nbsp;·&nbsp; NSU-KPCOM</div>
+      <p class="home-bio">${esc(about).replace(/\n\n/g,'</p><p class="home-bio" style="margin-top:12px">')}</p>
+      ${quote?`<div style="margin-top:16px;border-left:3px solid var(--clay);padding-left:14px;font-style:italic;font-size:13px;color:var(--text2)">"${esc(quote)}"</div>`:''}
+      <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
+        <button class="home-edit-btn" onclick="openBioModal()"><i class="ti ti-pencil" style="font-size:11px"></i> Edit bio</button>
+        <button class="home-edit-btn" onclick="navigate('dashboard')"><i class="ti ti-layout-dashboard" style="font-size:11px"></i> View dashboard</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick stats -->
+  <div class="stat-grid" style="margin-bottom:1.75rem">
+    <div class="stat" style="border-top:2px solid var(--clay)"><div class="stat-lbl">Match Day</div><div class="stat-val">${daysLeft.toLocaleString()}d</div><div class="stat-hint">March 21, 2029</div></div>
+    <div class="stat" style="border-top:2px solid #6A8A68"><div class="stat-lbl">Shadowing</div><div class="stat-val">${Math.round(hours)}h</div><div class="stat-hint">Target: 100+ hours</div></div>
+    <div class="stat" style="border-top:2px solid #AF8B57"><div class="stat-lbl">Scholarly outputs</div><div class="stat-val">${outputs}</div><div class="stat-hint">Target: 27+</div></div>
+    <div class="stat" style="border-top:2px solid var(--slate)"><div class="stat-lbl">Goals complete</div><div class="stat-val">${done}/${state.goals.length}</div><div class="stat-hint">${Math.round(done/Math.max(1,state.goals.length)*100)}%</div></div>
+  </div>
+
+  <!-- Education -->
+  <div class="home-section">
+    <div class="home-section-title">Education</div>
+    <div class="card" style="padding:0.75rem 1.25rem">
+      <div class="edu-item">
+        <div class="edu-dot" style="background:var(--slate)"></div>
+        <div>
+          <div class="edu-school">University of South Florida &nbsp;<span style="font-weight:400;color:var(--text2)">Tampa, FL</span></div>
+          <div class="edu-detail">
+            B.S. Biomedical Sciences &nbsp;·&nbsp; B.S. Public Health<br>
+            Master of Science in Medical Sciences (MMS)
+          </div>
+        </div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-dot"></div>
+        <div>
+          <div class="edu-school">NSU Kiran C. Patel College of Osteopathic Medicine &nbsp;<span style="font-weight:400;color:var(--text2)">Tampa, FL</span></div>
+          <div class="edu-detail">
+            Doctor of Osteopathic Medicine &nbsp;·&nbsp; Class of 2029<br>
+            OMS-II &nbsp;·&nbsp; <em style="color:var(--clay);font-style:normal">Pursuing Dermatology</em>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Research focus -->
+  <div class="home-section">
+    <div class="home-section-title">Current Research Focus</div>
+    ${state.research.map(r=>`
+    <div class="focus-card" style="margin-bottom:0.875rem">
+      <div class="focus-icon"><i class="ti ti-microscope"></i></div>
+      <div>
+        <div style="font-weight:500;font-size:14px;font-family:'Playfair Display',serif;margin-bottom:4px">${esc(r.title)}</div>
+        ${r.subtitle?`<div style="font-size:12px;color:var(--text2);font-style:italic;margin-bottom:6px">${esc(r.subtitle)}</div>`:''}
+        <div style="font-size:12px;color:var(--text2);line-height:1.6">${r.description?esc(r.description).slice(0,200)+'…':''}</div>
+        <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
+          <span class="badge b-warn">${esc(r.status)}</span>
+          ${r.targetVenue?`<span style="font-size:11px;color:var(--text2)"><i class="ti ti-target" style="font-size:11px;vertical-align:-1px"></i> ${esc(r.targetVenue)}</span>`:''}
+        </div>
+      </div>
+    </div>`).join('')}
+  </div>
+
+  ${(interests||vision)?`
+  <!-- Personal -->
+  <div class="home-section">
+    <div class="home-section-title">Beyond Medicine</div>
+    <div class="card">
+      ${interests?`<div style="margin-bottom:${vision?'12px':'0'}"><div style="font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.07em;color:var(--text2);margin-bottom:4px">Interests & Passions</div><div style="font-size:13px;line-height:1.7">${esc(interests)}</div></div>`:''}
+      ${vision?`<div><div style="font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.07em;color:var(--text2);margin-bottom:4px">Long-Term Vision</div><div style="font-size:13px;line-height:1.7">${esc(vision)}</div></div>`:''}
+    </div>
+  </div>`:''}
+
+  <!-- Add more button if sections are empty -->
+  ${(!interests&&!vision&&!quote)?`
+  <div class="card" style="border:1.5px dashed var(--border);background:transparent;text-align:center;padding:1.5rem">
+    <div style="font-size:13px;color:var(--text2);margin-bottom:10px">Add your personal interests, long-term vision, and a guiding quote to complete your profile</div>
+    <button class="btn btn-outline" onclick="openBioModal()"><i class="ti ti-plus"></i> Complete your profile</button>
+  </div>`:''}
+  `;
+}
+
+function openBioModal(){
+  const bio=state.bio||{};
+  openOverlay('Edit profile & bio',`
+    <div style="font-size:12px;color:var(--text2);margin-bottom:14px;line-height:1.5">This is the first thing a mentor or program director sees when you share this portfolio.</div>
+    ${ftxt('About me (bio paragraph)','f_about',bio.about||'')}
+    ${ftxt('Interests & passions outside medicine','f_interests',bio.interests||'')}
+    ${ftxt('Long-term vision (who do you want to be as a physician?)','f_vision',bio.vision||'')}
+    ${fld('A guiding quote or motto (optional)','f_quote','text','',bio.quote||'')}
+  `,()=>{
+    state.bio={
+      about:val('f_about'),
+      interests:val('f_interests'),
+      vision:val('f_vision'),
+      quote:val('f_quote'),
+    };
+    save();closeModal();navigate(tab);
+  });
+}
+
+function renderDashboard(){
+  const now=new Date();
+  const match=new Date('2029-03-15');
+  const start=new Date('2025-08-01');
+  const pct=Math.min(100,Math.max(0,((now-start)/(match-start))*100));
+  const days=Math.max(0,Math.ceil((match-now)/864e5));
+  const hours=state.shadowing.reduce((s,x)=>s+parseFloat(x.hours||0),0);
+  const pubs=state.publications.filter(p=>p.status==='Published').length;
+  const done=state.goals.filter(g=>g.completed).length;
+  const total=state.goals.length;
+  const upcoming=state.goals.filter(g=>!g.completed&&g.dueDate).sort((a,b)=>new Date(a.dueDate)-new Date(b.dueDate)).slice(0,6);
+  return`
+    ${pgHead('Welcome back, Jataya','OMS-II &middot; Nova Southeastern University Kiran C. Patel COM &middot; Class of 2029 &middot; <em style="font-style:italic;color:var(--clay)">Pursuing Dermatology</em>',null,null)}
+    <div class="card" style="margin-bottom:1.25rem">
+      <div class="prog-meta" style="margin-bottom:6px"><span style="font-weight:500;font-size:13px">Journey to Match Day</span><span>${days.toLocaleString()} days remaining</span></div>
+      <div class="prog-wrap"><div class="prog-bar" style="width:${pct}%"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text2);margin-top:5px">
+        ${['M1 (2025)','M2','M3','M4','Match — Mar 2029'].map(p=>`<span>${p}</span>`).join('')}
+      </div>
+      <div style="text-align:center;font-size:11px;color:var(--text3);margin-top:4px">You are here · ${Math.round(pct)}% of the way there</div>
+    </div>
+    <div class="stat-grid">
+      <div class="stat"><div class="stat-lbl">Shadowing</div><div class="stat-val">${Math.round(hours)}h</div><div class="stat-hint">Target: 100+ hours</div></div>
+      <div class="stat"><div class="stat-lbl">Scholarly outputs</div><div class="stat-val">${state.portfolio.length}</div><div class="stat-hint">Target: 27+ (matched avg)</div></div>
+      <div class="stat"><div class="stat-lbl">Research projects</div><div class="stat-val">${state.research.length}</div><div class="stat-hint">${state.research.filter(r=>r.status==='In Progress').length} active</div></div>
+      <div class="stat"><div class="stat-lbl">Goals complete</div><div class="stat-val">${done}/${total}</div><div class="stat-hint">${Math.round(done/total*100)}% done</div></div>
+    </div>
+    <div class="card" style="margin-bottom:1.25rem">
+      <div style="font-weight:500;font-size:14px;margin-bottom:1rem;display:flex;align-items:center;gap:7px"><i class="ti ti-flag-3" style="color:var(--clay)"></i>Residency application milestones</div>
+      ${(()=>{
+        const milestones=[
+          {label:'AOCD Abstract Deadline',date:'2026-11-30',note:'Submit research abstract for AOCD 2027 Spring Meeting'},
+          {label:'AOCD 2027 Spring Meeting',date:'2027-03-04',note:'West Palm Beach, FL — present research & meet program directors'},
+          {label:'Step 1 / COMLEX Level 1 (target)',date:'2027-06-15',note:'Pass Step 1 on first attempt · Target COMLEX 550+'},
+          {label:'Step 2 CK / COMLEX Level 2 (target)',date:'2028-09-01',note:'Target Step 2 CK 260+ min · 265+ competitive · 2026 matched derm avg was 267'},
+          {label:'ERAS Application Opens to Programs',date:'2028-09-04',note:'Apply to 60–80 DO-friendly dermatology programs'},
+          {label:'Interview Season Opens',date:'2028-10-01',note:'October 2028 – January 2029 · Thank you emails within 24 hrs'},
+          {label:'NRMP Rank List Deadline',date:'2029-02-19',note:'Submit your rank order list through NRMP'},
+          {label:'Match Day',date:'2029-03-21',note:'Class of 2029 · NSU-KPCOM · Dermatology'},
+        ];
+        return milestones.map(m=>{
+          const dd=Math.ceil((new Date(m.date)-now)/864e5);
+          const past=dd<0;
+          const pc=past?'pill-done':dd<=60?'pill-urgent':'pill-normal';
+          const pt=past?'✓':dd===0?'Today':dd<365?dd+'d':Math.floor(dd/365)+'y '+Math.floor((dd%365)/30)+'m';
+          const isMatch=m.label==='Match Day';
+          return`<div class="list-row" style="${past?'opacity:0.45':''}">
+            <div class="pill ${pc}" style="min-width:52px;font-size:10px">${pt}</div>
+            <div class="list-main">
+              <div class="list-title${past?' done-text':''}" style="${isMatch?'font-family:Playfair Display,serif;font-size:14px':''}">
+                ${isMatch?'🎯 ':''} ${esc(m.label)}
+              </div>
+              <div class="list-meta">${fmt(m.date)} &middot; ${esc(m.note)}</div>
+            </div>
+          </div>`;
+        }).join('');
+      })()}
+    </div>
+    <div class="card">
+      <div style="font-weight:500;font-size:14px;margin-bottom:1rem;display:flex;align-items:center;gap:7px"><i class="ti ti-clock" style="color:var(--clay)"></i>Upcoming deadlines</div>
+      ${upcoming.length===0?'<div class="empty">No upcoming deadlines. Check your goals tab to add milestones.</div>':upcoming.map(g=>{
+        const d=new Date(g.dueDate);
+        const ddays=Math.ceil((d-now)/864e5);
+        const pillClass=ddays<0?'pill-done':ddays<=14?'pill-urgent':'pill-normal';
+        const pillText=ddays<0?'Past':ddays+'d';
+        return`<div class="list-row">
+          <div class="pill ${pillClass}">${pillText}</div>
+          <div class="list-main">
+            <div class="list-title">${esc(g.text)}</div>
+            <div class="list-meta">Due ${fmt(g.dueDate)} &middot; ${g.phase}</div>
+          </div>
+          ${tag(g.category)}
+        </div>`;
+      }).join('')}
+    </div>
+    ${(()=>{
+      const nextExam=[...state.exams].filter(e=>!e.done).sort((a,b)=>new Date(a.date)-new Date(b.date))[0];
+      if(!nextExam) return '';
+      const dd=Math.ceil((new Date(nextExam.date)-now)/864e5);
+      const cc=courseColor(nextExam.course);
+      const urgColor=dd<=3?'var(--danger)':dd<=7?'var(--warn)':'var(--sage)';
+      return`<div class="card" style="margin-top:1rem;border-left:4px solid ${cc};padding-left:1rem;cursor:pointer" onclick="navigate('schedule')">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div>
+            <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.09em;color:var(--text2);margin-bottom:4px">Next exam <span style="color:var(--text3)">· tap to view schedule</span></div>
+            <div style="font-weight:500;font-size:14px;font-family:'Playfair Display',serif">${esc(nextExam.course)}</div>
+            <div style="font-size:12px;color:var(--text2);margin-top:2px">${esc(nextExam.type)} &middot; ${fmt(nextExam.date)}${nextExam.time?' at '+esc(nextExam.time):''}</div>
+          </div>
+          <div style="font-size:18px;font-family:'Playfair Display',serif;font-weight:500;color:${urgColor};flex-shrink:0;margin-left:1rem">${dd<=0?'Today':dd===1?'1d':dd+'d'}</div>
+        </div>
+      </div>`;
+    })()}`;
+}
+
+function renderGoals(){
+  const done=state.goals.filter(g=>g.completed).length;
+  let html=pgHead('Goals & Milestones',`${done} of ${state.goals.length} milestones completed`,'Add goal','openGoalModal()');
+  PHASES.forEach(phase=>{
+    const pg=state.goals.filter(g=>g.phase===phase);
+    if(!pg.length) return;
+    const pd=pg.filter(g=>g.completed).length;
+    const pct=Math.round(pd/pg.length*100);
+    html+=`<div class="phase-hd"><span class="phase-name">${phase}</span><span class="phase-pct">${pd}/${pg.length} &middot; ${pct}%</span></div>
+    <div class="prog-wrap" style="margin-bottom:10px"><div class="prog-bar sage" style="width:${pct}%"></div></div>
+    <div class="card" style="margin-bottom:1.5rem">`;
+    html+=pg.map(g=>`<div class="list-row">
+      <input type="checkbox" ${g.completed?'checked':''} onchange="toggleGoal('${g.id}')">
+      <div class="list-main">
+        <div class="${g.completed?'done-text':''}" style="font-size:13px;line-height:1.5">${esc(g.text)}</div>
+        ${g.dueDate?`<div class="list-meta">Due ${fmt(g.dueDate)}</div>`:''}
+      </div>
+      ${tag(g.category)}
+      <button class="btn-edit" onclick="openGoalModal('${g.id}')"><i class="ti ti-pencil"></i></button>
+      <button class="btn-ghost" onclick="delItem('goals','${g.id}')"><i class="ti ti-x"></i></button>
+    </div>`).join('');
+    html+='</div>';
+  });
+  return html;
+}
+
+function renderResearch(){
+  let html=pgHead('Research Projects',`${state.research.filter(r=>r.status==='In Progress').length} active project(s)`,'Add project','openModal("research")');
+  if(!state.research.length) return html+`<div class="card"><div class="empty">No projects yet.</div></div>`;
+  html+=state.research.map(r=>`<div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:8px">
+      <div><div class="card-title" style="font-family:'Playfair Display',serif;font-size:15px">${esc(r.title)}</div>${r.subtitle?`<div class="card-sub" style="margin-top:2px;font-style:italic">${esc(r.subtitle)}</div>`:''}</div>
+      <div style="display:flex;gap:8px;align-items:center;flex-shrink:0">${badge(r.status)}<button class="btn-edit" onclick="openModal('research','${r.id}')"><i class="ti ti-pencil"></i></button><button class="btn-ghost" onclick="delItem('research','${r.id}')"><i class="ti ti-trash"></i></button></div>
+    </div>
+    <dl class="detail-kv">
+      ${r.mentor?`<dt>Mentor</dt><dd>${esc(r.mentor)}</dd>`:''}
+      ${r.database?`<dt>Database</dt><dd>${esc(r.database)}</dd>`:''}
+      ${r.startDate?`<dt>Started</dt><dd>${esc(r.startDate)}</dd>`:''}
+      ${r.targetVenue?`<dt>Target</dt><dd>${esc(r.targetVenue)}</dd>`:''}
+    </dl>
+    ${r.description?`<div class="detail-block" style="margin-top:10px">${esc(r.description)}</div>`:''}
+  </div>`).join('');
+  return html;
+}
+
+function renderShadowing(){
+  const total=state.shadowing.reduce((s,x)=>s+parseFloat(x.hours||0),0);
+  const pct=Math.min(100,total);
+  let html=pgHead('Shadowing Log','Log every session — you need 100+ hours before residency applications','Log session','openModal("shadowing")');
+  html+=`<div class="stat-grid" style="margin-bottom:1.25rem">
+    <div class="stat"><div class="stat-lbl">Total hours</div><div class="stat-val">${Math.round(total)}h</div><div class="stat-hint">Target: 100+ hours</div></div>
+    <div class="stat"><div class="stat-lbl">Sessions</div><div class="stat-val">${state.shadowing.length}</div><div class="stat-hint">Individual sessions</div></div>
+    <div class="stat"><div class="stat-lbl">Hours remaining</div><div class="stat-val">${Math.max(0,100-Math.round(total))}h</div><div class="stat-hint">To reach 100h goal</div></div>
+  </div>
+  <div class="card" style="margin-bottom:1.25rem">
+    <div class="prog-meta"><span style="font-weight:500">Progress toward 100 hour goal</span><span>${Math.round(total)}/100 hours</span></div>
+    <div class="prog-wrap"><div class="prog-bar" style="width:${pct}%"></div></div>
+  </div>`;
+  html+=`<div class="card">${state.shadowing.length===0?`<div class="empty">No sessions logged yet.<br>First target: Bay Dermatology — call 727-585-8591 to arrange shadowing with Dr. Miller.</div>`:
+    state.shadowing.map(s=>`<div class="list-row">
+      <div style="min-width:44px;text-align:center;background:var(--clay-l);border-radius:6px;padding:4px 0;font-size:14px;font-weight:500;color:var(--clay)">${parseFloat(s.hours)}h</div>
+      <div class="list-main">
+        <div class="list-title">${esc(s.physician)}</div>
+        <div class="list-meta">${esc(s.location)} &middot; ${fmt(s.date)}${s.notes?` &middot; ${esc(s.notes)}`:''}</div>
+      </div>
+      <button class="btn-edit" onclick="openModal('shadowing','${s.id}')"><i class="ti ti-pencil"></i></button>
+      <button class="btn-ghost" onclick="delItem('shadowing','${s.id}')"><i class="ti ti-trash"></i></button>
+    </div>`).join('')}</div>`;
+  return html;
+}
+
+function renderConferences(){
+  let html=pgHead('Conferences & Presentations','Track conferences attended, abstracts submitted, and presentations given','Add conference','openModal("conference")');
+  if(!state.conferences.length) return html+`<div class="card"><div class="empty">No conferences yet.</div></div>`;
+  html+=state.conferences.map(c=>`<div class="card">
+    <div style="display:flex;justify-content:space-between;gap:12px;margin-bottom:6px">
+      <div class="card-title" style="font-family:'Playfair Display',serif">${esc(c.name)}</div>
+      <div style="display:flex;gap:8px;align-items:center;flex-shrink:0">${badge(c.status)}<button class="btn-edit" onclick="openModal('conference','${c.id}')"><i class="ti ti-pencil"></i></button><button class="btn-ghost" onclick="delItem('conferences','${c.id}')"><i class="ti ti-trash"></i></button></div>
+    </div>
+    <div class="card-sub" style="margin-bottom:8px">${esc(c.location)}${c.date?` &middot; ${fmt(c.date)}`:''}</div>
+    <dl class="detail-kv">
+      ${c.presentationType?`<dt>Type</dt><dd>${esc(c.presentationType)}</dd>`:''}
+      ${c.presentationTitle?`<dt>Title</dt><dd><em>${esc(c.presentationTitle)}</em></dd>`:''}
+    </dl>
+    ${c.notes?`<div class="detail-block" style="margin-top:8px">${esc(c.notes)}</div>`:''}
+  </div>`).join('');
+  return html;
+}
+
+function renderPublications(){
+  let html=pgHead('Publications',`${state.publications.length} publication(s) tracked`,'Add publication','openModal("pub")');
+  if(!state.publications.length) return html+`<div class="card"><div class="empty">No publications yet.<br>Your ALM/NCDB manuscript is on track for submission in fall 2027. A first-author publication before ERAS opens is the goal.</div></div>`;
+  html+=state.publications.map(p=>`<div class="card">
+    <div style="display:flex;justify-content:space-between;gap:12px">
+      <div>
+        <div class="card-title" style="font-family:'Playfair Display',serif">${esc(p.title)}</div>
+        <div class="card-sub" style="margin-top:3px">${[p.journal,p.year,p.role].filter(Boolean).map(esc).join(' &middot; ')}</div>
+        ${p.doi?`<div style="font-size:12px;color:var(--text2);margin-top:3px">DOI: ${esc(p.doi)}</div>`:''}
+      </div>
+      <div style="display:flex;gap:8px;align-items:flex-start;flex-shrink:0">${badge(p.status)}<button class="btn-edit" onclick="openModal('pub','${p.id}')"><i class="ti ti-pencil"></i></button><button class="btn-ghost" onclick="delItem('publications','${p.id}')"><i class="ti ti-trash"></i></button></div>
+    </div>
+  </div>`).join('');
+  return html;
+}
+
+function renderBoards(){
+  const boards=[
+    {key:'step1',label:'USMLE Step 1',target:'Pass',kind:'text',note:'Pass/Fail — must pass on first attempt. A Step 1 fail ends the derm conversation.'},
+    {key:'comlex1',label:'COMLEX Level 1',target:'550+',kind:'number',note:'Still reported to DO programs. Target 550+ minimum; 600+ is competitive.'},
+    {key:'step2',label:'USMLE Step 2 CK',target:'260+',kind:'number',note:'2024 NRMP: matched avg 257, 2026 avg ~267. Real competitive minimum is 260+, target 265+. This is the primary screening filter.'},
+    {key:'comlex2',label:'COMLEX Level 2',target:'550+',kind:'number',note:'Target 600+ for competitive DO derm programs. Still reported to programs alongside Step 2 CK.'},
+  ];
+  let html=pgHead('Board Scores','Step 2 CK competitive minimum is 260+ — the 2026 derm match average was 267. Every point counts.',null,null);
+  html+=boards.map(b=>{
+    const v=state.boardScores[b.key]||'';
+    const above=b.kind==='number'&&v&&parseFloat(v)>=parseFloat(b.target);
+    const below=b.kind==='number'&&v&&parseFloat(v)<parseFloat(b.target);
+    const scoreClass=above?'score-ok':below?'score-low':'';
+    return`<div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+        <div><div class="card-title">${b.label}</div><div class="card-sub">${b.note}</div></div>
+        <span class="badge b-ok" style="flex-shrink:0;margin-left:12px">Target: ${b.target}</span>
+      </div>
+      <div class="board-row">
+        <span style="font-size:12px;color:var(--text2);font-weight:500">Your score:</span>
+        <input class="board-input" type="${b.kind}" value="${esc(v)}" placeholder="${b.kind==='text'?'Pass / Fail / Pending':'Enter score'}" onchange="updateScore('${b.key}',this.value)">
+        ${v?`<span class="${scoreClass}">${above?'Above target':below?'Below target':v==='Pass'?'✓ Passed':v==='Fail'?'✗ Failed':''}</span>`:''}
+      </div>
+    </div>`;
+  }).join('');
+  return html;
+}
+
+function renderLORs(){
+  let html=pgHead('LOR Tracker','Target: 3 letters total — ideally 2–3 from dermatology attendings','Add contact','openModal("lor")');
+  html+=`<div class="alert alert-warn"><i class="ti ti-alert-triangle"></i>Priority: Secure a shadowing relationship with Dr. Richard Miller, DO — his LOR as NSU-COM Derm PD carries exceptional weight with DO programs nationwide.</div>`;
+  if(!state.lors.length) return html+`<div class="card"><div class="empty">No LOR contacts yet.</div></div>`;
+  html+=state.lors.map(l=>`<div class="card">
+    <div style="display:flex;justify-content:space-between;gap:12px;margin-bottom:6px">
+      <div><div class="card-title">${esc(l.name)}</div><div class="card-sub">${esc(l.specialty)} &middot; ${esc(l.institution)}</div></div>
+      <div style="display:flex;gap:8px;align-items:center;flex-shrink:0">${badge(l.status)}<button class="btn-edit" onclick="openModal('lor','${l.id}')"><i class="ti ti-pencil"></i></button><button class="btn-ghost" onclick="delItem('lors','${l.id}')"><i class="ti ti-trash"></i></button></div>
+    </div>
+    <dl class="detail-kv">
+      <dt>Relationship</dt><dd>${esc(l.relationship)}</dd>
+      ${l.dateRequested?`<dt>Requested</dt><dd>${l.dateRequested}</dd>`:''}
+      ${l.dateReceived?`<dt>Received</dt><dd>${l.dateReceived}</dd>`:''}
+    </dl>
+    ${l.notes?`<div class="detail-block" style="margin-top:8px">${esc(l.notes)}</div>`:''}
+  </div>`).join('');
+  return html;
+}
+
+function renderAwards(){
+  let html=pgHead('Awards & Honors',`${state.awards.length} award(s) tracked`,'Add award','openModal("award")');
+  if(!state.awards.length) return html+`<div class="card"><div class="empty">No awards yet.<br>Key targets: AOA Honor Society induction at NSU-COM, Dean\'s List, AOCD student research awards.</div></div>`;
+  html+=state.awards.map(a=>`<div class="card" style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+    <div>
+      <div class="card-title" style="font-family:'Playfair Display',serif">${esc(a.title)}</div>
+      <div class="card-sub">${[a.organization,a.date?fmt(a.date):null].filter(Boolean).join(' &middot; ')}</div>
+      ${a.description?`<div style="font-size:12px;color:var(--text2);margin-top:4px">${esc(a.description)}</div>`:''}
+    </div>
+    <div style="display:flex;gap:6px;flex-shrink:0">
+      <button class="btn-edit" onclick="openModal('award','${a.id}')"><i class="ti ti-pencil"></i></button>
+      <button class="btn-ghost" onclick="delItem('awards','${a.id}')"><i class="ti ti-trash"></i></button>
+    </div>
+  </div>`).join('');
+  return html;
+}
+
+const PORTFOLIO_TYPES=['Peer-Reviewed Publication','Case Report','Letter to Editor / Commentary','Book Chapter','Conference Abstract','Poster Presentation','Oral/Podium Presentation','Research Experience'];
+
+function renderPortfolio(){
+  const counts={};
+  PORTFOLIO_TYPES.forEach(t=>{counts[t]=state.portfolio.filter(p=>p.type===t).length;});
+  const total=state.portfolio.length;
+  const bench=27;
+  const pct=Math.min(100,Math.round(total/bench*100));
+  const color=total>=27?'var(--sage)':total>=19?'var(--warn)':'var(--danger)';
+  let html=pgHead('Research Portfolio',`${total} scholarly outputs · 2024 NRMP matched avg: 27.7`,'Add output','openModal("portfolio")');
+  html+=`<div class="card" style="margin-bottom:1.25rem">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+      <div>
+        <div style="font-weight:500;font-size:14px">Total scholarly outputs</div>
+        <div style="font-size:12px;color:var(--text2);margin-top:2px">Matched avg: 27.7 &nbsp;·&nbsp; Unmatched avg: 19.0 &nbsp;·&nbsp; (2024 NRMP Charting Outcomes)</div>
+      </div>
+      <div style="font-family:'Playfair Display',serif;font-size:32px;color:${color};line-height:1">${total}</div>
+    </div>
+    <div class="prog-wrap"><div class="prog-bar ${total>=27?'sage':total>=19?'gold':''}" style="width:${pct}%"></div></div>
+    <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text2);margin-top:5px">
+      <span>0</span><span style="color:var(--warn)">19 — unmatched avg</span><span style="color:#6A8A68">27 — matched avg</span>
+    </div>
+  </div>
+  <div class="stat-grid" style="margin-bottom:1.25rem">
+    ${['Peer-Reviewed Publication','Poster Presentation','Oral/Podium Presentation','Case Report','Conference Abstract','Letter to Editor / Commentary'].map(t=>`
+    <div class="stat"><div class="stat-lbl" style="font-size:9px">${t}</div><div class="stat-val">${counts[t]||0}</div></div>`).join('')}
+  </div>`;
+  if(!state.portfolio.length){
+    html+=`<div class="card"><div class="empty">No outputs logged yet.<br><br>
+    <strong>Quick path to 10+ items from your existing ALM study:</strong><br>
+    AOCD 2027 poster (+1) · ODAC 2027 poster (+1) · FAD 2027 presentation (+1) · Manuscript accepted (+1) · Case report on M3 derm rotation (+1-2) · Letter to editor on ALM findings (+1) = 6-8 items from natural activity. Repeat the poster circuit at 2 more conferences and you're at 10+.</div></div>`;
+  } else {
+    const byType={};
+    state.portfolio.forEach(p=>{if(!byType[p.type])byType[p.type]=[];byType[p.type].push(p);});
+    PORTFOLIO_TYPES.forEach(type=>{
+      const items=byType[type];
+      if(!items?.length)return;
+      html+=`<div style="font-weight:500;font-size:11px;color:var(--text2);margin:1rem 0 6px;text-transform:uppercase;letter-spacing:0.07em">${type} (${items.length})</div>
+      <div class="card" style="margin-bottom:0.875rem">`;
+      html+=items.map(p=>`<div class="list-row">
+        <div class="list-main">
+          <div class="list-title">${esc(p.title)}</div>
+          <div class="list-meta">${[p.venue,p.date?fmt(p.date):null].filter(Boolean).join(' &middot; ')}</div>
+          ${p.notes?`<div class="list-meta" style="font-style:italic">${esc(p.notes)}</div>`:''}
+        </div>
+        ${badge(p.status)}
+        <button class="btn-edit" onclick="openModal('portfolio','${p.id}')"><i class="ti ti-pencil"></i></button>
+        <button class="btn-ghost" onclick="delItem('portfolio','${p.id}')"><i class="ti ti-trash"></i></button>
+      </div>`).join('');
+      html+='</div>';
+    });
+  }
+  return html;
+}
+
+function renderSignals(){
+  const gold=state.signals.filter(s=>s.signal==='Gold').length;
+  const silver=state.signals.filter(s=>s.signal==='Silver').length;
+  let html=pgHead('Signal Strategy','28 signals: 3 gold + 25 silver · Near-zero interview rate at non-signaled programs','Add program','openModal("signal")');
+  html+=`<div class="stat-grid" style="margin-bottom:1.25rem">
+    <div class="stat" style="border-left:3px solid var(--gold)">
+      <div class="stat-lbl">Gold signals</div>
+      <div class="stat-val" style="color:var(--gold)">${gold}/3</div>
+      <div class="stat-hint">${3-gold} remaining &middot; ~54% interview rate</div>
+    </div>
+    <div class="stat" style="border-left:3px solid var(--text3)">
+      <div class="stat-lbl">Silver signals</div>
+      <div class="stat-val">${silver}/25</div>
+      <div class="stat-hint">${25-silver} remaining &middot; ~14% interview rate</div>
+    </div>
+    <div class="stat">
+      <div class="stat-lbl">Total assigned</div>
+      <div class="stat-val">${gold+silver}/28</div>
+      <div class="stat-hint">${28-(gold+silver)} slots remaining</div>
+    </div>
+  </div>
+  <div class="alert alert-warn"><i class="ti ti-alert-triangle"></i>Per APD guidance: near-zero interview chance at non-signaled programs. Use gold signals on programs where you've done away rotations or have direct faculty connections. Reserve 1 gold for your home institution if applying there.</div>`;
+  if(!state.signals.length){
+    html+=`<div class="card"><div class="empty">No programs added yet. Start researching DO-friendly derm programs now.<br><br>Your 3 gold signals should go to: (1) programs where you complete away rotations in M4, (2) programs where Dr. Miller has connections, (3) NSU-COM affiliated program if applicable. Build this list during M3 year.</div></div>`;
+  } else {
+    ['Gold','Silver','Undecided','None'].forEach(sig=>{
+      const progs=state.signals.filter(s=>s.signal===sig);
+      if(!progs.length)return;
+      const sigColor=sig==='Gold'?'var(--gold)':sig==='Silver'?'var(--text2)':'var(--text3)';
+      html+=`<div style="font-weight:500;font-size:13px;color:${sigColor};margin:1rem 0 6px;display:flex;align-items:center;gap:8px">
+        ${sig==='Gold'?'⭑':sig==='Silver'?'◎':'○'} ${sig} Signals (${progs.length}${sig==='Gold'?' of 3':sig==='Silver'?' of 25':''})
+      </div><div class="card" style="margin-bottom:0.875rem">`;
+      html+=progs.map(s=>`<div class="list-row">
+        <div class="list-main">
+          <div class="list-title">${esc(s.program)}${s.institution?` <span style="font-weight:400;color:var(--text2)">— ${esc(s.institution)}</span>`:''}</div>
+          <div class="list-meta">${[s.state,s.doFriendly?'DO: '+s.doFriendly:null,s.awayRotation&&s.awayRotation!=='N/A'?'Away: '+s.awayRotation:null].filter(Boolean).join(' &middot; ')}${s.facultyContact?' &middot; Contact: '+esc(s.facultyContact):''}</div>
+          ${s.notes?`<div class="list-meta" style="font-style:italic">${esc(s.notes)}</div>`:''}
+        </div>
+        <button class="btn-edit" onclick="openModal('signal','${s.id}')"><i class="ti ti-pencil"></i></button>
+        <button class="btn-ghost" onclick="delItem('signals','${s.id}')"><i class="ti ti-trash"></i></button>
+      </div>`).join('');
+      html+='</div>';
+    });
+  }
+  return html;
+}
+
+function renderPrelim(){
+  const applied=state.prelim.filter(p=>['Applied','Interviewed','Ranked'].includes(p.status)).length;
+  const interviewed=state.prelim.filter(p=>['Interviewed','Ranked'].includes(p.status)).length;
+  const ranked=state.prelim.filter(p=>p.status==='Ranked').length;
+  let html=pgHead('Prelim Year Tracker','PGY-1 Preliminary IM or Transitional Year — you must match this simultaneously with derm','Add program','openModal("prelim")');
+  html+=`<div class="alert alert-warn"><i class="ti ti-alert-triangle"></i>Dermatology is a PGY-2 "advanced" residency. In the same ERAS cycle, you must also match a separate PGY-1 preliminary year. If your prelim year falls through, you cannot start derm training — even if you matched derm. Plan this application track in parallel. Target programs in the same geographic area as your derm signals.</div>
+  <div class="stat-grid" style="margin-bottom:1.25rem">
+    <div class="stat"><div class="stat-lbl">Programs tracked</div><div class="stat-val">${state.prelim.length}</div><div class="stat-hint">Aim for 15–20 programs</div></div>
+    <div class="stat"><div class="stat-lbl">Applied</div><div class="stat-val">${applied}</div><div class="stat-hint">Of ${state.prelim.length} tracked</div></div>
+    <div class="stat"><div class="stat-lbl">Interviewed</div><div class="stat-val">${interviewed}</div><div class="stat-hint">Secure multiple</div></div>
+    <div class="stat"><div class="stat-lbl">Ranked</div><div class="stat-val">${ranked}</div><div class="stat-hint">Rank all you'd attend</div></div>
+  </div>`;
+  if(!state.prelim.length){
+    html+=`<div class="card"><div class="empty">No prelim programs added yet.<br><br>Start researching in M3 year. Prelim IM programs at academic medical centers near your derm signal cities are ideal — they're easier to match than derm and give you a built-in geographic foothold. Transitional year programs are also appropriate and sometimes even better for derm.</div></div>`;
+  } else {
+    ['Ranked','Interviewed','Applied','Planning to Apply','Researching'].forEach(status=>{
+      const progs=state.prelim.filter(p=>p.status===status);
+      if(!progs.length)return;
+      html+=`<div style="font-weight:500;font-size:11px;color:var(--text2);margin:1rem 0 6px;text-transform:uppercase;letter-spacing:0.07em">${status} (${progs.length})</div>
+      <div class="card" style="margin-bottom:0.875rem">`;
+      html+=progs.map(p=>`<div class="list-row">
+        <div class="list-main">
+          <div class="list-title">${esc(p.program)} <span style="font-weight:400;color:var(--text2)">— ${esc(p.type)}</span></div>
+          <div class="list-meta">${[p.institution,p.state].filter(Boolean).map(esc).join(', ')}${p.rank?' &middot; Rank #'+p.rank:''}</div>
+          ${p.notes?`<div class="list-meta" style="font-style:italic">${esc(p.notes)}</div>`:''}
+        </div>
+        ${badge(p.status)}
+        <button class="btn-edit" onclick="openModal('prelim','${p.id}')"><i class="ti ti-pencil"></i></button>
+        <button class="btn-ghost" onclick="delItem('prelim','${p.id}')"><i class="ti ti-trash"></i></button>
+      </div>`).join('');
+      html+='</div>';
+    });
+  }
+  return html;
+}
+
+const RESEARCH_START = new Date('2026-06-22');
+function weekNum(){ return Math.max(1, Math.ceil((new Date()-RESEARCH_START)/(7*864e5))); }
+function toDateStr(d){ return d.toISOString().split('T')[0]; }
+function fmtFull(d){ if(!d)return''; try{return new Date(d+'T12:00:00').toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});}catch{return d;} }
+
+function renderResearchLog(){
+  const now=new Date();
+  const wk=weekNum();
+  const sorted=[...state.researchLog].sort((a,b)=>new Date(b.weekStart)-new Date(a.weekStart));
+  const thisWeekLogged=sorted.find(e=>{
+    const s=new Date(e.weekStart+'T12:00:00');
+    const diff=(now-s)/864e5;
+    return diff>=0&&diff<7;
+  });
+  let html=pgHead('Research Log',`Weekly tracker · Dr. Riskin · ${state.researchLog.length} weeks logged`,'Log this week','openLogModal()');
+
+  // Current week status card
+  if(!thisWeekLogged){
+    html+=`<div class="card" style="border-left:4px solid #AF8B57;padding-left:1rem;margin-bottom:1.25rem">
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.09em;color:var(--clay);margin-bottom:4px">Action needed</div>
+      <div style="font-weight:500;font-size:15px;font-family:'Playfair Display',serif">Week ${wk} not yet logged</div>
+      <div style="font-size:12px;color:var(--text2);margin:4px 0 12px">Log your progress to generate this week's update email for Dr. Riskin</div>
+      <button class="btn btn-primary" onclick="openLogModal()"><i class="ti ti-plus"></i> Log Week ${wk}</button>
+    </div>`;
+  } else {
+    html+=`<div class="card" style="border-left:4px solid #6A8A68;padding-left:1rem;margin-bottom:1.25rem">
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.09em;color:#6A8A68;margin-bottom:4px">Week ${wk} logged ✓</div>
+      <div style="font-size:13px;color:var(--text2)">Email ${thisWeekLogged.emailSent?'sent':'not yet sent'} · <button onclick="showEmail('${thisWeekLogged.id}')" style="background:none;border:none;cursor:pointer;color:var(--clay);font-size:13px;padding:0;text-decoration:underline">Generate email</button></div>
+    </div>`;
+  }
+
+  // Stats row
+  const sent=state.researchLog.filter(e=>e.emailSent).length;
+  html+=`<div class="stat-grid" style="margin-bottom:1.5rem">
+    <div class="stat"><div class="stat-lbl">Weeks logged</div><div class="stat-val">${state.researchLog.length}</div><div class="stat-hint">Current week: ${wk}</div></div>
+    <div class="stat"><div class="stat-lbl">Emails sent</div><div class="stat-val">${sent}</div><div class="stat-hint">Of ${state.researchLog.length} logged</div></div>
+    <div class="stat"><div class="stat-lbl">Streak</div><div class="stat-val">${(()=>{let s=0;for(let i=0;i<sorted.length;i++){if(i===0||(new Date(sorted[i-1].weekStart)-new Date(sorted[i].weekStart))<=864e5*8)s++;else break;}return s;})()}</div><div class="stat-hint">Consecutive weeks</div></div>
+  </div>`;
+
+  if(!sorted.length){
+    html+=`<div class="card"><div class="empty">No weeks logged yet.<br>Log your first week to start generating update emails for Dr. Riskin. You committed to weekly updates — this makes it effortless.</div></div>`;
+  } else {
+    html+=sorted.map(e=>`<div class="card" style="margin-bottom:1rem">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;gap:12px">
+        <div>
+          <div style="font-family:'Playfair Display',serif;font-size:15px;font-weight:500">Week ${e.weekNum}</div>
+          <div style="font-size:12px;color:var(--text2)">${fmtFull(e.weekStart)} — ${fmtFull(e.weekEnd)}</div>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end">
+          ${e.emailSent?`<span class="badge b-ok">✓ Email sent</span>`:`<button class="btn btn-outline" style="font-size:11px;padding:3px 10px" onclick="markEmailSent('${e.id}')">Mark sent</button>`}
+          <button class="btn btn-outline" style="font-size:11px;padding:3px 10px" onclick="showEmail('${e.id}')"><i class="ti ti-mail" style="font-size:12px"></i> Generate email</button>
+          <button class="btn-edit" onclick="openLogModal('${e.id}')"><i class="ti ti-pencil"></i></button>
+          <button class="btn-ghost" onclick="delItem('researchLog','${e.id}')"><i class="ti ti-trash"></i></button>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        ${e.completed?`<div><div style="font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.07em;color:#6A8A68;margin-bottom:4px">✓ Completed</div><div style="font-size:12px;white-space:pre-wrap;line-height:1.5">${esc(e.completed)}</div></div>`:''}
+        ${e.inProgress?`<div><div style="font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.07em;color:var(--clay);margin-bottom:4px">⟳ In progress</div><div style="font-size:12px;white-space:pre-wrap;line-height:1.5">${esc(e.inProgress)}</div></div>`:''}
+        ${e.blockers?`<div><div style="font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.07em;color:var(--warn);margin-bottom:4px">⚠ Blockers / questions</div><div style="font-size:12px;white-space:pre-wrap;line-height:1.5">${esc(e.blockers)}</div></div>`:''}
+        ${e.nextWeek?`<div><div style="font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.07em;color:var(--text2);margin-bottom:4px">→ Next week</div><div style="font-size:12px;white-space:pre-wrap;line-height:1.5">${esc(e.nextWeek)}</div></div>`:''}
+      </div>
+    </div>`).join('');
+  }
+  return html;
+}
+
+function openLogModal(id=null){
+  const item=id?state.researchLog.find(e=>e.id===id):null;
+  const now=new Date();
+  const wk=weekNum();
+  const dayOfWeek=now.getDay();
+  const mon=new Date(now);
+  mon.setDate(now.getDate()-(dayOfWeek===0?6:dayOfWeek-1));
+  const sun=new Date(mon);sun.setDate(mon.getDate()+6);
+  const title=item?`Edit Week ${item.weekNum} Log`:`Log Week ${wk}`;
+  const body=`
+    <div class="f-row">
+      ${fld('Week number','f_wnum','number','min="1"',String(item?.weekNum||wk))}
+      ${fld('Week start (Monday)','f_wstart','date','',item?.weekStart||toDateStr(mon))}
+    </div>
+    ${fld('Week end (Sunday)','f_wend','date','',item?.weekEnd||toDateStr(sun))}
+    ${ftxt('✓ Completed this week','f_comp',item?.completed||'')}
+    ${ftxt('⟳ In progress','f_inp',item?.inProgress||'')}
+    ${ftxt('⚠ Blockers / questions for Dr. Riskin','f_blk',item?.blockers||'')}
+    ${ftxt('→ Next week\'s plan','f_nxt',item?.nextWeek||'')}
+  `;
+  openOverlay(title,body,()=>{
+    if(!val('f_wstart'))return;
+    const updated={id:item?.id||uid(),weekNum:parseInt(val('f_wnum'))||wk,weekStart:val('f_wstart'),weekEnd:val('f_wend'),completed:val('f_comp'),inProgress:val('f_inp'),blockers:val('f_blk'),nextWeek:val('f_nxt'),emailSent:item?.emailSent||false};
+    if(item){state.researchLog=state.researchLog.map(e=>e.id===item.id?updated:e);}
+    else{state.researchLog.push(updated);}
+    state.researchLog.sort((a,b)=>new Date(b.weekStart)-new Date(a.weekStart));
+    save();closeModal();navigate(tab);
+  });
+}
+
+function showEmail(id){
+  const e=state.researchLog.find(x=>x.id===id);
+  if(!e)return;
+  const subj=`Research Update — Week ${e.weekNum} — ${fmtFull(e.weekStart)}`;
+  const body=`Hi Dr. Riskin,
+
+Quick update for Week ${e.weekNum} (${fmtFull(e.weekStart)} – ${fmtFull(e.weekEnd)}):
+
+COMPLETED:
+${e.completed||'Nothing to report this week.'}
+
+IN PROGRESS:
+${e.inProgress||'N/A'}
+
+BLOCKERS / QUESTIONS:
+${e.blockers||'None this week — making good progress.'}
+
+NEXT WEEK'S PLAN:
+${e.nextWeek||'TBD'}
+
+Let me know if you would like to discuss any of this — otherwise I will plan to check in next week.
+
+Best,
+Jataya Jackson, OMS-II
+Nova Southeastern University Kiran C. Patel COM
+[Phone] | [Email]`;
+  window._emailText=body;
+  window._emailSubj=subj;
+  document.getElementById('mTitle').textContent=`Week ${e.weekNum} — Update Email`;
+  document.getElementById('mBody').innerHTML=`
+    <div style="margin-bottom:10px">
+      <div style="font-size:11px;font-weight:500;color:var(--text2);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.06em">Subject</div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:8px 10px;font-size:13px">${esc(subj)}</div>
+    </div>
+    <div style="margin-bottom:14px">
+      <div style="font-size:11px;font-weight:500;color:var(--text2);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.06em">Body</div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:10px 12px;font-size:12px;white-space:pre-wrap;line-height:1.7;max-height:320px;overflow-y:auto;font-family:'Inter',sans-serif">${esc(body)}</div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="copyEmail(this)"><i class="ti ti-clipboard"></i> Copy to clipboard</button>
+      <a href="mailto:riskinsuzanne@gmail.com?subject=${encodeURIComponent(subj)}&body=${encodeURIComponent(body)}" class="btn btn-outline" style="text-decoration:none"><i class="ti ti-external-link"></i> Open in mail app</a>
+      <button class="btn btn-outline" onclick="markEmailSent('${id}');closeModal()"><i class="ti ti-check"></i> Mark as sent</button>
+    </div>
+  `;
+  document.getElementById('mSave').style.display='none';
+  document.getElementById('overlay').classList.add('open');
+}
+
+function copyEmail(btn){
+  navigator.clipboard.writeText(window._emailText||'').then(()=>{
+    btn.innerHTML='<i class="ti ti-check"></i> Copied!';
+    setTimeout(()=>{btn.innerHTML='<i class="ti ti-clipboard"></i> Copy to clipboard';},2000);
+  }).catch(()=>{
+    btn.textContent='Select text above to copy';
+  });
+}
+
+function markEmailSent(id){
+  state.researchLog=state.researchLog.map(e=>e.id===id?{...e,emailSent:true}:e);
+  save();navigate(tab);
+}
+
+const COURSE_COLORS={
+  'Renal System':'#AF8B57',          /* Warm Clay */
+  'Endocrine System':'#8A6C3A',      /* Dark Clay */
+  'MSK & Rheumatology':'#6A8A68',    /* Jadite */
+  'OPP IV':'#675444',                /* Grounded */
+  'MEP IV':'#5A6E7A',                /* Smoky Blue */
+  'Medical Neuroanatomy':'#2B415F',  /* Deep Slate */
+  'Neuroanatomy & Nervous System':'#2B415F',
+  'Nervous System':'#3D5068',        /* Slate */
+  'Clinical Reasoning I':'#8A7258', /* Khaki */
+  'Human Sexuality':'#8A6868',       /* Muted warm */
+  'PCM I':'#5A7040',                 /* Sage */
+  'PCM 1':'#5A7040',
+};
+function courseColor(c){return COURSE_COLORS[c]||'#7A6550';}
+
+function toggleDone(id){
+  state.exams=state.exams.map(e=>e.id===id?{...e,done:!e.done}:e);
+  save();navigate(tab);
+}
+
+function renderSchedule(){
+  const now=new Date();
+  const sorted=[...state.exams].sort((a,b)=>new Date(a.date)-new Date(b.date));
+  const remaining=sorted.filter(e=>!e.done);
+  const done=state.exams.filter(e=>e.done).length;
+  const next=remaining[0];
+  const pct=state.exams.length?Math.round(done/state.exams.length*100):0;
+
+  let html=pgHead('Fall 2026 Schedule',`${state.exams.length} assessments · ${remaining.length} remaining`,'Add event','openModal("exam")');
+
+  if(next){
+    const dd=Math.ceil((new Date(next.date)-now)/864e5);
+    const urgColor=dd<=3?'var(--danger)':dd<=7?'var(--warn)':'var(--sage)';
+    html+=`<div class="card" style="margin-bottom:1.25rem;border-left:4px solid ${courseColor(next.course)};padding-left:1rem">
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.09em;color:var(--text2);margin-bottom:4px">Next assessment</div>
+      <div style="font-weight:500;font-size:15px;font-family:'Playfair Display',serif">${esc(next.course)}</div>
+      <div style="font-size:13px;color:var(--text2);margin-top:2px">${esc(next.type)} &middot; ${fmt(next.date)}${next.time?' at '+esc(next.time):''}</div>
+      <div style="margin-top:8px;font-size:14px;font-weight:500;color:${urgColor}">${dd<=0?'Today!':dd===1?'Tomorrow':dd+' days away'}</div>
+    </div>`;
+  }
+
+  html+=`<div class="card" style="margin-bottom:1.5rem">
+    <div class="prog-meta"><span style="font-weight:500">Semester progress</span><span>${done}/${state.exams.length} complete &middot; ${pct}%</span></div>
+    <div class="prog-wrap"><div class="prog-bar gold" style="width:${pct}%"></div></div>
+  </div>`;
+
+  const months={};
+  sorted.forEach(e=>{
+    const m=new Date(e.date+'T12:00:00').toLocaleDateString('en-US',{month:'long',year:'numeric'});
+    if(!months[m])months[m]=[];
+    months[m].push(e);
+  });
+
+  Object.entries(months).forEach(([month,exams])=>{
+    const md=exams.filter(e=>e.done).length;
+    html+=`<div class="phase-hd" style="margin-top:0.25rem"><span class="phase-name">${month}</span><span class="phase-pct">${md}/${exams.length}</span></div>
+    <div class="card" style="margin-bottom:1.5rem">`;
+    html+=exams.map((e,i)=>{
+      const dd=Math.ceil((new Date(e.date)-now)/864e5);
+      const pc=e.done?'pill-done':dd<0?'pill-done':dd<=7?'pill-urgent':'pill-normal';
+      const pt=e.done?'✓':dd<0?'Past':dd===0?'Today':dd+'d';
+      const cc=courseColor(e.course);
+      return`<div class="list-row" style="${e.done?'opacity:0.55':''}">
+        <div style="width:3px;min-height:36px;border-radius:2px;background:${cc};flex-shrink:0;align-self:stretch;margin:2px 0"></div>
+        <div class="pill ${pc}" style="min-width:44px;flex-shrink:0">${pt}</div>
+        <div class="list-main">
+          <div class="list-title${e.done?' done-text':''}">${esc(e.course)} <span style="font-weight:400;color:var(--text2)">— ${esc(e.type)}</span></div>
+          <div class="list-meta">${fmt(e.date)}${e.time?' &middot; '+esc(e.time):''}${e.location?' &middot; '+esc(e.location):''}</div>
+          ${e.notes?`<div class="list-meta" style="font-style:italic;margin-top:2px">${esc(e.notes)}</div>`:''}
+        </div>
+        <div style="display:flex;align-items:center;gap:4px;flex-shrink:0">
+          <button class="btn btn-outline" style="padding:3px 10px;font-size:11px;${e.done?'background:var(--ok-l);color:var(--ok);border-color:var(--ok)':''}" onclick="toggleDone('${e.id}')">${e.done?'✓ Done':'Mark done'}</button>
+          <button class="btn-edit" onclick="openModal('exam','${e.id}')"><i class="ti ti-pencil"></i></button>
+          <button class="btn-ghost" onclick="delItem('exams','${e.id}')"><i class="ti ti-trash"></i></button>
+        </div>
+      </div>`;
+    }).join('');
+    html+='</div>';
+  });
+  return html;
+}
+
+const TABS={
+  home:{label:'Home',icon:'ti-user',render:renderHome},
+  dashboard:{label:'Dashboard',icon:'ti-layout-dashboard',render:renderDashboard},
+  schedule:{label:'Schedule',icon:'ti-calendar',render:renderSchedule},
+  goals:{label:'Goals',icon:'ti-list-check',render:renderGoals},
+  research:{label:'Research',icon:'ti-microscope',render:renderResearch},
+  researchLog:{label:'Research Log',icon:'ti-notes',render:renderResearchLog},
+  portfolio:{label:'Portfolio',icon:'ti-books',render:renderPortfolio},
+  shadowing:{label:'Shadowing',icon:'ti-stethoscope',render:renderShadowing},
+  conferences:{label:'Conferences',icon:'ti-presentation',render:renderConferences},
+  publications:{label:'Publications',icon:'ti-file-text',render:renderPublications},
+  boards:{label:'Board Scores',icon:'ti-chart-bar',render:renderBoards},
+  lors:{label:'LOR Tracker',icon:'ti-mail',render:renderLORs},
+  awards:{label:'Awards',icon:'ti-award',render:renderAwards},
+  signals:{label:'Signal Strategy',icon:'ti-antenna',render:renderSignals},
+  prelim:{label:'Prelim Year',icon:'ti-building-hospital',render:renderPrelim},
+};
+
+function navigate(t){
+  tab=t;
+  document.querySelectorAll('.n-item').forEach(el=>el.classList.toggle('active',el.dataset.tab===t));
+  document.getElementById('main').innerHTML=TABS[t].render();
+}
+
+/* ---- CRUD ---- */
+function toggleGoal(id){
+  state.goals=state.goals.map(g=>g.id===id?{...g,completed:!g.completed}:g);
+  save();navigate(tab);
+}
+function delItem(key,id){
+  state[key]=state[key].filter(x=>x.id!==id);
+  save();navigate(tab);
+}
+function updateScore(key,val){
+  state.boardScores[key]=val;save();
+}
+
+/* ---- MODALS ---- */
+function closeModal(){
+  document.getElementById('overlay').classList.remove('open');
+  document.getElementById('mSave').style.display='';
+  document.getElementById('mSave').textContent='Save';
+  window._emailText='';
+}
+function openOverlay(title,body,onSave){
+  document.getElementById('mTitle').textContent=title;
+  document.getElementById('mBody').innerHTML=body;
+  document.getElementById('mSave').onclick=onSave;
+  document.getElementById('overlay').classList.add('open');
+}
+
+function openGoalModal(id=null){
+  const item=id?state.goals.find(g=>g.id===id):null;
+  openOverlay(item?'Edit goal':'Add goal',`
+    ${ftxt('Goal description','f_text',item?.text||'')}
+    <div class="f-row">
+      ${fsel('Phase','f_phase',PHASES,item?.phase||'')}
+      ${fsel('Category','f_cat',CATS,item?.category||'')}
+    </div>
+    ${fld('Due date','f_due','date','',item?.dueDate||'')}
+  `,()=>{
+    const text=val('f_text');const phase=val('f_phase');const category=val('f_cat');
+    if(!text||!phase||!category)return;
+    const updated={id:item?.id||uid(),completed:item?.completed||false,phase,category,text,dueDate:val('f_due')};
+    if(item){state.goals=state.goals.map(g=>g.id===id?updated:g);}
+    else{state.goals.push(updated);}
+    save();closeModal();navigate(tab);
+  });
+}
+
+function openModal(type,id=null){
+  const stateKey={research:'research',shadowing:'shadowing',conference:'conferences',pub:'publications',lor:'lors',award:'awards',exam:'exams',portfolio:'portfolio',signal:'signals',prelim:'prelim'}[type];
+  const item=id&&stateKey?state[stateKey].find(x=>x.id===id):null;
+  const isEdit=!!item;
+  const configs={
+    research:{
+      title:isEdit?'Edit research project':'Add research project',
+      body:`
+        ${fld('Title','f_title','text','',item?.title||'')}${fld('Subtitle (optional)','f_sub','text','',item?.subtitle||'')}
+        <div class="f-row">${fld('Mentor','f_mentor','text','',item?.mentor||'')}${fld('Database / source','f_db','text','',item?.database||'')}</div>
+        <div class="f-row">${fsel('Status','f_status',STATUSES.research,item?.status||'')}${fld('Start date','f_start','text','',item?.startDate||'')}</div>
+        ${fld('Target venue / journal','f_venue','text','',item?.targetVenue||'')}${ftxt('Description','f_desc',item?.description||'')}`,
+      save:()=>{
+        if(!val('f_title'))return;
+        const updated={id:item?.id||uid(),title:val('f_title'),subtitle:val('f_sub'),mentor:val('f_mentor'),database:val('f_db'),status:val('f_status')||'In Progress',startDate:val('f_start'),targetVenue:val('f_venue'),description:val('f_desc')};
+        if(isEdit){state.research=state.research.map(x=>x.id===id?updated:x);}else{state.research.push(updated);}
+        save();closeModal();navigate(tab);
+      }
+    },
+    shadowing:{
+      title:isEdit?'Edit shadowing session':'Log shadowing session',
+      body:`
+        <div class="f-row">${fld('Date','f_date','date','',item?.date||'')}${fld('Hours','f_hrs','number','min="0.5" step="0.5"',item?.hours||'')}</div>
+        ${fld('Physician name & credentials','f_phys','text','',item?.physician||'')}${fld('Clinic / hospital','f_loc','text','',item?.location||'')}
+        ${ftxt('Notes (optional)','f_notes',item?.notes||'')}`,
+      save:()=>{
+        if(!val('f_date')||!val('f_phys')||!val('f_hrs'))return;
+        const updated={id:item?.id||uid(),date:val('f_date'),hours:val('f_hrs'),physician:val('f_phys'),location:val('f_loc'),notes:val('f_notes')};
+        if(isEdit){state.shadowing=state.shadowing.map(x=>x.id===id?updated:x);}else{state.shadowing.push(updated);}
+        state.shadowing.sort((a,b)=>new Date(b.date)-new Date(a.date));
+        save();closeModal();navigate(tab);
+      }
+    },
+    conference:{
+      title:isEdit?'Edit conference':'Add conference',
+      body:`
+        ${fld('Conference name','f_name','text','',item?.name||'')}
+        <div class="f-row">${fld('Date','f_date','date','',item?.date||'')}${fld('Location','f_loc','text','',item?.location||'')}</div>
+        <div class="f-row">${fld('Presentation type','f_ptype','text','',item?.presentationType||'')}${fsel('Status','f_status',STATUSES.conference,item?.status||'')}</div>
+        ${fld('Presentation title (if applicable)','f_ptitle','text','',item?.presentationTitle||'')}${ftxt('Notes','f_notes',item?.notes||'')}`,
+      save:()=>{
+        if(!val('f_name'))return;
+        const updated={id:item?.id||uid(),name:val('f_name'),date:val('f_date'),location:val('f_loc'),presentationType:val('f_ptype'),status:val('f_status')||'Planned',presentationTitle:val('f_ptitle'),notes:val('f_notes')};
+        if(isEdit){state.conferences=state.conferences.map(x=>x.id===id?updated:x);}else{state.conferences.push(updated);}
+        save();closeModal();navigate(tab);
+      }
+    },
+    pub:{
+      title:isEdit?'Edit publication':'Add publication',
+      body:`
+        ${fld('Title','f_title','text','',item?.title||'')}
+        <div class="f-row">${fld('Journal','f_jrnl','text','',item?.journal||'')}${fld('Year','f_yr','text','',item?.year||'')}</div>
+        <div class="f-row">${fsel('Your role','f_role',['First Author','Co-Author','Corresponding Author','Contributing Author'],item?.role||'')}${fsel('Status','f_status',STATUSES.pub,item?.status||'')}</div>
+        ${fld('DOI (optional)','f_doi','text','',item?.doi||'')}`,
+      save:()=>{
+        if(!val('f_title'))return;
+        const updated={id:item?.id||uid(),title:val('f_title'),journal:val('f_jrnl'),year:val('f_yr'),role:val('f_role'),status:val('f_status')||'In Progress',doi:val('f_doi')};
+        if(isEdit){state.publications=state.publications.map(x=>x.id===id?updated:x);}else{state.publications.push(updated);}
+        save();closeModal();navigate(tab);
+      }
+    },
+    lor:{
+      title:isEdit?'Edit LOR contact':'Add LOR contact',
+      body:`
+        ${fld('Physician name','f_name','text','',item?.name||'')}
+        <div class="f-row">${fld('Specialty','f_spec','text','',item?.specialty||'')}${fld('Institution','f_inst','text','',item?.institution||'')}</div>
+        ${fld('Your relationship','f_rel','text','',item?.relationship||'')}
+        <div class="f-row">${fld('Date requested','f_dreq','date','',item?.dateRequested||'')}${fld('Date received','f_drec','date','',item?.dateReceived||'')}</div>
+        ${fsel('Status','f_status',STATUSES.lor,item?.status||'')}${ftxt('Notes','f_notes',item?.notes||'')}`,
+      save:()=>{
+        if(!val('f_name'))return;
+        const updated={id:item?.id||uid(),name:val('f_name'),specialty:val('f_spec'),institution:val('f_inst'),relationship:val('f_rel'),dateRequested:val('f_dreq'),dateReceived:val('f_drec'),status:val('f_status'),notes:val('f_notes')};
+        if(isEdit){state.lors=state.lors.map(x=>x.id===id?updated:x);}else{state.lors.push(updated);}
+        save();closeModal();navigate(tab);
+      }
+    },
+    award:{
+      title:isEdit?'Edit award or honor':'Add award or honor',
+      body:`
+        ${fld('Award / honor title','f_title','text','',item?.title||'')}
+        <div class="f-row">${fld('Organization','f_org','text','',item?.organization||'')}${fld('Date received','f_date','date','',item?.date||'')}</div>
+        ${ftxt('Description (optional)','f_desc',item?.description||'')}`,
+      save:()=>{
+        if(!val('f_title'))return;
+        const updated={id:item?.id||uid(),title:val('f_title'),organization:val('f_org'),date:val('f_date'),description:val('f_desc')};
+        if(isEdit){state.awards=state.awards.map(x=>x.id===id?updated:x);}else{state.awards.push(updated);}
+        save();closeModal();navigate(tab);
+      }
+    },
+    exam:{
+      title:isEdit?'Edit assessment':'Add assessment',
+      body:`
+        ${fld('Course name','f_course','text','',item?.course||'')}
+        <div class="f-row">${fld('Type (e.g. Midterm, Final)','f_type','text','',item?.type||'')}${fld('Date','f_edate','date','',item?.date||'')}</div>
+        <div class="f-row">${fld('Time','f_time','text','',item?.time||'')}${fld('Location','f_eloc','text','',item?.location||'')}</div>
+        ${ftxt('Notes (optional)','f_enotes',item?.notes||'')}`,
+      save:()=>{
+        if(!val('f_course'))return;
+        const updated={id:item?.id||uid(),course:val('f_course'),type:val('f_type'),date:val('f_edate'),time:val('f_time'),location:val('f_eloc'),notes:val('f_enotes'),done:item?.done||false};
+        if(isEdit){state.exams=state.exams.map(x=>x.id===id?updated:x);}
+        else{state.exams.push(updated);state.exams.sort((a,b)=>new Date(a.date)-new Date(b.date));}
+        save();closeModal();navigate(tab);
+      }
+    },
+    portfolio:{
+      title:isEdit?'Edit scholarly output':'Add scholarly output',
+      body:`
+        ${fsel('Type','f_ptype',PORTFOLIO_TYPES,item?.type||'')}
+        ${fld('Title','f_ptitle','text','',item?.title||'')}
+        ${fld('Venue / Journal / Conference','f_pvenue','text','',item?.venue||'')}
+        <div class="f-row">${fld('Date','f_pdate','date','',item?.date||'')}${fsel('Status','f_pstatus',['In Progress','Submitted','Under Review','Accepted','Published','Presented'],item?.status||'')}</div>
+        ${ftxt('Notes (optional)','f_pnotes',item?.notes||'')}`,
+      save:()=>{
+        if(!val('f_ptitle'))return;
+        const updated={id:item?.id||uid(),type:val('f_ptype')||'Research Experience',title:val('f_ptitle'),venue:val('f_pvenue'),date:val('f_pdate'),status:val('f_pstatus')||'In Progress',notes:val('f_pnotes')};
+        if(isEdit){state.portfolio=state.portfolio.map(x=>x.id===id?updated:x);}else{state.portfolio.push(updated);}
+        save();closeModal();navigate(tab);
+      }
+    },
+    signal:{
+      title:isEdit?'Edit signal program':'Add signal program',
+      body:`
+        ${fld('Program / department name','f_sname','text','',item?.program||'')}
+        <div class="f-row">${fld('Institution / hospital','f_sinst','text','',item?.institution||'')}${fld('State','f_sstate','text','',item?.state||'')}</div>
+        <div class="f-row">${fsel('Signal type','f_ssig',['Gold','Silver','Undecided','None'],item?.signal||'')}${fsel('DO-friendly?','f_sdo',['Yes — confirmed history','Likely','Unknown','No'],item?.doFriendly||'')}</div>
+        ${fsel('Away rotation status','f_saway',['Completed','Planned M4','N/A'],item?.awayRotation||'')}
+        ${fld('Faculty contact / connection','f_sfac','text','',item?.facultyContact||'')}
+        ${ftxt('Notes','f_snotes',item?.notes||'')}`,
+      save:()=>{
+        if(!val('f_sname'))return;
+        const updated={id:item?.id||uid(),program:val('f_sname'),institution:val('f_sinst'),state:val('f_sstate'),signal:val('f_ssig')||'Undecided',doFriendly:val('f_sdo'),awayRotation:val('f_saway')||'N/A',facultyContact:val('f_sfac'),notes:val('f_snotes')};
+        if(isEdit){state.signals=state.signals.map(x=>x.id===id?updated:x);}else{state.signals.push(updated);}
+        save();closeModal();navigate(tab);
+      }
+    },
+    prelim:{
+      title:isEdit?'Edit prelim program':'Add prelim program',
+      body:`
+        ${fld('Program / department name','f_prname','text','',item?.program||'')}
+        <div class="f-row">${fld('Institution','f_prinst','text','',item?.institution||'')}${fld('State','f_prstate','text','',item?.state||'')}</div>
+        <div class="f-row">${fsel('Type','f_prtype',['Preliminary IM','Transitional Year'],item?.type||'')}${fsel('Status','f_prstatus',['Researching','Planning to Apply','Applied','Interviewed','Ranked'],item?.status||'')}</div>
+        ${fld('Rank position (if ranked)','f_prrank','number','',item?.rank||'')}
+        ${ftxt('Notes','f_prnotes',item?.notes||'')}`,
+      save:()=>{
+        if(!val('f_prname'))return;
+        const s=val('f_prstatus')||'Researching';
+        const updated={id:item?.id||uid(),program:val('f_prname'),institution:val('f_prinst'),state:val('f_prstate'),type:val('f_prtype')||'Preliminary IM',status:s,rank:val('f_prrank'),notes:val('f_prnotes')};
+        if(isEdit){state.prelim=state.prelim.map(x=>x.id===id?updated:x);}else{state.prelim.push(updated);}
+        save();closeModal();navigate(tab);
+      }
+    },
+  };
+  const c=configs[type];
+  if(c) openOverlay(c.title,c.body,c.save);
+}
+
+/* ---- SIDEBAR INIT ---- */
+function initSidebar(){
+  // Journey timeline
+  const stops=[
+    {label:'M1',date:'Aug 2025',now:true},
+    {label:'M2',date:'Aug 2026',now:false},
+    {label:'M3',date:'Aug 2027',now:false},
+    {label:'M4',date:'Aug 2028',now:false},
+    {label:'Match Day',date:'March 2029',now:false},
+  ];
+  document.getElementById('jWrap').innerHTML=stops.map(s=>`
+    <div class="j-stop${s.now?' now':''}">
+      <div class="j-dot"></div>
+      <div class="j-lbl">${s.label}</div>
+      <div class="j-date">${s.date}</div>
+    </div>`).join('');
+
+  // Countdown
+  const days=Math.max(0,Math.ceil((new Date('2029-03-15')-new Date())/864e5));
+  document.getElementById('cdNum').textContent=days.toLocaleString();
+
+  // Nav
+  const navGroups=[
+    {label:'Profile',items:['home','dashboard','schedule']},
+    {label:'Academic',items:['goals','research','researchLog','portfolio','shadowing','conferences','publications']},
+    {label:'Application',items:['boards','lors','awards','signals','prelim']},
+  ];
+  document.getElementById('nav').innerHTML=navGroups.map(g=>`
+    <div class="n-sect">${g.label}</div>
+    ${g.items.map(k=>`<button class="n-item${tab===k?' active':''}" data-tab="${k}" onclick="navigate('${k}')">
+      <i class="ti ${TABS[k].icon}"></i>${TABS[k].label}
+    </button>`).join('')}
+  `).join('');
+}
+
+/* ---- INIT ---- */
+window.addEventListener('DOMContentLoaded',async()=>{
+  await load();
+  initSidebar();
+  navigate('home');
+  document.getElementById('overlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
+});
+</script>
+</body>
+</html>
