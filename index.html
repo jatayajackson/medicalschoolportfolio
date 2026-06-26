@@ -502,11 +502,15 @@ async function gistPull(){
     let pulled;
     try{ pulled = JSON.parse(content); }
     catch{ return showToast('Gist data corrupted', true); }
-    state = Object.assign(structuredClone(DEFAULT), pulled);
+    // Use pulled data directly — don't merge with DEFAULT as it overwrites pulled arrays
+    state = pulled;
     lsSet(KEY, JSON.stringify(state));
-    document.getElementById('main').innerHTML = TABS[tab].render();
-    document.querySelectorAll('.n-item').forEach(el=>el.classList.toggle('active',el.dataset.tab===tab));
-    showToast('✓ Data pulled successfully');
+    // Force full page re-render
+    setTimeout(() => {
+      document.getElementById('main').innerHTML = TABS[tab].render();
+      document.querySelectorAll('.n-item').forEach(el=>el.classList.toggle('active',el.dataset.tab===tab));
+      showToast('✓ Data pulled successfully');
+    }, 50);
   } catch(e){ showToast('Pull failed — '+e.message, true); }
 }
 
@@ -894,16 +898,12 @@ function renderResearch(){
     }
   } else {
     // Weekly Log tab
-    const now=new Date();
-    const wk=weekNum();
     const sorted=[...state.researchLog].sort((a,b)=>new Date(b.weekStart)-new Date(a.weekStart));
-    const thisWeekLogged=sorted.find(e=>{
-      const s=new Date(e.weekStart+'T12:00:00');
-      const diff=(now-s)/864e5;
-      return diff>=0&&diff<7;
-    });
+    const wk=nextUnloggedWeek();
+    const allLogged = (state.researchLog||[]).map(e=>e.weekNum);
+    const currentWeekLogged = allLogged.includes(weekNum());
 
-    if(!thisWeekLogged){
+    if(!currentWeekLogged){
       html+=`<div class="card" style="border-left:4px solid var(--clay);padding-left:1rem;margin-bottom:1.25rem">
         <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.09em;color:var(--clay);margin-bottom:4px">Action needed</div>
         <div style="font-weight:500;font-size:15px;font-family:'Playfair Display',serif">Week ${wk} not yet logged</div>
@@ -911,9 +911,10 @@ function renderResearch(){
         <button class="btn btn-primary" onclick="openLogModal()"><i class="ti ti-plus"></i> Log Week ${wk}</button>
       </div>`;
     } else {
+      const latest = sorted[0];
       html+=`<div class="card" style="border-left:4px solid #6A8A68;padding-left:1rem;margin-bottom:1.25rem">
-        <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.09em;color:#6A8A68;margin-bottom:4px">Week ${wk} logged ✓</div>
-        <div style="font-size:13px;color:var(--text2)">Email ${thisWeekLogged.emailSent?'sent':'not yet sent'} · <button onclick="showEmail('${thisWeekLogged.id}')" style="background:none;border:none;cursor:pointer;color:var(--clay);font-size:13px;padding:0;text-decoration:underline">Generate email</button></div>
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.09em;color:#6A8A68;margin-bottom:4px">Week ${weekNum()} logged ✓</div>
+        <div style="font-size:13px;color:var(--text2)">Email ${latest?.emailSent?'sent':'not yet sent'} · <button onclick="showEmail('${latest?.id}')" style="background:none;border:none;cursor:pointer;color:var(--clay);font-size:13px;padding:0;text-decoration:underline">Generate email</button></div>
       </div>`;
     }
 
@@ -1217,6 +1218,17 @@ function renderPrelim(){
 
 const RESEARCH_START = new Date('2026-06-22');
 function weekNum(){ return Math.max(1, Math.ceil((new Date()-RESEARCH_START)/(7*864e5))); }
+function nextUnloggedWeek(){
+  // Returns the next week number that hasn't been logged yet
+  const logged = new Set((state.researchLog||[]).map(e=>e.weekNum));
+  const current = weekNum();
+  // Find lowest unlogged week up to current
+  for(let w=1; w<=current; w++){
+    if(!logged.has(w)) return w;
+  }
+  // All weeks up to current are logged — return next week
+  return current + 1;
+}
 function toDateStr(d){ return d.toISOString().split('T')[0]; }
 function fmtFull(d){ if(!d)return''; try{return new Date(d+'T12:00:00').toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});}catch{return d;} }
 
@@ -1284,10 +1296,14 @@ function renderResearchLog(){
 function openLogModal(id=null){
   const item=id?state.researchLog.find(e=>e.id===id):null;
   const now=new Date();
-  const wk=weekNum();
-  const dayOfWeek=now.getDay();
-  const mon=new Date(now);
-  mon.setDate(now.getDate()-(dayOfWeek===0?6:dayOfWeek-1));
+  const wk=item?item.weekNum:nextUnloggedWeek();
+  // Calculate the Monday of the target week
+  const weekOffset = wk - weekNum();
+  const targetDate = new Date(now);
+  targetDate.setDate(now.getDate() + (weekOffset * 7));
+  const dayOfWeek=targetDate.getDay();
+  const mon=new Date(targetDate);
+  mon.setDate(targetDate.getDate()-(dayOfWeek===0?6:dayOfWeek-1));
   const sun=new Date(mon);sun.setDate(mon.getDate()+6);
   const title=item?`Edit Week ${item.weekNum} Log`:`Log Week ${wk}`;
   const body=`
