@@ -313,6 +313,9 @@ input[type=checkbox]{accent-color:#AF8B57;width:15px;height:15px;cursor:pointer;
 
 <script>
 const KEY = 'jataya_portfolio_v2';
+const SB_URL = 'https://zijgfuxocscrepwwdynp.supabase.co';
+const SB_KEY = 'sb_publishable_IBUvROrU9piq08F_huAKqw_Hfurg_wc';
+const SB_ROW = 'main';
 const uid = () => Math.random().toString(36).substr(2,9);
 const val = id => (document.getElementById(id)||{}).value||'';
 const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -425,102 +428,59 @@ const GIST_FILE = 'jataya_portfolio.json';
 function lsGet(k){try{return localStorage.getItem(k);}catch{return null;}}
 function lsSet(k,v){try{localStorage.setItem(k,v);}catch{}}
 
+async function sbFetch(method, body=null){
+  const opts = {
+    method,
+    headers:{
+      'apikey': SB_KEY,
+      'Authorization': 'Bearer '+SB_KEY,
+      'Content-Type': 'application/json',
+      'Prefer': method==='POST'?'resolution=merge-duplicates':''
+    }
+  };
+  if(body) opts.body = JSON.stringify(body);
+  const r = await fetch(SB_URL+'/rest/v1/portfolio_data?id=eq.'+SB_ROW, opts);
+  return r;
+}
+
 async function load(){
-  // 1. Load from localStorage as fast baseline
+  try{
+    // Try Supabase first
+    const r = await fetch(SB_URL+'/rest/v1/portfolio_data?id=eq.'+SB_ROW+'&select=data', {
+      headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}
+    });
+    if(r.ok){
+      const rows = await r.json();
+      if(rows.length && rows[0].data && Object.keys(rows[0].data).length > 0){
+        state = rows[0].data;
+        lsSet(KEY, JSON.stringify(state));
+        return;
+      }
+    }
+  } catch(e){ console.warn('Supabase load failed, falling back to localStorage', e); }
+  // Fallback to localStorage
   try{
     const raw = lsGet(KEY);
     state = raw ? JSON.parse(raw) : structuredClone(DEFAULT);
-  } catch{state=structuredClone(DEFAULT);}
-
-  // 2. Auto-pull from Gist if configured — silently overwrites with latest cloud data
-  const token = lsGet(GIST_KEY);
-  const gistId = lsGet(GIST_ID_KEY);
-  if(token && gistId){
-    try{
-      setSyncStatus('syncing');
-      const data = await new Promise((resolve,reject)=>{
-        const xhr=new XMLHttpRequest();
-        xhr.open('GET','https://api.github.com/gists/'+gistId,true);
-        xhr.setRequestHeader('Authorization','token '+token);
-        xhr.setRequestHeader('Accept','application/vnd.github+json');
-        xhr.onload=()=>{
-          if(xhr.status>=200&&xhr.status<300){try{resolve(JSON.parse(xhr.responseText));}catch{reject(new Error('Parse error'));}}
-          else{reject(new Error('HTTP '+xhr.status));}
-        };
-        xhr.onerror=()=>reject(new Error('Network error'));
-        xhr.timeout=10000;
-        xhr.ontimeout=()=>reject(new Error('Timeout'));
-        xhr.send();
-      });
-      const content=data.files?.[GIST_FILE]?.content;
-      if(content){
-        const pulled=JSON.parse(content);
-        state=pulled;
-        lsSet(KEY,JSON.stringify(state));
-      }
-      setSyncStatus('ok');
-    }catch(e){
-      // Fall back to local data silently — offline or bad token
-      setSyncStatus('error');
-      console.log('Auto-pull failed, using local data:',e.message);
-    }
-  }
+  } catch{ state = structuredClone(DEFAULT); }
 }
 
 async function save(){
-  try{lsSet(KEY, JSON.stringify(state));}catch{}
-  scheduleGistPush();
-}
-
-/* ---- AUTO SYNC ---- */
-let _gistPushTimer=null;
-function scheduleGistPush(){
-  if(!lsGet(GIST_KEY))return; // Not configured — skip
-  clearTimeout(_gistPushTimer);
-  _gistPushTimer=setTimeout(silentGistPush,1800);
-}
-
-async function silentGistPush(){
-  const token=lsGet(GIST_KEY);
-  const gistId=lsGet(GIST_ID_KEY);
-  if(!token)return;
-  lsSet(KEY,JSON.stringify(state));
-  const body={files:{[GIST_FILE]:{content:JSON.stringify(state,null,2)}}};
-  const url=gistId?'https://api.github.com/gists/'+gistId:'https://api.github.com/gists';
-  const method=gistId?'PATCH':'POST';
-  if(!gistId){body.description='Jataya Portfolio Data';body.public=false;}
-  setSyncStatus('syncing');
+  // Save to localStorage immediately
+  try{ lsSet(KEY, JSON.stringify(state)); } catch{}
+  // Save to Supabase in background
   try{
-    const data=await new Promise((resolve,reject)=>{
-      const xhr=new XMLHttpRequest();
-      xhr.open(method,url,true);
-      xhr.setRequestHeader('Authorization','token '+token);
-      xhr.setRequestHeader('Content-Type','application/json');
-      xhr.setRequestHeader('Accept','application/vnd.github+json');
-      xhr.onload=()=>{
-        if(xhr.status>=200&&xhr.status<300){try{resolve(JSON.parse(xhr.responseText));}catch{reject(new Error('Parse error'));}}
-        else{reject(new Error('HTTP '+xhr.status));}
-      };
-      xhr.onerror=()=>reject(new Error('Network error'));
-      xhr.timeout=15000;
-      xhr.ontimeout=()=>reject(new Error('Timeout'));
-      xhr.send(JSON.stringify(body));
+    await fetch(SB_URL+'/rest/v1/portfolio_data', {
+      method:'POST',
+      headers:{
+        'apikey':SB_KEY,
+        'Authorization':'Bearer '+SB_KEY,
+        'Content-Type':'application/json',
+        'Prefer':'resolution=merge-duplicates'
+      },
+      body: JSON.stringify({id:SB_ROW, data:state, updated_at: new Date().toISOString()})
     });
-    if(data.id){lsSet(GIST_ID_KEY,data.id);}
-    setSyncStatus('ok');
-  }catch(e){
-    setSyncStatus('error');
-    console.log('Auto-push failed:',e.message);
-  }
-}
-
-function setSyncStatus(status){
-  const el=document.getElementById('syncDot');
-  if(!el)return;
-  const colors={syncing:'#AF8B57',ok:'#6A8A68',error:'#8B3028'};
-  const labels={syncing:'Syncing…',ok:'Synced ✓',error:'Sync failed — tap Settings to check token'};
-  el.style.background=colors[status]||'transparent';
-  el.title=labels[status]||'';
+  } catch(e){ console.warn('Supabase save failed:', e); }
 }
 
 /* ---- GIST SYNC ---- */
@@ -629,54 +589,26 @@ function showToast(msg, isError=false){
 function showSyncModal(){
   const existingToken = lsGet(GIST_KEY)||'';
   const existingId = lsGet(GIST_ID_KEY)||'';
-  const isSetUp = !!(existingToken && existingId);
-
-  document.getElementById('mTitle').textContent='Sync Settings';
+  document.getElementById('mTitle').textContent='GitHub Gist Sync';
   document.getElementById('mBody').innerHTML=
-
-    // ── Status banner ──
-    (isSetUp
-      ? '<div style="background:#D8EED0;border:1px solid #8ABE88;border-radius:7px;padding:9px 13px;font-size:12px;color:#3A5830;margin-bottom:14px;display:flex;align-items:center;gap:8px"><i class="ti ti-circle-check" style="font-size:15px"></i><span>Sync is active — your data auto-saves to GitHub Gist on every change and loads automatically on every device.</span></div>'
-      : '<div style="background:#F0E8D4;border:1px solid #C4A878;border-radius:7px;padding:9px 13px;font-size:12px;color:#6A4A20;margin-bottom:14px;display:flex;align-items:center;gap:8px"><i class="ti ti-alert-triangle" style="font-size:15px"></i><span>Sync not set up yet. Once configured, every change auto-saves to GitHub and loads on any device automatically.</span></div>'
-    )+
-
-    // ── Token field ──
+    '<div style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:14px">'+
+    'Gist sync saves your portfolio data to a <strong>private GitHub Gist</strong> so it works on any device.<br><br>'+
+    '<strong>To get your token:</strong><br>'+
+    '1. Go to <a href="https://github.com/settings/tokens/new" target="_blank" style="color:var(--clay)">github.com/settings/tokens/new</a><br>'+
+    '2. Name it <em>Portfolio Sync</em><br>'+
+    '3. Check the <strong>gist</strong> scope only<br>'+
+    '4. Click Generate token and paste it below</div>'+
     '<div class="field"><label>GitHub Personal Access Token</label>'+
-    '<input type="password" id="f_token" placeholder="ghp_..." value="'+existingToken+'">'+
-    '<div style="font-size:11px;color:var(--text3);margin-top:5px">'+
-    (existingToken
-      ? 'Token on file. Update only if you need to replace it.'
-      : '1. Go to <a href="https://github.com/settings/tokens/new" target="_blank" style="color:var(--clay)">github.com/settings/tokens/new</a> &nbsp;2. Name it <em>Portfolio Sync</em> &nbsp;3. Check <strong>gist</strong> scope only &nbsp;4. Paste here.'
-    )+'</div></div>'+
-
-    // ── Gist ID field (always shown so second device can paste it in) ──
-    '<div class="field"><label>Gist ID <span style="font-weight:400;text-transform:none;font-size:10px;color:var(--text3)">(auto-filled after first sync — paste this on a second device)</span></label>'+
-    '<div style="display:flex;gap:8px;align-items:center">'+
-    '<input type="text" id="f_gistid" placeholder="Leave blank to create a new Gist" value="'+existingId+'" style="flex:1">'+
-    (existingId
-      ? '<button onclick="navigator.clipboard.writeText(\''+existingId+'\').then(()=>{this.textContent=\'Copied!\';setTimeout(()=>this.textContent=\'Copy\',2000);})" style="flex-shrink:0;padding:7px 12px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text2);font-size:12px;font-family:Inter,sans-serif;cursor:pointer">Copy</button>'
-      : ''
-    )+
-    '</div>'+
-    (existingId?'<div style="font-size:10px;color:var(--text3);margin-top:4px">To add a new device: open Settings on the other device, paste your token and this Gist ID, then save.</div>':'')+
-    '</div>'+
-
-    '<div style="font-size:11px;color:var(--text3)">Token is stored only in this browser\'s localStorage and sent only to GitHub.</div>';
-
-  document.getElementById('mSave').textContent=isSetUp?'Update settings':'Connect & sync now';
+    '<input type="password" id="f_token" placeholder="ghp_..." value="'+existingToken+'"></div>'+
+    (existingId?'<div style="font-size:11px;color:var(--text2);margin-bottom:10px">Gist ID on file: '+existingId+'</div>':'')+
+    '<div style="font-size:11px;color:var(--text3)">Token is stored only in this browser and sent only to GitHub.</div>';
+  document.getElementById('mSave').textContent='Save & Sync';
   document.getElementById('mSave').onclick=async()=>{
     const t=document.getElementById('f_token').value.trim();
-    const gid=document.getElementById('f_gistid').value.trim();
     if(!t)return;
     lsSet(GIST_KEY,t);
-    if(gid) lsSet(GIST_ID_KEY,gid);
     closeModal();
-    // If a gist ID was provided, pull first so we load existing data
-    if(gid){
-      await gistPull();
-    } else {
-      await gistPush();
-    }
+    await gistPush();
   };
   document.getElementById('overlay').classList.add('open');
 }
@@ -847,7 +779,7 @@ function openBioModal(){
 
 function renderDashboard(){
   const now=new Date();
-  const match=new Date('2029-03-21');
+  const match=new Date('2029-03-15');
   const start=new Date('2025-08-01');
   const pct=Math.min(100,Math.max(0,((now-start)/(match-start))*100));
   const days=Math.max(0,Math.ceil((match-now)/864e5));
@@ -870,7 +802,7 @@ function renderDashboard(){
       <div class="stat"><div class="stat-lbl">Shadowing</div><div class="stat-val">${Math.round(hours)}h</div><div class="stat-hint">Target: 100+ hours</div></div>
       <div class="stat"><div class="stat-lbl">Scholarly outputs</div><div class="stat-val">${state.portfolio.length}</div><div class="stat-hint">Target: 27+ (matched avg)</div></div>
       <div class="stat"><div class="stat-lbl">Research projects</div><div class="stat-val">${state.research.length}</div><div class="stat-hint">${state.research.filter(r=>r.status==='In Progress').length} active</div></div>
-      <div class="stat"><div class="stat-lbl">Goals complete</div><div class="stat-val">${done}/${total}</div><div class="stat-hint">${Math.round(done/Math.max(1,total)*100)}% done</div></div>
+      <div class="stat"><div class="stat-lbl">Goals complete</div><div class="stat-val">${done}/${total}</div><div class="stat-hint">${Math.round(done/total*100)}% done</div></div>
     </div>
     <div class="card" style="margin-bottom:1.25rem">
       <div style="font-weight:500;font-size:14px;margin-bottom:1rem;display:flex;align-items:center;gap:7px"><i class="ti ti-flag-3" style="color:var(--clay)"></i>Residency application milestones</div>
@@ -1439,6 +1371,8 @@ function openLogModal(id=null){
     else{state.researchLog.push(updated);}
     state.researchLog.sort((a,b)=>new Date(b.weekStart)-new Date(a.weekStart));
     save();closeModal();navigate(tab);
+    // Auto-push to Gist after saving so other devices stay in sync
+    if(lsGet(GIST_KEY) && lsGet(GIST_ID_KEY)) gistPush();
   });
 }
 
@@ -1861,8 +1795,8 @@ function openModal(type,id=null){
 function initSidebar(){
   // Journey timeline
   const stops=[
-    {label:'M1',date:'Aug 2025',now:false},
-    {label:'M2',date:'Aug 2026',now:true},
+    {label:'M1',date:'Aug 2025',now:true},
+    {label:'M2',date:'Aug 2026',now:false},
     {label:'M3',date:'Aug 2027',now:false},
     {label:'M4',date:'Aug 2028',now:false},
     {label:'Match Day',date:'March 2029',now:false},
@@ -1875,7 +1809,7 @@ function initSidebar(){
     </div>`).join('');
 
   // Countdown
-  const days=Math.max(0,Math.ceil((new Date('2029-03-21')-new Date())/864e5));
+  const days=Math.max(0,Math.ceil((new Date('2029-03-15')-new Date())/864e5));
   document.getElementById('cdNum').textContent=days.toLocaleString();
 
   // Nav
@@ -1887,19 +1821,28 @@ function initSidebar(){
   document.getElementById('nav').innerHTML=navGroups.map(g=>`
     <div class="n-sect">${g.label}</div>
     ${g.items.map(k=>`<button class="n-item${tab===k?' active':''}" data-tab="${k}" onclick="navigate('${k}')">
-      <i class="ti ${TABS[k].icon}"></i><span>${TABS[k].label}</span>
+      <i class="ti ${TABS[k].icon}"></i>${TABS[k].label}
     </button>`).join('')}
   `).join('')+`
-    <div class="n-sect" style="margin-top:0.5rem;display:flex;align-items:center;gap:6px">Data & Sync <span id="syncDot" style="width:7px;height:7px;border-radius:50%;background:transparent;flex-shrink:0;transition:background 0.4s" title=""></span></div>
-    <div class="sync-panel" style="padding:0.5rem 1rem 0.75rem;display:flex;flex-direction:column;gap:6px">
-      <button onclick="showSyncModal()" style="display:flex;align-items:center;gap:9px;width:100%;padding:9px 14px;border-radius:8px;border:1px solid rgba(175,139,87,0.45);background:linear-gradient(135deg,rgba(175,139,87,0.18),rgba(175,139,87,0.08));color:#D4B87A;font-size:12px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;letter-spacing:0.03em;transition:all 0.15s" onmouseover="this.style.background='linear-gradient(135deg,rgba(175,139,87,0.32),rgba(175,139,87,0.16))';this.style.borderColor='rgba(175,139,87,0.7)'" onmouseout="this.style.background='linear-gradient(135deg,rgba(175,139,87,0.18),rgba(175,139,87,0.08))';this.style.borderColor='rgba(175,139,87,0.45)'">
-        <i class="ti ti-cloud" style="font-size:15px"></i>Sync Settings
+    <div class="n-sect" style="margin-top:0.5rem">Data & Sync</div>
+    <div id="sbStatus" style="margin:0 1rem 8px;padding:7px 10px;border-radius:7px;font-size:11px;font-family:'Inter',sans-serif;background:rgba(106,138,104,0.12);border:1px solid rgba(106,138,104,0.3);color:#8DB88A;display:flex;align-items:center;gap:6px">
+      <i class="ti ti-cloud-check" style="font-size:13px"></i><span>Supabase connected</span>
+    </div>
+    <div style="padding:0.5rem 1rem 0.75rem;display:flex;flex-direction:column;gap:7px">
+      <button onclick="gistPush()" style="display:flex;align-items:center;gap:9px;width:100%;padding:9px 14px;border-radius:8px;border:1px solid rgba(175,139,87,0.45);background:linear-gradient(135deg,rgba(175,139,87,0.18),rgba(175,139,87,0.08));color:#D4B87A;font-size:12px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;letter-spacing:0.03em;transition:all 0.15s" onmouseover="this.style.background='linear-gradient(135deg,rgba(175,139,87,0.32),rgba(175,139,87,0.16))';this.style.borderColor='rgba(175,139,87,0.7)'" onmouseout="this.style.background='linear-gradient(135deg,rgba(175,139,87,0.18),rgba(175,139,87,0.08))';this.style.borderColor='rgba(175,139,87,0.45)'">
+        <i class="ti ti-cloud-upload" style="font-size:15px"></i>Push to Gist
       </button>
-      <div style="display:flex;gap:6px">
-        <button onclick="exportData()" title="Export JSON backup" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:7px 8px;border-radius:7px;border:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.04);color:var(--sb-dim);font-size:11px;font-family:'Inter',sans-serif;cursor:pointer;transition:all 0.15s" onmouseover="this.style.background='rgba(255,255,255,0.09)';this.style.color='var(--sb-text)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.color='var(--sb-dim)'">
+      <button onclick="gistPull()" style="display:flex;align-items:center;gap:9px;width:100%;padding:9px 14px;border-radius:8px;border:1px solid rgba(106,138,104,0.45);background:linear-gradient(135deg,rgba(106,138,104,0.18),rgba(106,138,104,0.08));color:#8DB88A;font-size:12px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;letter-spacing:0.03em;transition:all 0.15s" onmouseover="this.style.background='linear-gradient(135deg,rgba(106,138,104,0.32),rgba(106,138,104,0.16))';this.style.borderColor='rgba(106,138,104,0.7)'" onmouseout="this.style.background='linear-gradient(135deg,rgba(106,138,104,0.18),rgba(106,138,104,0.08))';this.style.borderColor='rgba(106,138,104,0.45)'">
+        <i class="ti ti-cloud-download" style="font-size:15px"></i>Pull from Gist
+      </button>
+      <div style="display:flex;gap:6px;margin-top:1px">
+        <button onclick="showSyncModal()" title="Sync Settings" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:7px 8px;border-radius:7px;border:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.04);color:var(--sb-dim);font-size:11px;font-family:'Inter',sans-serif;cursor:pointer;transition:all 0.15s" onmouseover="this.style.background='rgba(255,255,255,0.09)';this.style.color='var(--sb-text)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.color='var(--sb-dim)'">
+          <i class="ti ti-settings" style="font-size:13px"></i>Settings
+        </button>
+        <button onclick="exportData()" title="Export Backup" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:7px 8px;border-radius:7px;border:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.04);color:var(--sb-dim);font-size:11px;font-family:'Inter',sans-serif;cursor:pointer;transition:all 0.15s" onmouseover="this.style.background='rgba(255,255,255,0.09)';this.style.color='var(--sb-text)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.color='var(--sb-dim)'">
           <i class="ti ti-download" style="font-size:13px"></i>Export
         </button>
-        <button onclick="importData()" title="Import JSON backup" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:7px 8px;border-radius:7px;border:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.04);color:var(--sb-dim);font-size:11px;font-family:'Inter',sans-serif;cursor:pointer;transition:all 0.15s" onmouseover="this.style.background='rgba(255,255,255,0.09)';this.style.color='var(--sb-text)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.color='var(--sb-dim)'">
+        <button onclick="importData()" title="Import Backup" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:7px 8px;border-radius:7px;border:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.04);color:var(--sb-dim);font-size:11px;font-family:'Inter',sans-serif;cursor:pointer;transition:all 0.15s" onmouseover="this.style.background='rgba(255,255,255,0.09)';this.style.color='var(--sb-text)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.color='var(--sb-dim)'">
           <i class="ti ti-upload" style="font-size:13px"></i>Import
         </button>
       </div>
