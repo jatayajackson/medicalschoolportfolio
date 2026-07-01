@@ -698,6 +698,45 @@ function fld(label,id,type,extra='',v=''){return`<div class="field"><label>${lab
 function fsel(label,id,options,sel=''){return`<div class="field"><label>${label}</label><select id="${id}"><option value="">Select…</option>${opts(options,sel)}</select></div>`;}
 function ftxt(label,id,val=''){return`<div class="field"><label>${label}</label><textarea id="${id}">${esc(val)}</textarea></div>`;}
 
+/* ---- FILE ATTACHMENTS (stored as base64, e.g. shadowing/service evaluations) ---- */
+function fileField(label,id,item){
+  const hasFile = item&&item.attachmentName;
+  return `<div class="field">
+    <label>${label}</label>
+    <input type="file" id="${id}" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,.heic" onchange="handleFileSelect(event,'${id}')">
+    <div id="${id}_status" style="font-size:11px;color:var(--text2);margin-top:5px">
+      ${hasFile?`Attached: <a href="${item.attachmentData}" target="_blank" rel="noopener" style="color:var(--clay)">${esc(item.attachmentName)}</a> &middot; <label style="cursor:pointer;font-weight:400;text-transform:none;letter-spacing:normal"><input type="checkbox" id="${id}_remove" style="width:auto;height:auto;margin:0 3px 0 8px;vertical-align:middle">Remove</label>`:'No file attached (max 4MB — PDF, Word doc, or image)'}
+    </div>
+  </div>
+  ${fld('Or paste a link instead (Google Drive, Dropbox, etc.)',id+'_link','text','',item?.attachmentLink||'')}`;
+}
+function handleFileSelect(e,id){
+  const file=e.target.files[0];
+  if(!file) return;
+  if(file.size>4*1024*1024){ showToast('File too large — 4MB max', true); e.target.value=''; return; }
+  const reader=new FileReader();
+  reader.onload=()=>{
+    window._pendingFiles = window._pendingFiles||{};
+    window._pendingFiles[id] = {name:file.name, data:reader.result};
+    const statusEl = document.getElementById(id+'_status');
+    if(statusEl) statusEl.innerHTML = 'Selected: '+esc(file.name)+' <span style="color:var(--clay)">(will attach on Save)</span>';
+  };
+  reader.readAsDataURL(file);
+}
+function resolveAttachment(id,item){
+  const pending = window._pendingFiles && window._pendingFiles[id];
+  const removeChecked = document.getElementById(id+'_remove')?.checked;
+  let attachmentName=item?.attachmentName||'', attachmentData=item?.attachmentData||'';
+  if(removeChecked){ attachmentName=''; attachmentData=''; }
+  if(pending){ attachmentName=pending.name; attachmentData=pending.data; }
+  return {attachmentName, attachmentData, attachmentLink:val(id+'_link')};
+}
+function attachmentBadge(item){
+  if(item.attachmentData) return `<a href="${item.attachmentData}" target="_blank" rel="noopener" title="${esc(item.attachmentName)}" style="color:var(--clay);font-size:13px;flex-shrink:0"><i class="ti ti-paperclip"></i></a>`;
+  if(item.attachmentLink) return `<a href="${esc(item.attachmentLink)}" target="_blank" rel="noopener" title="View attached link" style="color:var(--clay);font-size:13px;flex-shrink:0"><i class="ti ti-link"></i></a>`;
+  return '';
+}
+
 /* ---- RENDERS ---- */
 function pgHead(title,sub,btnLabel,btnAction){
   return`<div class="pg-head">
@@ -1074,6 +1113,7 @@ function renderShadowing(){
         <div class="list-title">${esc(s.physician)}</div>
         <div class="list-meta">${esc(s.location)} &middot; ${fmt(s.date)}${s.notes?` &middot; ${esc(s.notes)}`:''}</div>
       </div>
+      ${attachmentBadge(s)}
       <button class="btn-edit" onclick="openModal('shadowing','${s.id}')"><i class="ti ti-pencil"></i></button>
       <button class="btn-ghost" onclick="delItem('shadowing','${s.id}')"><i class="ti ti-trash"></i></button>
     </div>`).join('')}</div>`;
@@ -1097,6 +1137,7 @@ function renderCommunityService(){
         <div class="list-title">${esc(s.organization)}</div>
         <div class="list-meta">${esc(s.activity)}${s.activity?' &middot; ':''}${fmt(s.date)}${s.notes?` &middot; ${esc(s.notes)}`:''}</div>
       </div>
+      ${attachmentBadge(s)}
       <button class="btn-edit" onclick="openModal('communityService','${s.id}')"><i class="ti ti-pencil"></i></button>
       <button class="btn-ghost" onclick="delItem('communityService','${s.id}')"><i class="ti ti-trash"></i></button>
     </div>`).join('')}</div>`;
@@ -1711,6 +1752,7 @@ function closeModal(){
   document.getElementById('mSave').style.display='';
   document.getElementById('mSave').textContent='Save';
   window._emailText='';
+  window._pendingFiles={};
 }
 function openOverlay(title,body,onSave){
   document.getElementById('mTitle').textContent=title;
@@ -1762,10 +1804,12 @@ function openModal(type,id=null){
       body:`
         <div class="f-row">${fld('Date','f_date','date','',item?.date||'')}${fld('Hours','f_hrs','number','min="0.5" step="0.5"',item?.hours||'')}</div>
         ${fld('Physician name & credentials','f_phys','text','',item?.physician||'')}${fld('Clinic / hospital','f_loc','text','',item?.location||'')}
-        ${ftxt('Notes (optional)','f_notes',item?.notes||'')}`,
+        ${ftxt('Notes (optional)','f_notes',item?.notes||'')}
+        ${fileField('Attach document (e.g. evaluation from your school)','f_shaddoc',item)}`,
       save:()=>{
         if(!val('f_date')||!val('f_phys')||!val('f_hrs'))return;
-        const updated={id:item?.id||uid(),date:val('f_date'),hours:val('f_hrs'),physician:val('f_phys'),location:val('f_loc'),notes:val('f_notes')};
+        const att=resolveAttachment('f_shaddoc',item);
+        const updated={id:item?.id||uid(),date:val('f_date'),hours:val('f_hrs'),physician:val('f_phys'),location:val('f_loc'),notes:val('f_notes'),...att};
         if(isEdit){state.shadowing=state.shadowing.map(x=>x.id===id?updated:x);}else{state.shadowing.push(updated);}
         state.shadowing.sort((a,b)=>new Date(b.date)-new Date(a.date));
         save();closeModal();navigate(tab);
@@ -1776,10 +1820,12 @@ function openModal(type,id=null){
       body:`
         <div class="f-row">${fld('Date','f_csdate','date','',item?.date||'')}${fld('Hours','f_cshrs','number','min="0.5" step="0.5"',item?.hours||'')}</div>
         ${fld('Organization','f_csorg','text','',item?.organization||'')}${fld('Activity / role','f_csact','text','',item?.activity||'')}
-        ${ftxt('Notes (optional)','f_csnotes',item?.notes||'')}`,
+        ${ftxt('Notes (optional)','f_csnotes',item?.notes||'')}
+        ${fileField('Attach document (e.g. evaluation or verification letter)','f_csdoc',item)}`,
       save:()=>{
         if(!val('f_csdate')||!val('f_csorg')||!val('f_cshrs'))return;
-        const updated={id:item?.id||uid(),date:val('f_csdate'),hours:val('f_cshrs'),organization:val('f_csorg'),activity:val('f_csact'),notes:val('f_csnotes')};
+        const att=resolveAttachment('f_csdoc',item);
+        const updated={id:item?.id||uid(),date:val('f_csdate'),hours:val('f_cshrs'),organization:val('f_csorg'),activity:val('f_csact'),notes:val('f_csnotes'),...att};
         if(isEdit){state.communityService=state.communityService.map(x=>x.id===id?updated:x);}else{state.communityService.push(updated);}
         state.communityService.sort((a,b)=>new Date(b.date)-new Date(a.date));
         save();closeModal();navigate(tab);
