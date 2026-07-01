@@ -327,7 +327,9 @@ const STATUSES = {
   conference:['Planned','Abstract Submitted','Accepted — Poster','Accepted — Oral','Attended','Declined'],
   pub:['In Progress','Submitted','Under Review','Revision','Accepted','Published'],
   lor:['Pending Shadowing','Will Request in M3','Requested','Received','Declined'],
+  extprogram:['Not Started','Researching','Applied','Interview / Next Step','Accepted','Declined'],
 };
+const EXTPROGRAM_TYPES = ['Mentorship','Research Fellowship','Research Award / Grant','Observership Grant'];
 
 const EXAMS_DEFAULT = [
   {id:'e1',course:'Renal System',type:'Midterm Exam',date:'2026-07-30',time:'9:10 AM',location:'FTL: Morris | TBR: 1803',notes:'',done:false},
@@ -381,6 +383,18 @@ const DEFAULT = {
     {id:'g26',phase:'M4',category:'Application',text:'Draft and finalize personal statement (leverage ALM equity research narrative)',dueDate:'2028-08-31',completed:false},
     {id:'g27',phase:'M4',category:'Application',text:'Submit ERAS application',dueDate:'2028-09-01',completed:false},
     {id:'g28',phase:'M4',category:'Application',text:'Apply to 60–80 DO-friendly dermatology programs',dueDate:'2028-10-01',completed:false},
+    {id:'g29',phase:'M2 Fall',category:'Networking',text:'Ask Dr. Riskin/AOCD contacts about Foundation for Osteopathic Dermatology funding pathways for students (currently resident-focused)',dueDate:'2026-08-15',completed:false},
+    {id:'g30',phase:'M2 Fall',category:'Research',text:'Apply — Dermatology Foundation Medical Student Research Supplement Award ($5,000; confirm next application cycle, est. ~Nov 1)',dueDate:'2026-11-01',completed:false},
+    {id:'g31',phase:'M2 Fall',category:'Networking',text:'Apply — AAD Pathways Medical Student Mentorship Program',dueDate:'2026-09-01',completed:false},
+    {id:'g32',phase:'M2 Fall',category:'Networking',text:'Apply — Skin of Color Society Observership Grant (up to $2,500; window Aug 2–Oct 27, 2026)',dueDate:'2026-10-27',completed:false},
+    {id:'g33',phase:'M2 Fall',category:'Networking',text:'Join SOCS & apply — Skin of Color Society Mentorship Program',dueDate:'2026-09-01',completed:false},
+    {id:'g34',phase:'M2 Spring',category:'Research',text:'Apply — WDS Student Summer Research Fellowship (confirm exact deadline on womensderm.org)',dueDate:'2027-01-15',completed:false},
+    {id:'g35',phase:'M2 Fall',category:'Research',text:'Apply — PeDRA Medical Student Research/Mentorship Cohort (confirm next cycle dates)',dueDate:'2026-10-15',completed:false},
+    {id:'g36',phase:'M2 Spring',category:'Networking',text:'Apply — Medical Dermatology Society (MDS) Mentorship Program (confirm when next cycle opens)',dueDate:'2027-01-15',completed:false},
+    {id:'g37',phase:'M2 Spring',category:'Research',text:'Apply — UCSF Dermatology Medical Student Summer Research Fellowship (Summer 2027; confirm deadline)',dueDate:'2027-01-31',completed:false},
+    {id:'g38',phase:'M2 Spring',category:'Research',text:'Apply — University of Colorado Mentored Medical Student Research Award ($2,500 stipend; confirm 2027 deadline)',dueDate:'2027-02-01',completed:false},
+    {id:'g39',phase:'M2 Spring',category:'Research',text:'Explore — University of Utah DermSRP (typically for rising M2s; confirm eligibility/timing)',dueDate:'2027-01-15',completed:false},
+    {id:'g40',phase:'M3',category:'Research',text:'Explore — Yale Dermatology Mentorship & Research Rotation ($3,000 stipend; confirm timing/eligibility)',dueDate:'2027-03-01',completed:false},
   ],
   research:[{
     id:'r1',title:'Racial and Ethnic Disparities in Stage at Melanoma Diagnosis and Time to Treatment',
@@ -391,6 +405,22 @@ const DEFAULT = {
     description:'Retrospective cohort study examining racial/ethnic disparities in ALM stage at diagnosis and time to first treatment. Aims: (1) stage at diagnosis by race/ethnicity; (2) time from diagnosis to first treatment; (3) ALM subtype distribution; (4) insurance status as mediating factor.',
   }],
   shadowing:[],
+  communityService:[],
+  externalPrograms:[
+    {id:'ep1',name:'AOCD Student Programs',organization:'American Osteopathic College of Dermatology (AOCD)',type:'Mentorship',deadline:'Ongoing — student membership',funding:'N/A',status:'Not Started',link:'https://aocd.org',notes:'Mentorship from AOCD fellows/faculty; dedicated student track at the AOCD Spring Meeting. Already an active membership target.'},
+    {id:'ep2',name:'Foundation for Osteopathic Dermatology (FOD) Research Grants',organization:'Foundation for Osteopathic Dermatology',type:'Research Award / Grant',deadline:'Currently resident-focused — ask about student pathways',funding:'Varies (e.g. A.P. Ulbrich Research Award)',status:'Researching',link:'https://foundationdo.org/awards/',notes:'Funds osteopathic derm research for AOCD resident members. Worth asking Dr. Riskin/AOCD contacts if a student-level track exists.'},
+    {id:'ep3',name:'Medical Student Research Supplement Award (MSRSA)',organization:'Dermatology Foundation',type:'Research Award / Grant',deadline:'Spring-summer cycle: May 1 annually (confirm fall/winter cycle date)',funding:'$5,000',status:'Not Started',link:'https://dermatologyfoundation.org/msrsa/',notes:'Open to MD & DO students at accredited U.S. schools. Funds a 6–12 week research project — good fit for the ALM/NCDB project.'},
+    {id:'ep4',name:'Pathways Medical Student Mentorship Program',organization:'American Academy of Dermatology (AAD)',type:'Mentorship',deadline:'Rolling/annual — confirm on site',funding:'N/A',status:'Not Started',link:'https://www.aad.org/member/career/diversity/pathways/medical-students',notes:'One-on-one mentorship with a dermatologist. Open to MS1–MS4.'},
+    {id:'ep5',name:'Observership Grant',organization:'Skin of Color Society (SOCS)',type:'Observership Grant',deadline:'Aug 2 – Oct 27, 2026',funding:'Up to $2,500',status:'Not Started',link:'https://skinofcolorsociety.org/what-we-do/mentorship/observership-grant',notes:'Requires SOCS membership. Covers travel/lodging to shadow a SOCS mentor. One grant per student per 4-year period.'},
+    {id:'ep6',name:'Mentorship Program',organization:'Skin of Color Society (SOCS)',type:'Mentorship',deadline:'Rolling — confirm on site',funding:'N/A',status:'Not Started',link:'https://skinofcolorsociety.org/what-we-do/mentorship/mentorship-program',notes:'Ongoing mentor pairing, open to medical students with active SOCS membership.'},
+    {id:'ep7',name:'Student Summer Research Fellowship',organization:"Women's Dermatologic Society (WDS)",type:'Research Fellowship',deadline:'Confirm on site (historically ~winter for following summer)',funding:'Funded stipend (amount TBD)',status:'Not Started',link:'https://www.womensderm.org/awards/award-programs/student-summer-research-fellowship',notes:'Particular support for underrepresented-in-medicine students.'},
+    {id:'ep8',name:'Medical Student Research/Mentorship Cohort',organization:'PeDRA (Pediatric Dermatology Research Alliance)',type:'Research Fellowship',deadline:'2026 cohort in progress; confirm 2027 cycle',funding:'N/A',status:'Researching',link:'https://pedraresearch.org/2026-mentorship-program/',notes:'Relevant if pediatric dermatology becomes a sub-interest.'},
+    {id:'ep9',name:'Mentorship Program',organization:'Medical Dermatology Society (MDS)',type:'Mentorship',deadline:'Mentorship period Apr 1, 2026 – Jun 30, 2027; confirm application window',funding:'N/A',status:'Researching',link:'https://meddermsociety.org/mentorship-program/',notes:'Structured 4-week mentorship program; open to apply as a mentee.'},
+    {id:'ep10',name:'Dermatology Medical Student Summer Research Fellowship',organization:'UCSF Department of Dermatology',type:'Research Fellowship',deadline:'Confirm on site (typically due winter for following summer)',funding:'Funded stipend',status:'Not Started',link:'https://dermatology.ucsf.edu/fellowships/ucsf-dermatology-medical-student-summer-research-fellowship',notes:'8-week summer research fellowship with a faculty mentor; open to outside applicants.'},
+    {id:'ep11',name:'Mentored Medical Student Research Award',organization:'University of Colorado School of Medicine Dermatology',type:'Research Award / Grant',deadline:'2026 program ran Jul 26 – Aug 28; confirm 2027 application date',funding:'$2,500 stipend',status:'Researching',link:'https://medschool.cuanschutz.edu/dermatology/education/mentored-medical-student-research-program',notes:'Up to 3 awards/year; paired with a departmental faculty mentor.'},
+    {id:'ep12',name:'DermSRP (Summer Medical Student Research Program)',organization:'University of Utah Department of Dermatology',type:'Research Fellowship',deadline:'For students between M1–M2; confirm eligibility & timing',funding:'TBD',status:'Researching',link:'https://medicine.utah.edu/dermatology/education/interest-groups/msrp',notes:'Designed for the summer between first and second year — check current-year eligibility given schedule.'},
+    {id:'ep13',name:'Dermatology Mentorship & Research Rotation',organization:'Yale School of Medicine',type:'Mentorship',deadline:'Confirm on site',funding:'$3,000 stipend',status:'Researching',link:'https://medicine.yale.edu/dermatology/education/medical-student-education/',notes:'Extended mentorship plus a one-month in-person rotation with Yale Dermatology faculty.'},
+  ],
   conferences:[
     {id:'c1',name:'AOCD 2027 Spring Meeting',date:'2027-03-04',location:'Hilton West Palm Beach, FL',presentationType:'Poster / Oral Presentation',presentationTitle:'Racial and Ethnic Disparities in Stage at Melanoma Diagnosis and Time to Treatment',status:'Planned',notes:'Primary target. Abstract deadline ~Nov 2026. Residency PD networking session Saturday — attend even if abstract not accepted.'},
     {id:'c2',name:'ODAC Dermatology Conference 2027',date:'2027-01-15',location:'Orlando, FL',presentationType:'Attendee / Poster',presentationTitle:'',status:'Planned',notes:'Annual Florida derm conference. Apply for student scholarship at orlandoderm.org.'},
@@ -443,7 +473,26 @@ async function sbFetch(method, body=null){
   return r;
 }
 
+function backfillDefaults(){
+  // Ensure any new top-level sections added to DEFAULT after a user's data
+  // was already saved get initialized, without touching existing data.
+  for(const k in DEFAULT){
+    if(state[k]===undefined){
+      state[k]=structuredClone(DEFAULT[k]);
+    } else if(Array.isArray(DEFAULT[k]) && Array.isArray(state[k])){
+      // Also merge in any newly-added default items (matched by id) into
+      // arrays the user already has data in, e.g. new goals added later,
+      // without duplicating or touching existing/edited items.
+      const existingIds = new Set(state[k].map(x=>x&&x.id));
+      DEFAULT[k].forEach(item=>{
+        if(item&&item.id!==undefined&&!existingIds.has(item.id)) state[k].push(structuredClone(item));
+      });
+    }
+  }
+}
+
 async function load(){
+  let loaded=false;
   try{
     // Try Supabase first
     const r = await fetch(SB_URL+'/rest/v1/portfolio_data?id=eq.'+SB_ROW+'&select=data', {
@@ -453,16 +502,19 @@ async function load(){
       const rows = await r.json();
       if(rows.length && rows[0].data && Object.keys(rows[0].data).length > 0){
         state = rows[0].data;
-        lsSet(KEY, JSON.stringify(state));
-        return;
+        loaded=true;
       }
     }
   } catch(e){ console.warn('Supabase load failed, falling back to localStorage', e); }
-  // Fallback to localStorage
-  try{
-    const raw = lsGet(KEY);
-    state = raw ? JSON.parse(raw) : structuredClone(DEFAULT);
-  } catch{ state = structuredClone(DEFAULT); }
+  if(!loaded){
+    // Fallback to localStorage
+    try{
+      const raw = lsGet(KEY);
+      state = raw ? JSON.parse(raw) : structuredClone(DEFAULT);
+    } catch{ state = structuredClone(DEFAULT); }
+  }
+  backfillDefaults();
+  lsSet(KEY, JSON.stringify(state));
 }
 
 async function save(){
@@ -551,6 +603,7 @@ async function gistPull(){
     catch{ return showToast('Gist data corrupted', true); }
     // Use pulled data directly — don't merge with DEFAULT as it overwrites pulled arrays
     state = pulled;
+    backfillDefaults();
     lsSet(KEY, JSON.stringify(state));
     // Force full page re-render
     setTimeout(() => {
@@ -1004,7 +1057,7 @@ function renderResearch(){
 function renderShadowing(){
   const total=state.shadowing.reduce((s,x)=>s+parseFloat(x.hours||0),0);
   const pct=Math.min(100,total);
-  let html=pgHead('Shadowing Log','Log every session — you need 100+ hours before residency applications','Log session','openModal("shadowing")');
+  let html=pgHead('Shadowing Log','Log every session — you need 100+ hours before residency applications','Log session',"openModal('shadowing')");
   html+=`<div class="stat-grid" style="margin-bottom:1.25rem">
     <div class="stat"><div class="stat-lbl">Total hours</div><div class="stat-val">${Math.round(total)}h</div><div class="stat-hint">Target: 100+ hours</div></div>
     <div class="stat"><div class="stat-lbl">Sessions</div><div class="stat-val">${state.shadowing.length}</div><div class="stat-hint">Individual sessions</div></div>
@@ -1027,8 +1080,56 @@ function renderShadowing(){
   return html;
 }
 
+function renderCommunityService(){
+  const total=state.communityService.reduce((s,x)=>s+parseFloat(x.hours||0),0);
+  const now=new Date();
+  const yearHours=state.communityService.filter(x=>x.date&&new Date(x.date).getFullYear()===now.getFullYear()).reduce((s,x)=>s+parseFloat(x.hours||0),0);
+  let html=pgHead('Community Service','Log every service session — track hours toward applications','Log session',"openModal('communityService')");
+  html+=`<div class="stat-grid" style="margin-bottom:1.25rem">
+    <div class="stat"><div class="stat-lbl">Total hours</div><div class="stat-val">${Math.round(total*10)/10}h</div><div class="stat-hint">All time</div></div>
+    <div class="stat"><div class="stat-lbl">Sessions</div><div class="stat-val">${state.communityService.length}</div><div class="stat-hint">Individual sessions</div></div>
+    <div class="stat"><div class="stat-lbl">This year</div><div class="stat-val">${Math.round(yearHours*10)/10}h</div><div class="stat-hint">${now.getFullYear()}</div></div>
+  </div>`;
+  html+=`<div class="card">${state.communityService.length===0?`<div class="empty">No sessions logged yet.<br>Log your first community service session to start tracking hours.</div>`:
+    [...state.communityService].sort((a,b)=>new Date(b.date)-new Date(a.date)).map(s=>`<div class="list-row">
+      <div style="min-width:44px;text-align:center;background:var(--sage-l);border-radius:6px;padding:4px 0;font-size:14px;font-weight:500;color:#3A5825">${parseFloat(s.hours)}h</div>
+      <div class="list-main">
+        <div class="list-title">${esc(s.organization)}</div>
+        <div class="list-meta">${esc(s.activity)}${s.activity?' &middot; ':''}${fmt(s.date)}${s.notes?` &middot; ${esc(s.notes)}`:''}</div>
+      </div>
+      <button class="btn-edit" onclick="openModal('communityService','${s.id}')"><i class="ti ti-pencil"></i></button>
+      <button class="btn-ghost" onclick="delItem('communityService','${s.id}')"><i class="ti ti-trash"></i></button>
+    </div>`).join('')}</div>`;
+  return html;
+}
+
+function renderExternalPrograms(){
+  const list=state.externalPrograms||[];
+  const applied=list.filter(p=>p.status&&p.status!=='Not Started'&&p.status!=='Researching').length;
+  let html=pgHead('Mentorship & External Programs','Track outside mentorship, research fellowship, and grant opportunities & their deadlines',"Add program","openModal('extprogram')");
+  html+=`<div class="stat-grid" style="margin-bottom:1.25rem">
+    <div class="stat"><div class="stat-lbl">Tracked programs</div><div class="stat-val">${list.length}</div><div class="stat-hint">Opportunities on file</div></div>
+    <div class="stat"><div class="stat-lbl">In motion</div><div class="stat-val">${applied}</div><div class="stat-hint">Applied or further along</div></div>
+  </div>`;
+  if(!list.length) return html+`<div class="card"><div class="empty">No external programs tracked yet.</div></div>`;
+  html+=list.map(p=>`<div class="card">
+    <div style="display:flex;justify-content:space-between;gap:12px;margin-bottom:6px">
+      <div><div class="card-title" style="font-family:'Playfair Display',serif">${esc(p.name)}</div><div class="card-sub" style="margin-top:2px;font-style:italic">${esc(p.organization)}</div></div>
+      <div style="display:flex;gap:8px;align-items:center;flex-shrink:0">${badge(p.status)}<button class="btn-edit" onclick="openModal('extprogram','${p.id}')"><i class="ti ti-pencil"></i></button><button class="btn-ghost" onclick="delItem('externalPrograms','${p.id}')"><i class="ti ti-trash"></i></button></div>
+    </div>
+    <dl class="detail-kv">
+      ${p.type?`<dt>Type</dt><dd>${esc(p.type)}</dd>`:''}
+      ${p.deadline?`<dt>Deadline</dt><dd>${esc(p.deadline)}</dd>`:''}
+      ${p.funding?`<dt>Funding</dt><dd>${esc(p.funding)}</dd>`:''}
+      ${p.link?`<dt>Link</dt><dd><a href="${esc(p.link)}" target="_blank" rel="noopener" style="color:var(--clay)">${esc(p.link)}</a></dd>`:''}
+    </dl>
+    ${p.notes?`<div class="detail-block" style="margin-top:10px">${esc(p.notes)}</div>`:''}
+  </div>`).join('');
+  return html;
+}
+
 function renderConferences(){
-  let html=pgHead('Conferences & Presentations','Track conferences attended, abstracts submitted, and presentations given','Add conference','openModal("conference")');
+  let html=pgHead('Conferences & Presentations','Track conferences attended, abstracts submitted, and presentations given','Add conference',"openModal('conference')");
   if(!state.conferences.length) return html+`<div class="card"><div class="empty">No conferences yet.</div></div>`;
   html+=state.conferences.map(c=>`<div class="card">
     <div style="display:flex;justify-content:space-between;gap:12px;margin-bottom:6px">
@@ -1046,7 +1147,7 @@ function renderConferences(){
 }
 
 function renderPublications(){
-  let html=pgHead('Publications',`${state.publications.length} publication(s) tracked`,'Add publication','openModal("pub")');
+  let html=pgHead('Publications',`${state.publications.length} publication(s) tracked`,'Add publication',"openModal('pub')");
   if(!state.publications.length) return html+`<div class="card"><div class="empty">No publications yet.<br>Your ALM/NCDB manuscript is on track for submission in fall 2027. A first-author publication before ERAS opens is the goal.</div></div>`;
   html+=state.publications.map(p=>`<div class="card">
     <div style="display:flex;justify-content:space-between;gap:12px">
@@ -1090,7 +1191,7 @@ function renderBoards(){
 }
 
 function renderLORs(){
-  let html=pgHead('LOR Tracker','Target: 3 letters total — ideally 2–3 from dermatology attendings','Add contact','openModal("lor")');
+  let html=pgHead('LOR Tracker','Target: 3 letters total — ideally 2–3 from dermatology attendings','Add contact',"openModal('lor')");
   html+=`<div class="alert alert-warn"><i class="ti ti-alert-triangle"></i>Priority: Secure a shadowing relationship with Dr. Richard Miller, DO — his LOR as NSU-COM Derm PD carries exceptional weight with DO programs nationwide.</div>`;
   if(!state.lors.length) return html+`<div class="card"><div class="empty">No LOR contacts yet.</div></div>`;
   html+=state.lors.map(l=>`<div class="card">
@@ -1109,7 +1210,7 @@ function renderLORs(){
 }
 
 function renderAwards(){
-  let html=pgHead('Awards & Honors',`${state.awards.length} award(s) tracked`,'Add award','openModal("award")');
+  let html=pgHead('Awards & Honors',`${state.awards.length} award(s) tracked`,'Add award',"openModal('award')");
   if(!state.awards.length) return html+`<div class="card"><div class="empty">No awards yet.<br>Key targets: AOA Honor Society induction at NSU-COM, Dean\'s List, AOCD student research awards.</div></div>`;
   html+=state.awards.map(a=>`<div class="card" style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
     <div>
@@ -1134,7 +1235,7 @@ function renderPortfolio(){
   const bench=27;
   const pct=Math.min(100,Math.round(total/bench*100));
   const color=total>=27?'var(--sage)':total>=19?'var(--warn)':'var(--danger)';
-  let html=pgHead('Research Portfolio',`${total} scholarly outputs · 2024 NRMP matched avg: 27.7`,'Add output','openModal("portfolio")');
+  let html=pgHead('Research Portfolio',`${total} scholarly outputs · 2024 NRMP matched avg: 27.7`,'Add output',"openModal('portfolio')");
   html+=`<div class="card" style="margin-bottom:1.25rem">
     <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
       <div>
@@ -1183,7 +1284,7 @@ function renderPortfolio(){
 function renderSignals(){
   const gold=state.signals.filter(s=>s.signal==='Gold').length;
   const silver=state.signals.filter(s=>s.signal==='Silver').length;
-  let html=pgHead('Signal Strategy','28 signals: 3 gold + 25 silver · Near-zero interview rate at non-signaled programs','Add program','openModal("signal")');
+  let html=pgHead('Signal Strategy','28 signals: 3 gold + 25 silver · Near-zero interview rate at non-signaled programs','Add program',"openModal('signal')");
   html+=`<div class="stat-grid" style="margin-bottom:1.25rem">
     <div class="stat" style="border-left:3px solid var(--gold)">
       <div class="stat-lbl">Gold signals</div>
@@ -1231,7 +1332,7 @@ function renderPrelim(){
   const applied=state.prelim.filter(p=>['Applied','Interviewed','Ranked'].includes(p.status)).length;
   const interviewed=state.prelim.filter(p=>['Interviewed','Ranked'].includes(p.status)).length;
   const ranked=state.prelim.filter(p=>p.status==='Ranked').length;
-  let html=pgHead('Prelim Year Tracker','PGY-1 Preliminary IM or Transitional Year — you must match this simultaneously with derm','Add program','openModal("prelim")');
+  let html=pgHead('Prelim Year Tracker','PGY-1 Preliminary IM or Transitional Year — you must match this simultaneously with derm','Add program',"openModal('prelim')");
   html+=`<div class="alert alert-warn"><i class="ti ti-alert-triangle"></i>Dermatology is a PGY-2 "advanced" residency. In the same ERAS cycle, you must also match a separate PGY-1 preliminary year. If your prelim year falls through, you cannot start derm training — even if you matched derm. Plan this application track in parallel. Target programs in the same geographic area as your derm signals.</div>
   <div class="stat-grid" style="margin-bottom:1.25rem">
     <div class="stat"><div class="stat-lbl">Programs tracked</div><div class="stat-val">${state.prelim.length}</div><div class="stat-hint">Aim for 15–20 programs</div></div>
@@ -1359,7 +1460,7 @@ function openLogModal(id=null){
       ${fld('Week start (Monday)','f_wstart','date','',item?.weekStart||toDateStr(mon))}
     </div>
     ${fld('Week end (Sunday)','f_wend','date','',item?.weekEnd||toDateStr(sun))}
-    ${ftxt('✓ Completed this week','f_comp',item?.completed||'')}
+    ${ftxt('✓ Email sent to mentor','f_comp',item?.completed||'')}
     ${ftxt('⟳ In progress','f_inp',item?.inProgress||'')}
     ${ftxt('⚠ Blockers / questions for Dr. Riskin','f_blk',item?.blockers||'')}
     ${ftxt('→ Next week\'s plan','f_nxt',item?.nextWeek||'')}
@@ -1467,7 +1568,7 @@ function renderSchedule(){
   const next=remaining[0];
   const pct=state.exams.length?Math.round(done/state.exams.length*100):0;
 
-  let html=pgHead('Fall 2026 Schedule',`${state.exams.length} assessments · ${remaining.length} remaining`,'Add event','openModal("exam")');
+  let html=pgHead('Fall 2026 Schedule',`${state.exams.length} assessments · ${remaining.length} remaining`,'Add event',"openModal('exam')");
 
   if(next){
     const dd=Math.ceil((new Date(next.date)-now)/864e5);
@@ -1529,6 +1630,8 @@ const TABS={
   research:{label:'Research',icon:'ti-microscope',render:renderResearch},
   portfolio:{label:'Portfolio',icon:'ti-books',render:renderPortfolio},
   shadowing:{label:'Shadowing',icon:'ti-stethoscope',render:renderShadowing},
+  communityService:{label:'Community Service',icon:'ti-heart-handshake',render:renderCommunityService},
+  externalPrograms:{label:'Mentorship & External Programs',icon:'ti-world',render:renderExternalPrograms},
   conferences:{label:'Conferences',icon:'ti-presentation',render:renderConferences},
   publications:{label:'Publications',icon:'ti-file-text',render:renderPublications},
   boards:{label:'Board Scores',icon:'ti-chart-bar',render:renderBoards},
@@ -1636,7 +1739,7 @@ function openGoalModal(id=null){
 }
 
 function openModal(type,id=null){
-  const stateKey={research:'research',shadowing:'shadowing',conference:'conferences',pub:'publications',lor:'lors',award:'awards',exam:'exams',portfolio:'portfolio',signal:'signals',prelim:'prelim'}[type];
+  const stateKey={research:'research',shadowing:'shadowing',communityService:'communityService',extprogram:'externalPrograms',conference:'conferences',pub:'publications',lor:'lors',award:'awards',exam:'exams',portfolio:'portfolio',signal:'signals',prelim:'prelim'}[type];
   const item=id&&stateKey?state[stateKey].find(x=>x.id===id):null;
   const isEdit=!!item;
   const configs={
@@ -1665,6 +1768,34 @@ function openModal(type,id=null){
         const updated={id:item?.id||uid(),date:val('f_date'),hours:val('f_hrs'),physician:val('f_phys'),location:val('f_loc'),notes:val('f_notes')};
         if(isEdit){state.shadowing=state.shadowing.map(x=>x.id===id?updated:x);}else{state.shadowing.push(updated);}
         state.shadowing.sort((a,b)=>new Date(b.date)-new Date(a.date));
+        save();closeModal();navigate(tab);
+      }
+    },
+    communityService:{
+      title:isEdit?'Edit community service session':'Log community service session',
+      body:`
+        <div class="f-row">${fld('Date','f_csdate','date','',item?.date||'')}${fld('Hours','f_cshrs','number','min="0.5" step="0.5"',item?.hours||'')}</div>
+        ${fld('Organization','f_csorg','text','',item?.organization||'')}${fld('Activity / role','f_csact','text','',item?.activity||'')}
+        ${ftxt('Notes (optional)','f_csnotes',item?.notes||'')}`,
+      save:()=>{
+        if(!val('f_csdate')||!val('f_csorg')||!val('f_cshrs'))return;
+        const updated={id:item?.id||uid(),date:val('f_csdate'),hours:val('f_cshrs'),organization:val('f_csorg'),activity:val('f_csact'),notes:val('f_csnotes')};
+        if(isEdit){state.communityService=state.communityService.map(x=>x.id===id?updated:x);}else{state.communityService.push(updated);}
+        state.communityService.sort((a,b)=>new Date(b.date)-new Date(a.date));
+        save();closeModal();navigate(tab);
+      }
+    },
+    extprogram:{
+      title:isEdit?'Edit external program':'Add external program',
+      body:`
+        ${fld('Program name','f_epname','text','',item?.name||'')}${fld('Organization','f_eporg','text','',item?.organization||'')}
+        <div class="f-row">${fsel('Type','f_eptype',EXTPROGRAM_TYPES,item?.type||'')}${fsel('Status','f_epstatus',STATUSES.extprogram,item?.status||'')}</div>
+        <div class="f-row">${fld('Deadline','f_epdead','text','',item?.deadline||'')}${fld('Funding','f_epfund','text','',item?.funding||'')}</div>
+        ${fld('Link (URL)','f_eplink','text','',item?.link||'')}${ftxt('Notes','f_epnotes',item?.notes||'')}`,
+      save:()=>{
+        if(!val('f_epname'))return;
+        const updated={id:item?.id||uid(),name:val('f_epname'),organization:val('f_eporg'),type:val('f_eptype'),deadline:val('f_epdead'),funding:val('f_epfund'),status:val('f_epstatus')||'Not Started',link:val('f_eplink'),notes:val('f_epnotes')};
+        if(isEdit){state.externalPrograms=state.externalPrograms.map(x=>x.id===id?updated:x);}else{state.externalPrograms.push(updated);}
         save();closeModal();navigate(tab);
       }
     },
@@ -1815,7 +1946,7 @@ function initSidebar(){
   // Nav
   const navGroups=[
     {label:'Profile',items:['home','dashboard','schedule']},
-    {label:'Academic',items:['goals','research','portfolio','shadowing','conferences','publications']},
+    {label:'Academic',items:['goals','research','portfolio','shadowing','communityService','conferences','publications','externalPrograms']},
     {label:'Application',items:['boards','lors','awards','signals','prelim']},
   ];
   document.getElementById('nav').innerHTML=navGroups.map(g=>`
