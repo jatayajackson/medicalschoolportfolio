@@ -321,7 +321,11 @@ const val = id => (document.getElementById(id)||{}).value||'';
 const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 
 const PHASES = ['M1 Summer','M2 Fall','M2 Spring','M3','M4'];
+const SPECIALTIES = ['Dermatology','Dermatology — Mohs Surgery','Dermatology — Cosmetic/Aesthetic','Dermatopathology','Pediatric Dermatology','Family Medicine','Internal Medicine','Pediatrics','Surgery','Emergency Medicine','OB/GYN','Psychiatry','Other'];
 const CATS = ['Research','Shadowing','Conferences','Boards','LORs','Clinical','Networking','Application'];
+const MASTERY_ACTIVITIES = ['Watched Lecture','Practice Questions (Website)','Reviewed with Classmates','Whiteboard Practice Questions','Study Tables Practice Questions'];
+const MASTERY_LEVELS = ['Not Reviewed','Minimal Review','Moderate Review','Substantial Review','Complete Review'];
+const SYSTEMS = ['Renal','Endocrine','MSK & Rheumatology','OPP IV','MEP IV','PCM I','Medical Neuroanatomy','Clinical Reasoning I','Neuroanatomy & Nervous System','Nervous System','Human Sexuality'];
 const STATUSES = {
   research:['In Progress','Submitted','Under Review','Revision','Accepted','Published','Completed'],
   conference:['Planned','Abstract Submitted','Accepted — Poster','Accepted — Oral','Attended','Declined'],
@@ -439,6 +443,54 @@ const DEFAULT = {
   signals:[],
   prelim:[],
   researchLog:[],
+  studyLog:[
+    {id:'renal1',system:'Renal',lectureTitle:'Fundamentals of Nephrology',date:'2026-07-20',activities:[],notes:''},
+    {id:'renal2',system:'Renal',lectureTitle:'Approach to the Patient with Kidney Disease',date:'2026-07-20',activities:[],notes:''},
+    {id:'renal3',system:'Renal',lectureTitle:'Disorders of Potassium Homeostasis',date:'2026-07-20',activities:[],notes:''},
+    {id:'renal4',system:'Renal',lectureTitle:'Pathology of Acute Kidney Injury',date:'2026-07-20',activities:[],notes:''},
+    {id:'renal5',system:'Renal',lectureTitle:'Clinical Features and Diagnosis of AKI 1',date:'2026-07-21',activities:[],notes:''},
+    {id:'renal6',system:'Renal',lectureTitle:'Clinical Features and Diagnosis of AKI 2',date:'2026-07-21',activities:[],notes:''},
+    {id:'renal7',system:'Renal',lectureTitle:'Genitourinary Imaging I',date:'2026-07-21',activities:[],notes:''},
+    {id:'renal8',system:'Renal',lectureTitle:'Genitourinary Imaging I',date:'2026-07-21',activities:[],notes:''},
+    {id:'renal9',system:'Renal',lectureTitle:'Clinical Features and Diagnosis of CKD 1',date:'2026-07-22',activities:[],notes:''},
+    {id:'renal10',system:'Renal',lectureTitle:'Clinical Features and Diagnosis of CKD 2',date:'2026-07-22',activities:[],notes:''},
+    {id:'renal11',system:'Renal',lectureTitle:'Disorders of Osmoregulation',date:'2026-07-22',activities:[],notes:''},
+    {id:'renal12',system:'Renal',lectureTitle:'Micturition',date:'2026-07-22',activities:[],notes:''},
+    {id:'renal13',system:'Renal',lectureTitle:'Urinary Tract Infections',date:'2026-07-23',activities:[],notes:''},
+    {id:'renal14',system:'Renal',lectureTitle:'Sexually Transmitted Infections in the Male',date:'2026-07-23',activities:[],notes:''},
+    {id:'renal15',system:'Renal',lectureTitle:'Urolithiasis',date:'2026-07-23',activities:[],notes:''},
+    {id:'renal16',system:'Renal',lectureTitle:'Clinical Aspects of Tubulointerstitial Disease',date:'2026-07-23',activities:[],notes:''},
+    {id:'renal17',system:'Renal',lectureTitle:'Renal Manifestations of Infectious Diseases',date:'2026-07-24',activities:[],notes:''},
+    {id:'renal18',system:'Renal',lectureTitle:'Incontinence',date:'2026-07-24',activities:[],notes:''},
+    {id:'renal19',system:'Renal',lectureTitle:'Pathology of Tubulointerstitial Disease',date:'2026-07-24',activities:[],notes:''},
+    {id:'renal20',system:'Renal',lectureTitle:'Pathology of Chronic Kidney Disease (Self-Study #1)',date:'2026-07-24',activities:[],notes:''},
+    {id:'renal21',system:'Renal',lectureTitle:'Renal Drug Metabolism & Nephrotoxicity',date:'2026-07-27',activities:[],notes:''},
+    {id:'renal22',system:'Renal',lectureTitle:'Hyponatremia (Self-Study #2)',date:'2026-07-27',activities:[],notes:''},
+    {id:'renal23',system:'Renal',lectureTitle:'Resistant Hypertension and Renovascular Hypertension (Self-Study #3)',date:'2026-07-27',activities:[],notes:''},
+    {id:'renal24',system:'Renal',lectureTitle:'Congenital Anomalies & Hereditary Nephritis',date:'2026-07-28',activities:[],notes:''},
+    {id:'renal25',system:'Renal',lectureTitle:'Pathology of Primary & Secondary Glomerular Disease I',date:'2026-07-29',activities:[],notes:''},
+    {id:'renal26',system:'Renal',lectureTitle:'Pathology of Primary & Secondary Glomerular Disease II',date:'2026-07-29',activities:[],notes:''},
+    {id:'renal27',system:'Renal',lectureTitle:'Interstitial Cystitis (Self-Study #4)',date:'2026-07-29',activities:[],notes:''},
+    {id:'renal28',system:'Renal',lectureTitle:'Glomerular Disease in Adults I',date:'2026-07-31',activities:[],notes:''},
+    {id:'renal29',system:'Renal',lectureTitle:'Glomerular Disease in Adults II',date:'2026-07-31',activities:[],notes:''},
+    {id:'renal30',system:'Renal',lectureTitle:'Acid-Base Balance',date:'2026-08-03',activities:[],notes:''},
+    {id:'renal31',system:'Renal',lectureTitle:'Metabolic Acid-Base Disorders I',date:'2026-08-03',activities:[],notes:''},
+    {id:'renal32',system:'Renal',lectureTitle:'Metabolic Acid-Base Disorders II',date:'2026-08-03',activities:[],notes:''},
+    {id:'renal33',system:'Renal',lectureTitle:'Calcium Phosphate & Magnesium Balance',date:'2026-08-05',activities:[],notes:''},
+    {id:'renal34',system:'Renal',lectureTitle:'Microscopic Hematuria',date:'2026-08-05',activities:[],notes:''},
+    {id:'renal35',system:'Renal',lectureTitle:'Sepsis Syndrome',date:'2026-08-05',activities:[],notes:''},
+    {id:'renal36',system:'Renal',lectureTitle:'Pathology of the Male Genital System',date:'2026-08-06',activities:[],notes:''},
+    {id:'renal37',system:'Renal',lectureTitle:'Pathology of the Ureters, Bladder, and Urethra',date:'2026-08-06',activities:[],notes:''},
+    {id:'renal38',system:'Renal',lectureTitle:'Pathology of the Prostate and Tumors of the Kidney',date:'2026-08-06',activities:[],notes:''},
+    {id:'renal39',system:'Renal',lectureTitle:'Clinical Approach to GU Cancers I',date:'2026-08-10',activities:[],notes:''},
+    {id:'renal40',system:'Renal',lectureTitle:'Clinical Approach to GU Cancers II',date:'2026-08-10',activities:[],notes:''},
+    {id:'renal41',system:'Renal',lectureTitle:'Urinary Tract Obstruction & Vesicoureteral Reflux',date:'2026-08-11',activities:[],notes:''},
+    {id:'renal42',system:'Renal',lectureTitle:'Erectile Dysfunction & Male Infertility',date:'2026-08-11',activities:[],notes:''},
+    {id:'renal43',system:'Renal',lectureTitle:'Urological Emergencies',date:'2026-08-12',activities:[],notes:''},
+    {id:'renal44',system:'Renal',lectureTitle:'Benign Conditions of the Prostate',date:'2026-08-12',activities:[],notes:''},
+    {id:'renal45',system:'Renal',lectureTitle:'OPP in Nephrology',date:'2026-08-13',activities:[],notes:''},
+    {id:'renal46',system:'Renal',lectureTitle:'Clinical Vignettes of Renal and Urology',date:'2026-08-13',activities:[],notes:''},
+  ],
   bio:{
     about:`Jataya Jackson is a second-year osteopathic medical student at Nova Southeastern University Kiran C. Patel College of Osteopathic Medicine, Class of 2029. A Tampa native, she holds dual bachelor's degrees in Biomedical Sciences and Public Health from the University of South Florida, along with a Master of Science in Medical Sciences — a multidisciplinary foundation that anchors her commitment to both rigorous clinical training and evidence-based preventive care.\n\nDrawn to dermatology for its visual precision, clear clinical pathways, and meaningful continuity of care, Jataya is passionate about delivering results that are both medically significant and tangible — a specialty where treatment transforms health outcomes and quality of life in ways a patient can see and feel. That commitment to visible, lasting impact extends directly to her research, where she is investigating racial and ethnic disparities in acral lentiginous melanoma diagnosis and time to treatment — working to ensure that dermatologic care serves every patient equitably, regardless of skin tone.`,
     interests:'',
@@ -697,44 +749,96 @@ function opts(arr,sel){return arr.map(o=>`<option${o===sel?' selected':''}>${esc
 function fld(label,id,type,extra='',v=''){return`<div class="field"><label>${label}</label><input type="${type}" id="${id}" value="${esc(v)}" ${extra}></div>`;}
 function fsel(label,id,options,sel=''){return`<div class="field"><label>${label}</label><select id="${id}"><option value="">Select…</option>${opts(options,sel)}</select></div>`;}
 function ftxt(label,id,val=''){return`<div class="field"><label>${label}</label><textarea id="${id}">${esc(val)}</textarea></div>`;}
+function fcheck(label,id,options,selected=[]){
+  return `<div class="field"><label>${label}</label>
+    <div style="display:flex;flex-wrap:wrap;gap:7px 14px;margin-top:2px">
+      ${options.map((o,i)=>`<label style="display:flex;align-items:center;gap:5px;font-size:12px;font-weight:400;text-transform:none;letter-spacing:normal;color:var(--text);cursor:pointer"><input type="checkbox" id="${id}_${i}" style="width:auto;height:auto;margin:0" ${selected.includes(o)?'checked':''}>${esc(o)}</label>`).join('')}
+    </div>
+  </div>`;
+}
+function fcheckVal(id,options){
+  return options.filter((o,i)=>document.getElementById(id+'_'+i)?.checked);
+}
 
-/* ---- FILE ATTACHMENTS (stored as base64, e.g. shadowing/service evaluations) ---- */
+/* ---- FILE ATTACHMENTS (multiple, stored as base64, e.g. shadowing/service evaluations) ---- */
+function attRow(name,url,id,source,idx){
+  return `<div style="display:flex;align-items:center;gap:6px;font-size:12px;background:var(--surface);border:1px solid var(--border-l);border-radius:6px;padding:4px 8px">
+    <i class="ti ${source==='pendingLinks'?'ti-link':'ti-paperclip'}" style="color:var(--clay);font-size:13px;flex-shrink:0"></i>
+    <a href="${esc(url)}" target="_blank" rel="noopener" style="color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(name)}</a>
+    <button type="button" onclick="removeAttachment('${id}','${source}',${idx})" style="background:none;border:none;cursor:pointer;color:var(--text3);font-size:15px;line-height:1;padding:0 2px;flex-shrink:0" title="Remove">&times;</button>
+  </div>`;
+}
+function attachmentStatusHTML(id){
+  const existing=(window._existingAtt&&window._existingAtt[id])||[];
+  const pf=(window._pendingFiles&&window._pendingFiles[id])||[];
+  const pl=(window._pendingLinks&&window._pendingLinks[id])||[];
+  if(!existing.length&&!pf.length&&!pl.length) return `<div style="font-size:11px;color:var(--text2)">No files attached yet (max 4MB per file — PDF, Word doc, or image; add as many as you need)</div>`;
+  return existing.map((a,i)=>attRow(a.name,a.data||a.link,id,'existing',i)).join('')
+    + pf.map((f,i)=>attRow(f.name+' (new)',f.data,id,'pendingFiles',i)).join('')
+    + pl.map((l,i)=>attRow(l+' (new link)',l,id,'pendingLinks',i)).join('');
+}
+function refreshAttachmentStatus(id){
+  const el=document.getElementById(id+'_status');
+  if(el) el.innerHTML=attachmentStatusHTML(id);
+}
+function removeAttachment(id,source,idx){
+  const map={existing:'_existingAtt',pendingFiles:'_pendingFiles',pendingLinks:'_pendingLinks'};
+  if(window[map[source]]&&window[map[source]][id]) window[map[source]][id].splice(idx,1);
+  refreshAttachmentStatus(id);
+}
+function handleFilesSelect(e,id){
+  const files=Array.from(e.target.files||[]);
+  if(!files.length) return;
+  window._pendingFiles=window._pendingFiles||{};
+  window._pendingFiles[id]=window._pendingFiles[id]||[];
+  files.forEach(file=>{
+    if(file.size>4*1024*1024){ showToast('Skipped '+file.name+' — over 4MB', true); return; }
+    const reader=new FileReader();
+    reader.onload=()=>{
+      window._pendingFiles[id].push({name:file.name, data:reader.result});
+      refreshAttachmentStatus(id);
+    };
+    reader.readAsDataURL(file);
+  });
+  e.target.value='';
+}
+function addAttachmentLink(id){
+  const inp=document.getElementById(id+'_linkinput');
+  const v=(inp?.value||'').trim();
+  if(!v) return;
+  window._pendingLinks=window._pendingLinks||{};
+  window._pendingLinks[id]=window._pendingLinks[id]||[];
+  window._pendingLinks[id].push(v);
+  if(inp) inp.value='';
+  refreshAttachmentStatus(id);
+}
 function fileField(label,id,item){
-  const hasFile = item&&item.attachmentName;
+  window._existingAtt=window._existingAtt||{};
+  window._pendingFiles=window._pendingFiles||{};
+  window._pendingLinks=window._pendingLinks||{};
+  window._existingAtt[id]=(item?.attachments||[]).map(a=>({...a}));
+  window._pendingFiles[id]=[];
+  window._pendingLinks[id]=[];
   return `<div class="field">
     <label>${label}</label>
-    <input type="file" id="${id}" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,.heic" onchange="handleFileSelect(event,'${id}')">
-    <div id="${id}_status" style="font-size:11px;color:var(--text2);margin-top:5px">
-      ${hasFile?`Attached: <a href="${item.attachmentData}" target="_blank" rel="noopener" style="color:var(--clay)">${esc(item.attachmentName)}</a> &middot; <label style="cursor:pointer;font-weight:400;text-transform:none;letter-spacing:normal"><input type="checkbox" id="${id}_remove" style="width:auto;height:auto;margin:0 3px 0 8px;vertical-align:middle">Remove</label>`:'No file attached (max 4MB — PDF, Word doc, or image)'}
+    <input type="file" id="${id}" multiple accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,.heic" onchange="handleFilesSelect(event,'${id}')">
+    <div style="display:flex;gap:6px;margin-top:6px">
+      <input type="text" id="${id}_linkinput" placeholder="Paste a link (Google Drive, Dropbox, etc.)" style="flex:1;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:var(--surface);color:var(--text);font-family:'Inter',sans-serif">
+      <button type="button" class="btn btn-outline" style="padding:5px 10px;font-size:11px;flex-shrink:0" onclick="addAttachmentLink('${id}')">Add link</button>
     </div>
-  </div>
-  ${fld('Or paste a link instead (Google Drive, Dropbox, etc.)',id+'_link','text','',item?.attachmentLink||'')}`;
+    <div id="${id}_status" style="margin-top:8px;display:flex;flex-direction:column;gap:5px">${attachmentStatusHTML(id)}</div>
+  </div>`;
 }
-function handleFileSelect(e,id){
-  const file=e.target.files[0];
-  if(!file) return;
-  if(file.size>4*1024*1024){ showToast('File too large — 4MB max', true); e.target.value=''; return; }
-  const reader=new FileReader();
-  reader.onload=()=>{
-    window._pendingFiles = window._pendingFiles||{};
-    window._pendingFiles[id] = {name:file.name, data:reader.result};
-    const statusEl = document.getElementById(id+'_status');
-    if(statusEl) statusEl.innerHTML = 'Selected: '+esc(file.name)+' <span style="color:var(--clay)">(will attach on Save)</span>';
-  };
-  reader.readAsDataURL(file);
+function resolveAttachments(id){
+  const existing=(window._existingAtt&&window._existingAtt[id])||[];
+  const pf=(window._pendingFiles&&window._pendingFiles[id])||[];
+  const pl=(window._pendingLinks&&window._pendingLinks[id])||[];
+  return [...existing, ...pf.map(f=>({name:f.name,data:f.data})), ...pl.map(l=>({name:l,link:l}))];
 }
-function resolveAttachment(id,item){
-  const pending = window._pendingFiles && window._pendingFiles[id];
-  const removeChecked = document.getElementById(id+'_remove')?.checked;
-  let attachmentName=item?.attachmentName||'', attachmentData=item?.attachmentData||'';
-  if(removeChecked){ attachmentName=''; attachmentData=''; }
-  if(pending){ attachmentName=pending.name; attachmentData=pending.data; }
-  return {attachmentName, attachmentData, attachmentLink:val(id+'_link')};
-}
-function attachmentBadge(item){
-  if(item.attachmentData) return `<a href="${item.attachmentData}" target="_blank" rel="noopener" title="${esc(item.attachmentName)}" style="color:var(--clay);font-size:13px;flex-shrink:0"><i class="ti ti-paperclip"></i></a>`;
-  if(item.attachmentLink) return `<a href="${esc(item.attachmentLink)}" target="_blank" rel="noopener" title="View attached link" style="color:var(--clay);font-size:13px;flex-shrink:0"><i class="ti ti-link"></i></a>`;
-  return '';
+function attachmentsList(item){
+  const atts=item.attachments||[];
+  if(!atts.length) return '';
+  return `<div style="margin-top:4px;display:flex;flex-wrap:wrap;gap:6px">${atts.map(a=>`<a href="${esc(a.data||a.link)}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--clay);background:var(--clay-l);border-radius:4px;padding:2px 7px;text-decoration:none;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"><i class="ti ${a.link&&!a.data?'ti-link':'ti-paperclip'}" style="font-size:11px;flex-shrink:0"></i>${esc(a.name)}</a>`).join('')}</div>`;
 }
 
 /* ---- RENDERS ---- */
@@ -1110,10 +1214,10 @@ function renderShadowing(){
     state.shadowing.map(s=>`<div class="list-row">
       <div style="min-width:44px;text-align:center;background:var(--clay-l);border-radius:6px;padding:4px 0;font-size:14px;font-weight:500;color:var(--clay)">${parseFloat(s.hours)}h</div>
       <div class="list-main">
-        <div class="list-title">${esc(s.physician)}</div>
+        <div class="list-title">${esc(s.physician)}${s.specialty?` <span class="badge b-neutral" style="margin-left:4px;vertical-align:middle">${esc(s.specialty)}</span>`:''}</div>
         <div class="list-meta">${esc(s.location)} &middot; ${fmt(s.date)}${s.notes?` &middot; ${esc(s.notes)}`:''}</div>
+        ${attachmentsList(s)}
       </div>
-      ${attachmentBadge(s)}
       <button class="btn-edit" onclick="openModal('shadowing','${s.id}')"><i class="ti ti-pencil"></i></button>
       <button class="btn-ghost" onclick="delItem('shadowing','${s.id}')"><i class="ti ti-trash"></i></button>
     </div>`).join('')}</div>`;
@@ -1136,8 +1240,8 @@ function renderCommunityService(){
       <div class="list-main">
         <div class="list-title">${esc(s.organization)}</div>
         <div class="list-meta">${esc(s.activity)}${s.activity?' &middot; ':''}${fmt(s.date)}${s.notes?` &middot; ${esc(s.notes)}`:''}</div>
+        ${attachmentsList(s)}
       </div>
-      ${attachmentBadge(s)}
       <button class="btn-edit" onclick="openModal('communityService','${s.id}')"><i class="ti ti-pencil"></i></button>
       <button class="btn-ghost" onclick="delItem('communityService','${s.id}')"><i class="ti ti-trash"></i></button>
     </div>`).join('')}</div>`;
@@ -1601,6 +1705,158 @@ function toggleDone(id){
   save();navigate(tab);
 }
 
+function lectureNum(x){
+  if(x.num) return x.num;
+  const m=(x.id||'').match(/(\d+)$/);
+  return m?parseInt(m[1]):null;
+}
+function refreshMainPreserveScroll(){
+  const main=document.getElementById('main');
+  const pos=main?main.scrollTop:0;
+  if(main){ main.innerHTML=TABS[tab].render(); main.scrollTop=pos; }
+}
+function toggleStudyActivity(id,activity){
+  state.studyLog=state.studyLog.map(x=>{
+    if(x.id!==id) return x;
+    const acts=x.activities||[];
+    const has=acts.includes(activity);
+    return {...x, activities: has?acts.filter(a=>a!==activity):[...acts,activity]};
+  });
+  save();
+  refreshMainPreserveScroll();
+}
+function updateStudyNotes(id,value){
+  state.studyLog=state.studyLog.map(x=>x.id===id?{...x,notes:value}:x);
+  save();
+}
+function masteryLevel(count){
+  const pct=count/MASTERY_ACTIVITIES.length;
+  if(pct>=1) return 'Complete Review';
+  if(pct>=0.75) return 'Substantial Review';
+  if(pct>=0.5) return 'Moderate Review';
+  if(pct>0) return 'Minimal Review';
+  return 'Not Reviewed';
+}
+function examGroup(x){
+  if(x.exam) return x.exam;
+  if(x.system!=='Renal') return null; // Renal-specific numbering; other systems need an explicit Exam value
+  const n=lectureNum(x);
+  if(n===null) return null;
+  return n<=23 ? 'Exam 1' : 'Exam 2';
+}
+function masteryColors(level){
+  return {
+    'Not Reviewed':{bg:'var(--danger-l)',fg:'var(--danger)'},
+    'Minimal Review':{bg:'var(--warn-l)',fg:'var(--warn)'},
+    'Moderate Review':{bg:'var(--gold-l)',fg:'#6A5010'},
+    'Substantial Review':{bg:'#E2EDD8',fg:'#3A5825'},
+    'Complete Review':{bg:'var(--ok-l)',fg:'var(--ok)'},
+  }[level]||{bg:'var(--border-l)',fg:'var(--text2)'};
+}
+function pieChartSVG(data,size){
+  size=size||150;
+  const total=data.reduce((s,d)=>s+d.value,0);
+  const cx=size/2, cy=size/2, r=size/2-3;
+  if(!total) return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${cx}" cy="${cy}" r="${r}" fill="var(--border-l)"/></svg>`;
+  const nonzero=data.filter(d=>d.value>0);
+  if(nonzero.length===1) return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${cx}" cy="${cy}" r="${r}" fill="${nonzero[0].color}"/></svg>`;
+  let startAngle=-Math.PI/2, paths='';
+  data.forEach(d=>{
+    if(d.value<=0) return;
+    const angle=(d.value/total)*Math.PI*2, endAngle=startAngle+angle;
+    const x1=cx+r*Math.cos(startAngle), y1=cy+r*Math.sin(startAngle);
+    const x2=cx+r*Math.cos(endAngle), y2=cy+r*Math.sin(endAngle);
+    const largeArc=angle>Math.PI?1:0;
+    paths+=`<path d="M${cx},${cy} L${x1.toFixed(2)},${y1.toFixed(2)} A${r},${r} 0 ${largeArc} 1 ${x2.toFixed(2)},${y2.toFixed(2)} Z" fill="${d.color}"/>`;
+    startAngle=endAngle;
+  });
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">${paths}</svg>`;
+}
+function renderStudyLog(){
+  const filter=window._masterySystem||'All';
+  const systems=[...new Set(state.studyLog.map(x=>x.system).filter(Boolean))].sort();
+  const list=(filter==='All'?state.studyLog:state.studyLog.filter(x=>x.system===filter));
+  const sorted=[...list].sort((a,b)=>(a.system||'').localeCompare(b.system||'')||new Date(a.date)-new Date(b.date));
+
+  let html=pgHead('Lecture Mastery','Track study activities per lecture and see your mastery breakdown at a glance',"Log lecture","openModal('study')");
+
+  html+=`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.25rem">`;
+  ['All',...systems].forEach(s=>{
+    const active=s===filter;
+    html+=`<button onclick="window._masterySystem='${esc(s)}';navigate('studyLog')" style="padding:6px 14px;border-radius:999px;font-size:12px;font-family:'Inter',sans-serif;border:1px solid ${active?'var(--clay)':'var(--border)'};background:${active?'var(--clay-l)':'var(--surface)'};color:${active?'var(--clay-d)':'var(--text2)'};cursor:pointer;font-weight:${active?'600':'400'}">${esc(s)}</button>`;
+  });
+  html+=`</div>`;
+
+  function breakdownCard(items,title){
+    const counts={}; MASTERY_LEVELS.forEach(l=>counts[l]=0);
+    items.forEach(x=>{ counts[masteryLevel((x.activities||[]).length)]++; });
+    const t=items.length;
+    const avg=t?items.reduce((s,x)=>s+((x.activities||[]).length/MASTERY_ACTIVITIES.length),0)/t:0;
+    const pieData=MASTERY_LEVELS.map(l=>({label:l,value:counts[l],color:masteryColors(l).fg}));
+    return `<div class="card" style="display:flex;gap:1.25rem;align-items:center;flex-wrap:wrap;flex:1;min-width:280px">
+      <div style="flex-shrink:0">${pieChartSVG(pieData,130)}</div>
+      <div style="flex:1;min-width:180px">
+        <div style="font-family:'Playfair Display',serif;font-size:14px;margin-bottom:2px">${esc(title)}</div>
+        <div style="font-size:11px;color:var(--text2);margin-bottom:8px">${t} lecture${t!==1?'s':''} &middot; ${Math.round(avg*100)}% average mastery</div>
+        ${MASTERY_LEVELS.map(l=>`<div style="display:flex;align-items:center;gap:7px;font-size:11px;margin-bottom:3px"><span style="width:9px;height:9px;border-radius:2px;background:${masteryColors(l).fg};flex-shrink:0"></span><span style="flex:1;color:var(--text2)">${l}</span><span style="font-weight:500">${counts[l]}</span></div>`).join('')}
+      </div>
+    </div>`;
+  }
+
+  const groups=[...new Set(list.map(x=>examGroup(x)).filter(Boolean))].sort();
+  html+=`<div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.25rem">`;
+  if(groups.length>1){
+    groups.forEach(g=>{
+      const items=list.filter(x=>examGroup(x)===g);
+      html+=breakdownCard(items,g);
+    });
+    const ungrouped=list.filter(x=>!examGroup(x));
+    if(ungrouped.length) html+=breakdownCard(ungrouped,'Ungrouped');
+  } else {
+    html+=breakdownCard(list, filter==='All'?'All Systems — Mastery Breakdown':`${filter} — Mastery Breakdown`);
+  }
+  html+=`</div>`;
+
+  if(!sorted.length) return html+`<div class="card"><div class="empty">No lectures logged${filter!=='All'?` for ${esc(filter)}`:''} yet.</div></div>`;
+
+  function lectureCard(x){
+    const acts=x.activities||[];
+    const level=masteryLevel(acts.length);
+    const col=masteryColors(level);
+    const num=lectureNum(x);
+    return `<div class="card">
+      <div style="display:flex;justify-content:space-between;gap:12px;margin-bottom:8px">
+        <div><div class="card-title" style="font-family:'Playfair Display',serif">${num?`<span style="color:var(--text3);font-weight:400">${num}.</span> `:''}${esc(x.lectureTitle)}</div><div class="card-sub" style="margin-top:2px">${x.system?esc(x.system)+' &middot; ':''}${fmt(x.date)}</div></div>
+        <div style="display:flex;gap:8px;align-items:center;flex-shrink:0">
+          <span class="badge" style="background:${col.bg};color:${col.fg}">${Math.round((acts.length/MASTERY_ACTIVITIES.length)*100)}% &middot; ${level}</span>
+          <button class="btn-edit" onclick="openModal('study','${x.id}')"><i class="ti ti-pencil"></i></button>
+          <button class="btn-ghost" onclick="delItem('studyLog','${x.id}')"><i class="ti ti-trash"></i></button>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px 18px;margin-bottom:8px">
+        ${MASTERY_ACTIVITIES.map(a=>`<label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text);cursor:pointer;font-weight:400"><input type="checkbox" ${acts.includes(a)?'checked':''} onchange="toggleStudyActivity('${x.id}','${esc(a).replace(/'/g,"\\'")}')">${esc(a)}</label>`).join('')}
+      </div>
+      <textarea placeholder="Notes… (saves automatically)" onblur="updateStudyNotes('${x.id}',this.value)" style="width:100%;min-height:44px;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-size:12px;font-family:'Inter',sans-serif;background:var(--surface);color:var(--text);resize:vertical">${esc(x.notes||'')}</textarea>
+    </div>`;
+  }
+
+  if(groups.length>1){
+    groups.forEach(g=>{
+      html+=`<div style="font-family:'Playfair Display',serif;font-size:14px;font-weight:500;color:var(--text2);margin:1.5rem 0 0.75rem;padding-bottom:6px;border-bottom:1px solid var(--border)">${esc(g)}</div>`;
+      html+=sorted.filter(x=>examGroup(x)===g).map(lectureCard).join('');
+    });
+    const ungrouped=sorted.filter(x=>!examGroup(x));
+    if(ungrouped.length){
+      html+=`<div style="font-family:'Playfair Display',serif;font-size:14px;font-weight:500;color:var(--text2);margin:1.5rem 0 0.75rem;padding-bottom:6px;border-bottom:1px solid var(--border)">Ungrouped</div>`;
+      html+=ungrouped.map(lectureCard).join('');
+    }
+  } else {
+    html+=sorted.map(lectureCard).join('');
+  }
+
+  return html;
+}
+
 function renderSchedule(){
   const now=new Date();
   const sorted=[...state.exams].sort((a,b)=>new Date(a.date)-new Date(b.date));
@@ -1667,6 +1923,7 @@ const TABS={
   home:{label:'Home',icon:'ti-user',render:renderHome},
   dashboard:{label:'Dashboard',icon:'ti-layout-dashboard',render:renderDashboard},
   schedule:{label:'Schedule',icon:'ti-calendar',render:renderSchedule},
+  studyLog:{label:'Lecture Mastery',icon:'ti-chart-pie',render:renderStudyLog},
   goals:{label:'Goals',icon:'ti-list-check',render:renderGoals},
   research:{label:'Research',icon:'ti-microscope',render:renderResearch},
   portfolio:{label:'Portfolio',icon:'ti-books',render:renderPortfolio},
@@ -1753,6 +2010,8 @@ function closeModal(){
   document.getElementById('mSave').textContent='Save';
   window._emailText='';
   window._pendingFiles={};
+  window._pendingLinks={};
+  window._existingAtt={};
 }
 function openOverlay(title,body,onSave){
   document.getElementById('mTitle').textContent=title;
@@ -1781,7 +2040,7 @@ function openGoalModal(id=null){
 }
 
 function openModal(type,id=null){
-  const stateKey={research:'research',shadowing:'shadowing',communityService:'communityService',extprogram:'externalPrograms',conference:'conferences',pub:'publications',lor:'lors',award:'awards',exam:'exams',portfolio:'portfolio',signal:'signals',prelim:'prelim'}[type];
+  const stateKey={research:'research',shadowing:'shadowing',communityService:'communityService',extprogram:'externalPrograms',study:'studyLog',conference:'conferences',pub:'publications',lor:'lors',award:'awards',exam:'exams',portfolio:'portfolio',signal:'signals',prelim:'prelim'}[type];
   const item=id&&stateKey?state[stateKey].find(x=>x.id===id):null;
   const isEdit=!!item;
   const configs={
@@ -1804,12 +2063,13 @@ function openModal(type,id=null){
       body:`
         <div class="f-row">${fld('Date','f_date','date','',item?.date||'')}${fld('Hours','f_hrs','number','min="0.5" step="0.5"',item?.hours||'')}</div>
         ${fld('Physician name & credentials','f_phys','text','',item?.physician||'')}${fld('Clinic / hospital','f_loc','text','',item?.location||'')}
+        ${fld('Specialty','f_spec','text','list="specList"',item?.specialty||'')}
+        <datalist id="specList">${opts(SPECIALTIES,item?.specialty||'')}</datalist>
         ${ftxt('Notes (optional)','f_notes',item?.notes||'')}
         ${fileField('Attach document (e.g. evaluation from your school)','f_shaddoc',item)}`,
       save:()=>{
         if(!val('f_date')||!val('f_phys')||!val('f_hrs'))return;
-        const att=resolveAttachment('f_shaddoc',item);
-        const updated={id:item?.id||uid(),date:val('f_date'),hours:val('f_hrs'),physician:val('f_phys'),location:val('f_loc'),notes:val('f_notes'),...att};
+        const updated={id:item?.id||uid(),date:val('f_date'),hours:val('f_hrs'),physician:val('f_phys'),location:val('f_loc'),specialty:val('f_spec'),notes:val('f_notes'),attachments:resolveAttachments('f_shaddoc')};
         if(isEdit){state.shadowing=state.shadowing.map(x=>x.id===id?updated:x);}else{state.shadowing.push(updated);}
         state.shadowing.sort((a,b)=>new Date(b.date)-new Date(a.date));
         save();closeModal();navigate(tab);
@@ -1824,8 +2084,7 @@ function openModal(type,id=null){
         ${fileField('Attach document (e.g. evaluation or verification letter)','f_csdoc',item)}`,
       save:()=>{
         if(!val('f_csdate')||!val('f_csorg')||!val('f_cshrs'))return;
-        const att=resolveAttachment('f_csdoc',item);
-        const updated={id:item?.id||uid(),date:val('f_csdate'),hours:val('f_cshrs'),organization:val('f_csorg'),activity:val('f_csact'),notes:val('f_csnotes'),...att};
+        const updated={id:item?.id||uid(),date:val('f_csdate'),hours:val('f_cshrs'),organization:val('f_csorg'),activity:val('f_csact'),notes:val('f_csnotes'),attachments:resolveAttachments('f_csdoc')};
         if(isEdit){state.communityService=state.communityService.map(x=>x.id===id?updated:x);}else{state.communityService.push(updated);}
         state.communityService.sort((a,b)=>new Date(b.date)-new Date(a.date));
         save();closeModal();navigate(tab);
@@ -1842,6 +2101,24 @@ function openModal(type,id=null){
         if(!val('f_epname'))return;
         const updated={id:item?.id||uid(),name:val('f_epname'),organization:val('f_eporg'),type:val('f_eptype'),deadline:val('f_epdead'),funding:val('f_epfund'),status:val('f_epstatus')||'Not Started',link:val('f_eplink'),notes:val('f_epnotes')};
         if(isEdit){state.externalPrograms=state.externalPrograms.map(x=>x.id===id?updated:x);}else{state.externalPrograms.push(updated);}
+        save();closeModal();navigate(tab);
+      }
+    },
+    study:{
+      title:isEdit?'Edit lecture':'Log lecture',
+      body:`
+        <div class="f-row">${fld('Lecture #','f_stnum','number','min="1"',item?String(lectureNum(item)||''):'')}${fld('Date','f_stdate','date','',item?.date||'')}</div>
+        ${fld('System','f_stsys','text','list="systemList"',item?.system||'')}
+        <datalist id="systemList">${opts(SYSTEMS,item?.system||'')}</datalist>
+        ${fld('Lecture title / topic','f_sttitle','text','',item?.lectureTitle||'')}
+        ${fsel('Exam (optional — leave blank to auto-detect for Renal)','f_stexam',['Exam 1','Exam 2'],item?.exam||'')}
+        ${fcheck('Which study activities have you completed for this lecture?','f_stact',MASTERY_ACTIVITIES,item?.activities||[])}
+        ${ftxt('Notes (optional)','f_stnotes',item?.notes||'')}`,
+      save:()=>{
+        if(!val('f_stdate')||!val('f_stsys')||!val('f_sttitle'))return;
+        const updated={id:item?.id||uid(),num:val('f_stnum')?parseInt(val('f_stnum')):(item?.num||null),date:val('f_stdate'),system:val('f_stsys'),lectureTitle:val('f_sttitle'),exam:val('f_stexam')||null,activities:fcheckVal('f_stact',MASTERY_ACTIVITIES),notes:val('f_stnotes')};
+        if(isEdit){state.studyLog=state.studyLog.map(x=>x.id===id?updated:x);}else{state.studyLog.push(updated);}
+        state.studyLog.sort((a,b)=>(a.system||'').localeCompare(b.system||'')||new Date(a.date)-new Date(b.date));
         save();closeModal();navigate(tab);
       }
     },
@@ -1991,7 +2268,7 @@ function initSidebar(){
 
   // Nav
   const navGroups=[
-    {label:'Profile',items:['home','dashboard','schedule']},
+    {label:'Profile',items:['home','dashboard','schedule','studyLog']},
     {label:'Academic',items:['goals','research','portfolio','shadowing','communityService','conferences','publications','externalPrograms']},
     {label:'Application',items:['boards','lors','awards','signals','prelim']},
   ];
