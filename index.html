@@ -323,7 +323,7 @@ const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replac
 const PHASES = ['M1 Summer','M2 Fall','M2 Spring','M3','M4'];
 const SPECIALTIES = ['Dermatology','Dermatology — Mohs Surgery','Dermatology — Cosmetic/Aesthetic','Dermatopathology','Pediatric Dermatology','Family Medicine','Internal Medicine','Pediatrics','Surgery','Emergency Medicine','OB/GYN','Psychiatry','Other'];
 const CATS = ['Research','Shadowing','Conferences','Boards','LORs','Clinical','Networking','Application'];
-const MASTERY_ACTIVITIES = ['Watched Lecture','Practice Questions (Website)','Reviewed with Classmates','Whiteboard Practice Questions','Study Tables Practice Questions'];
+const MASTERY_ACTIVITIES = ['Watched Lecture','Practice Questions (Website)','Reviewed with Classmates','Whiteboard','Study Tables Practice Questions','Notes'];
 const MASTERY_LEVELS = ['Not Reviewed','Minimal Review','Moderate Review','Substantial Review','Complete Review'];
 const SYSTEMS = ['Renal','Endocrine','MSK & Rheumatology','OPP IV','MEP IV','PCM I','Medical Neuroanatomy','Clinical Reasoning I','Neuroanatomy & Nervous System','Nervous System','Human Sexuality'];
 const STATUSES = {
@@ -1836,7 +1836,7 @@ function renderStudyLog(){
       <div style="display:flex;flex-wrap:wrap;gap:10px 18px;margin-bottom:8px">
         ${MASTERY_ACTIVITIES.map(a=>`<label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text);cursor:pointer;font-weight:400"><input type="checkbox" ${acts.includes(a)?'checked':''} onchange="toggleStudyActivity('${x.id}','${esc(a).replace(/'/g,"\\'")}')">${esc(a)}</label>`).join('')}
       </div>
-      <textarea placeholder="Notes… (saves automatically)" onblur="updateStudyNotes('${x.id}',this.value)" style="width:100%;min-height:44px;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-size:12px;font-family:'Inter',sans-serif;background:var(--surface);color:var(--text);resize:vertical">${esc(x.notes||'')}</textarea>
+      <textarea placeholder="Additional notes… (saves automatically)" onblur="updateStudyNotes('${x.id}',this.value)" style="width:100%;min-height:44px;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-size:12px;font-family:'Inter',sans-serif;background:var(--surface);color:var(--text);resize:vertical">${esc(x.notes||'')}</textarea>
     </div>`;
   }
 
@@ -2113,7 +2113,7 @@ function openModal(type,id=null){
         ${fld('Lecture title / topic','f_sttitle','text','',item?.lectureTitle||'')}
         ${fsel('Exam (optional — leave blank to auto-detect for Renal)','f_stexam',['Exam 1','Exam 2'],item?.exam||'')}
         ${fcheck('Which study activities have you completed for this lecture?','f_stact',MASTERY_ACTIVITIES,item?.activities||[])}
-        ${ftxt('Notes (optional)','f_stnotes',item?.notes||'')}`,
+        ${ftxt('Additional Notes (optional)','f_stnotes',item?.notes||'')}`,
       save:()=>{
         if(!val('f_stdate')||!val('f_stsys')||!val('f_sttitle'))return;
         const updated={id:item?.id||uid(),num:val('f_stnum')?parseInt(val('f_stnum')):(item?.num||null),date:val('f_stdate'),system:val('f_stsys'),lectureTitle:val('f_sttitle'),exam:val('f_stexam')||null,activities:fcheckVal('f_stact',MASTERY_ACTIVITIES),notes:val('f_stnotes')};
