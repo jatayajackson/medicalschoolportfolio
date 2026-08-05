@@ -331,7 +331,7 @@ const STATUSES = {
   conference:['Planned','Abstract Submitted','Accepted — Poster','Accepted — Oral','Attended','Declined'],
   pub:['In Progress','Submitted','Under Review','Revision','Accepted','Published'],
   lor:['Pending Shadowing','Will Request in M3','Requested','Received','Declined'],
-  extprogram:['Not Started','Researching','Applied','Interview / Next Step','Accepted','Declined'],
+  extprogram:['Not Started','Researching','Applied','Interview / Next Step','Accepted','Declined','Not Eligible'],
 };
 const EXTPROGRAM_TYPES = ['Mentorship','Research Fellowship','Research Award / Grant','Observership Grant'];
 
@@ -417,13 +417,13 @@ const DEFAULT = {
     {id:'ep4',name:'Pathways Medical Student Mentorship Program',organization:'American Academy of Dermatology (AAD)',type:'Mentorship',deadline:'Rolling/annual — confirm on site',funding:'N/A',status:'Not Started',link:'https://www.aad.org/member/career/diversity/pathways/medical-students',notes:'One-on-one mentorship with a dermatologist. Open to MS1–MS4.'},
     {id:'ep5',name:'Observership Grant',organization:'Skin of Color Society (SOCS)',type:'Observership Grant',deadline:'Aug 2 – Oct 27, 2026',funding:'Up to $2,500',status:'Not Started',link:'https://skinofcolorsociety.org/what-we-do/mentorship/observership-grant',notes:'Requires SOCS membership. Covers travel/lodging to shadow a SOCS mentor. One grant per student per 4-year period.'},
     {id:'ep6',name:'Mentorship Program',organization:'Skin of Color Society (SOCS)',type:'Mentorship',deadline:'Rolling — confirm on site',funding:'N/A',status:'Not Started',link:'https://skinofcolorsociety.org/what-we-do/mentorship/mentorship-program',notes:'Ongoing mentor pairing, open to medical students with active SOCS membership.'},
-    {id:'ep7',name:'Student Summer Research Fellowship',organization:"Women's Dermatologic Society (WDS)",type:'Research Fellowship',deadline:'Confirm on site (historically ~winter for following summer)',funding:'Funded stipend (amount TBD)',status:'Not Started',link:'https://www.womensderm.org/awards/award-programs/student-summer-research-fellowship',notes:'Particular support for underrepresented-in-medicine students.'},
+    {id:'ep7',name:'Student Summer Research Fellowship',organization:"Women's Dermatologic Society (WDS)",type:'Research Fellowship',deadline:'Confirm on site (historically ~winter for following summer)',funding:'Funded stipend (amount TBD)',status:'Researching',link:'https://www.womensderm.org/awards/award-programs/student-summer-research-fellowship',notes:'ELIGIBILITY CHECK NEEDED: this award is specifically for students underrepresented in medicine (UIM per AAMC definition). Confirm whether you qualify before applying — WDS may have other general opportunities if not.'},
     {id:'ep8',name:'Medical Student Research/Mentorship Cohort',organization:'PeDRA (Pediatric Dermatology Research Alliance)',type:'Research Fellowship',deadline:'2026 cohort in progress; confirm 2027 cycle',funding:'N/A',status:'Researching',link:'https://pedraresearch.org/2026-mentorship-program/',notes:'Relevant if pediatric dermatology becomes a sub-interest.'},
-    {id:'ep9',name:'Mentorship Program',organization:'Medical Dermatology Society (MDS)',type:'Mentorship',deadline:'Mentorship period Apr 1, 2026 – Jun 30, 2027; confirm application window',funding:'N/A',status:'Researching',link:'https://meddermsociety.org/mentorship-program/',notes:'Structured 4-week mentorship program; open to apply as a mentee.'},
-    {id:'ep10',name:'Dermatology Medical Student Summer Research Fellowship',organization:'UCSF Department of Dermatology',type:'Research Fellowship',deadline:'Confirm on site (typically due winter for following summer)',funding:'Funded stipend',status:'Not Started',link:'https://dermatology.ucsf.edu/fellowships/ucsf-dermatology-medical-student-summer-research-fellowship',notes:'8-week summer research fellowship with a faculty mentor; open to outside applicants.'},
-    {id:'ep11',name:'Mentored Medical Student Research Award',organization:'University of Colorado School of Medicine Dermatology',type:'Research Award / Grant',deadline:'2026 program ran Jul 26 – Aug 28; confirm 2027 application date',funding:'$2,500 stipend',status:'Researching',link:'https://medschool.cuanschutz.edu/dermatology/education/mentored-medical-student-research-program',notes:'Up to 3 awards/year; paired with a departmental faculty mentor.'},
-    {id:'ep12',name:'DermSRP (Summer Medical Student Research Program)',organization:'University of Utah Department of Dermatology',type:'Research Fellowship',deadline:'For students between M1–M2; confirm eligibility & timing',funding:'TBD',status:'Researching',link:'https://medicine.utah.edu/dermatology/education/interest-groups/msrp',notes:'Designed for the summer between first and second year — check current-year eligibility given schedule.'},
-    {id:'ep13',name:'Dermatology Mentorship & Research Rotation',organization:'Yale School of Medicine',type:'Mentorship',deadline:'Confirm on site',funding:'$3,000 stipend',status:'Researching',link:'https://medicine.yale.edu/dermatology/education/medical-student-education/',notes:'Extended mentorship plus a one-month in-person rotation with Yale Dermatology faculty.'},
+    {id:'ep9',name:'Mentorship Program',organization:'Medical Dermatology Society (MDS)',type:'Mentorship',deadline:'Mentorship period Apr 1, 2026 – Jun 30, 2027; confirm application window',funding:'N/A',status:'Not Eligible',link:'https://meddermsociety.org/mentorship-program/',notes:'NOT CURRENTLY ELIGIBLE: this program is restricted to residents, fellows, and junior faculty — it does not accept medical students as mentees. Keeping on the list to revisit once you\'re a resident.'},
+    {id:'ep10',name:'Dermatology Medical Student Summer Research Fellowship',organization:'UCSF Department of Dermatology',type:'Research Fellowship',deadline:'Confirm on site (typically due winter for following summer)',funding:'Funded stipend',status:'Not Started',link:'https://dermatology.ucsf.edu/fellowships/ucsf-dermatology-medical-student-summer-research-fellowship',notes:'CONFIRMED ELIGIBLE: explicitly open to medical students nationwide, not just UCSF. Non-UCSF students actually get a higher stipend ($5,500 vs $4,500 for UCSF students) — good target.'},
+    {id:'ep11',name:'Mentored Medical Student Research Award',organization:'University of Colorado School of Medicine Dermatology',type:'Research Award / Grant',deadline:'2026 program ran Jul 26 – Aug 28; confirm 2027 application date',funding:'$2,500 stipend',status:'Not Eligible',link:'https://medschool.cuanschutz.edu/dermatology/education/mentored-medical-student-research-program',notes:'NOT ELIGIBLE: explicitly restricted to current University of Colorado School of Medicine students only.'},
+    {id:'ep12',name:'DermSRP (Summer Medical Student Research Program)',organization:'University of Utah Department of Dermatology',type:'Research Fellowship',deadline:'For students between M1–M2; confirm eligibility & timing',funding:'TBD',status:'Researching',link:'https://medicine.utah.edu/dermatology/education/interest-groups/msrp',notes:'UNCONFIRMED: could not verify whether this accepts outside (non-Utah) applicants — contact the department directly to ask. Also designed for the M1→M2 summer, which has passed for you, so confirm whether a later-year track exists.'},
+    {id:'ep13',name:'Dermatology Mentorship & Research Rotation',organization:'Yale School of Medicine',type:'Mentorship',deadline:'Confirm on site',funding:'$3,000 stipend',status:'Researching',link:'https://medicine.yale.edu/dermatology/education/medical-student-education/',notes:'LIKELY ELIGIBLE but not fully confirmed: described as open to medical students in accredited programs generally, with no explicit DO or non-Yale exclusion found — but I couldn\'t verify this for outside applicants directly, so confirm before investing time in the application.'},
   ],
   conferences:[
     {id:'c1',name:'AOCD 2027 Spring Meeting',date:'2027-03-04',location:'Hilton West Palm Beach, FL',presentationType:'Poster / Oral Presentation',presentationTitle:'Racial and Ethnic Disparities in Stage at Melanoma Diagnosis and Time to Treatment',status:'Planned',notes:'Primary target. Abstract deadline ~Nov 2026. Residency PD networking session Saturday — attend even if abstract not accepted.'},
@@ -438,6 +438,10 @@ const DEFAULT = {
     {id:'l3',name:'Dr. Kristin Witfill, DO',specialty:'Dermatology / Cosmetic Surgery',institution:'Bay Dermatology / NSU-COM Clinical Faculty',relationship:'Shadowing Supervisor (Pending)',dateRequested:'',dateReceived:'',status:'Pending Shadowing',notes:'NSU-COM Clinical Faculty. Director of Cosmetic Surgery for HCA/USF Morsani derm residency. Call 727-585-8591.'},
   ],
   awards:[],
+  leadership:[
+    {id:'ld1',title:'Vice President',organization:'Student National Medical Association (SNMA) — NSU KPCOM Chapter',start:'',end:'',description:''},
+    {id:'ld2',title:'Community Service Chair',organization:'Student Association for Obstetrics and Gynecology (SAOG)',start:'',end:'',description:''},
+  ],
   exams: EXAMS_DEFAULT,
   portfolio:[],
   signals:[],
@@ -545,28 +549,9 @@ const DEFAULT = {
 let state = null;
 let tab = 'home';
 
-/* ---- STORAGE (localStorage + GitHub Gist sync) ---- */
-const GIST_KEY = 'jataya_gist_token';
-const GIST_ID_KEY = 'jataya_gist_id';
-const GIST_FILE = 'jataya_portfolio.json';
-
+/* ---- STORAGE (localStorage cache + Supabase as source of truth) ---- */
 function lsGet(k){try{return localStorage.getItem(k);}catch{return null;}}
 function lsSet(k,v){try{localStorage.setItem(k,v);}catch{}}
-
-async function sbFetch(method, body=null){
-  const opts = {
-    method,
-    headers:{
-      'apikey': SB_KEY,
-      'Authorization': 'Bearer '+SB_KEY,
-      'Content-Type': 'application/json',
-      'Prefer': method==='POST'?'resolution=merge-duplicates':''
-    }
-  };
-  if(body) opts.body = JSON.stringify(body);
-  const r = await fetch(SB_URL+'/rest/v1/portfolio_data?id=eq.'+SB_ROW, opts);
-  return r;
-}
 
 function backfillDefaults(){
   // Ensure any new top-level sections added to DEFAULT after a user's data
@@ -630,135 +615,12 @@ async function save(){
   } catch(e){ console.warn('Supabase save failed:', e); }
 }
 
-/* ---- GIST SYNC ---- */
-async function gistPush(){
-  const token = lsGet(GIST_KEY);
-  const gistId = lsGet(GIST_ID_KEY);
-  if(!token) return showSyncModal();
-  // Always save to localStorage first
-  lsSet(KEY, JSON.stringify(state));
-  const body = {files:{[GIST_FILE]:{content:JSON.stringify(state,null,2)}}};
-  const url = gistId ? 'https://api.github.com/gists/'+gistId : 'https://api.github.com/gists';
-  const method = gistId ? 'PATCH' : 'POST';
-  if(!gistId){body.description='Jataya Portfolio Data';body.public=false;}
-  try{
-    showToast('Pushing to Gist...');
-    const data = await new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-      xhr.open(method, url, true);
-      xhr.setRequestHeader('Authorization', 'token '+token);
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.setRequestHeader('Accept', 'application/vnd.github+json');
-      xhr.onload = () => {
-        if(xhr.status >= 200 && xhr.status < 300){
-          try{ resolve(JSON.parse(xhr.responseText)); }
-          catch{ reject(new Error('Invalid response')); }
-        } else {
-          reject(new Error('HTTP '+xhr.status));
-        }
-      };
-      xhr.onerror = () => reject(new Error('Network error'));
-      xhr.timeout = 15000;
-      xhr.ontimeout = () => reject(new Error('Timed out'));
-      xhr.send(JSON.stringify(body));
-    });
-    if(data.id){ lsSet(GIST_ID_KEY, data.id); }
-    showToast('✓ Pushed to GitHub Gist');
-  } catch(e){ showToast('Push failed — '+e.message, true); }
-}
-
-async function gistPull(){
-  const token = lsGet(GIST_KEY);
-  const gistId = lsGet(GIST_ID_KEY);
-  if(!token || !gistId) return showToast('Set up Gist sync first', true);
-  try{
-    // Use XMLHttpRequest for maximum Safari/iOS compatibility
-    const data = await new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-      xhr.open('GET', 'https://api.github.com/gists/'+gistId, true);
-      xhr.setRequestHeader('Authorization', 'token '+token);
-      xhr.setRequestHeader('Accept', 'application/vnd.github+json');
-      xhr.onload = () => {
-        if(xhr.status >= 200 && xhr.status < 300){
-          try{ resolve(JSON.parse(xhr.responseText)); }
-          catch{ reject(new Error('Invalid JSON response')); }
-        } else {
-          reject(new Error('HTTP '+xhr.status));
-        }
-      };
-      xhr.onerror = () => reject(new Error('Network error — check your connection'));
-      xhr.ontimeout = () => reject(new Error('Request timed out'));
-      xhr.timeout = 15000;
-      xhr.send();
-    });
-    const content = data.files?.[GIST_FILE]?.content;
-    if(!content) return showToast('No data found in Gist', true);
-    let pulled;
-    try{ pulled = JSON.parse(content); }
-    catch{ return showToast('Gist data corrupted', true); }
-    // Use pulled data directly — don't merge with DEFAULT as it overwrites pulled arrays
-    state = pulled;
-    backfillDefaults();
-    lsSet(KEY, JSON.stringify(state));
-    // Force full page re-render
-    setTimeout(() => {
-      document.getElementById('main').innerHTML = TABS[tab].render();
-      document.querySelectorAll('.n-item').forEach(el=>el.classList.toggle('active',el.dataset.tab===tab));
-      showToast('✓ Data pulled successfully');
-    }, 50);
-  } catch(e){ showToast('Pull failed — '+e.message, true); }
-}
-
-async function gistPushAndConfirm(){
-  const token = lsGet(GIST_KEY);
-  const gistId = lsGet(GIST_ID_KEY);
-  if(!token) return showSyncModal();
-  const body = {files:{[GIST_FILE]:{content:JSON.stringify(state,null,2)}}};
-  const url = gistId ? 'https://api.github.com/gists/'+gistId : 'https://api.github.com/gists';
-  const method = gistId ? 'PATCH' : 'POST';
-  if(!gistId){body.description='Jataya Portfolio Data';body.public=false;}
-  try{
-    const r = await fetch(url,{method,headers:{'Authorization':'token '+token,'Content-Type':'application/json'},body:JSON.stringify(body)});
-    if(!r.ok) return showToast('Push failed — HTTP '+r.status, true);
-    const data = await r.json();
-    if(data.id){ lsSet(GIST_ID_KEY, data.id); }
-    showToast('✓ Pushed to GitHub Gist');
-  } catch(e){ showToast('Push failed — '+e.message, true); }
-}
-
 function showToast(msg, isError=false){
   const t = document.createElement('div');
   t.style.cssText='position:fixed;bottom:24px;right:24px;z-index:9999;padding:10px 18px;border-radius:8px;font-size:13px;font-family:Inter,sans-serif;font-weight:500;box-shadow:0 4px 16px rgba(0,0,0,0.2);background:'+(isError?'#8B3028':'#486840')+';color:#fff';
   t.textContent=msg;
   document.body.appendChild(t);
   setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity 0.4s';setTimeout(()=>t.remove(),400);},2800);
-}
-
-function showSyncModal(){
-  const existingToken = lsGet(GIST_KEY)||'';
-  const existingId = lsGet(GIST_ID_KEY)||'';
-  document.getElementById('mTitle').textContent='GitHub Gist Sync';
-  document.getElementById('mBody').innerHTML=
-    '<div style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:14px">'+
-    'Gist sync saves your portfolio data to a <strong>private GitHub Gist</strong> so it works on any device.<br><br>'+
-    '<strong>To get your token:</strong><br>'+
-    '1. Go to <a href="https://github.com/settings/tokens/new" target="_blank" style="color:var(--clay)">github.com/settings/tokens/new</a><br>'+
-    '2. Name it <em>Portfolio Sync</em><br>'+
-    '3. Check the <strong>gist</strong> scope only<br>'+
-    '4. Click Generate token and paste it below</div>'+
-    '<div class="field"><label>GitHub Personal Access Token</label>'+
-    '<input type="password" id="f_token" placeholder="ghp_..." value="'+existingToken+'"></div>'+
-    (existingId?'<div style="font-size:11px;color:var(--text2);margin-bottom:10px">Gist ID on file: '+existingId+'</div>':'')+
-    '<div style="font-size:11px;color:var(--text3)">Token is stored only in this browser and sent only to GitHub.</div>';
-  document.getElementById('mSave').textContent='Save & Sync';
-  document.getElementById('mSave').onclick=async()=>{
-    const t=document.getElementById('f_token').value.trim();
-    if(!t)return;
-    lsSet(GIST_KEY,t);
-    closeModal();
-    await gistPush();
-  };
-  document.getElementById('overlay').classList.add('open');
 }
 
 function exportData(){
@@ -1414,6 +1276,23 @@ function renderAwards(){
   return html;
 }
 
+function renderLeadership(){
+  let html=pgHead('Leadership',`${state.leadership.length} role(s) tracked`,'Add role',"openModal('leadership')");
+  if(!state.leadership.length) return html+`<div class="card"><div class="empty">No leadership roles yet.<br>Track your student org positions, committee seats, and elected roles here.</div></div>`;
+  html+=state.leadership.map(l=>`<div class="card" style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+    <div>
+      <div class="card-title" style="font-family:'Playfair Display',serif">${esc(l.title)}</div>
+      <div class="card-sub">${[l.organization,[l.start,l.end].filter(Boolean).join(' – ')].filter(Boolean).join(' &middot; ')}</div>
+      ${l.description?`<div style="font-size:12px;color:var(--text2);margin-top:4px">${esc(l.description)}</div>`:''}
+    </div>
+    <div style="display:flex;gap:6px;flex-shrink:0">
+      <button class="btn-edit" onclick="openModal('leadership','${l.id}')"><i class="ti ti-pencil"></i></button>
+      <button class="btn-ghost" onclick="delItem('leadership','${l.id}')"><i class="ti ti-trash"></i></button>
+    </div>
+  </div>`).join('');
+  return html;
+}
+
 const PORTFOLIO_TYPES=['Peer-Reviewed Publication','Case Report','Letter to Editor / Commentary','Book Chapter','Conference Abstract','Poster Presentation','Oral/Podium Presentation','Research Experience'];
 
 function renderPortfolio(){
@@ -1660,8 +1539,6 @@ function openLogModal(id=null){
     else{state.researchLog.push(updated);}
     state.researchLog.sort((a,b)=>new Date(b.weekStart)-new Date(a.weekStart));
     save();closeModal();navigate(tab);
-    // Auto-push to Gist after saving so other devices stay in sync
-    if(lsGet(GIST_KEY) && lsGet(GIST_ID_KEY)) gistPush();
   });
 }
 
@@ -2011,6 +1888,7 @@ const TABS={
   boards:{label:'Board Scores',icon:'ti-chart-bar',render:renderBoards},
   lors:{label:'LOR Tracker',icon:'ti-mail',render:renderLORs},
   awards:{label:'Awards',icon:'ti-award',render:renderAwards},
+  leadership:{label:'Leadership',icon:'ti-users-group',render:renderLeadership},
   signals:{label:'Signal Strategy',icon:'ti-antenna',render:renderSignals},
   prelim:{label:'Prelim Year',icon:'ti-building-hospital',render:renderPrelim},
 };
@@ -2116,7 +1994,7 @@ function openGoalModal(id=null){
 }
 
 function openModal(type,id=null){
-  const stateKey={research:'research',shadowing:'shadowing',communityService:'communityService',extprogram:'externalPrograms',study:'studyLog',conference:'conferences',pub:'publications',lor:'lors',award:'awards',exam:'exams',portfolio:'portfolio',signal:'signals',prelim:'prelim'}[type];
+  const stateKey={research:'research',shadowing:'shadowing',communityService:'communityService',extprogram:'externalPrograms',study:'studyLog',conference:'conferences',pub:'publications',lor:'lors',award:'awards',leadership:'leadership',exam:'exams',portfolio:'portfolio',signal:'signals',prelim:'prelim'}[type];
   const item=id&&stateKey?state[stateKey].find(x=>x.id===id):null;
   const isEdit=!!item;
   const configs={
@@ -2254,6 +2132,20 @@ function openModal(type,id=null){
         save();closeModal();navigate(tab);
       }
     },
+    leadership:{
+      title:isEdit?'Edit leadership role':'Add leadership role',
+      body:`
+        ${fld('Position / title','f_title','text','',item?.title||'')}
+        ${fld('Organization','f_org','text','',item?.organization||'')}
+        <div class="f-row">${fld('Start date','f_start','date','',item?.start||'')}${fld('End date (leave blank if current)','f_end','date','',item?.end||'')}</div>
+        ${ftxt('Description (optional)','f_desc',item?.description||'')}`,
+      save:()=>{
+        if(!val('f_title'))return;
+        const updated={id:item?.id||uid(),title:val('f_title'),organization:val('f_org'),start:val('f_start'),end:val('f_end'),description:val('f_desc')};
+        if(isEdit){state.leadership=state.leadership.map(x=>x.id===id?updated:x);}else{state.leadership.push(updated);}
+        save();closeModal();navigate(tab);
+      }
+    },
     exam:{
       title:isEdit?'Edit assessment':'Add assessment',
       body:`
@@ -2325,27 +2217,28 @@ function openModal(type,id=null){
 function initSidebar(){
   // Journey timeline
   const stops=[
-    {label:'M1',date:'Aug 2025',now:true},
-    {label:'M2',date:'Aug 2026',now:false},
-    {label:'M3',date:'Aug 2027',now:false},
-    {label:'M4',date:'Aug 2028',now:false},
-    {label:'Match Day',date:'March 2029',now:false},
+    {label:'M1',date:'Aug 2025 – Jun 2026',now:false},
+    {label:'M2',date:'Jul 2026 – Jun 2027',now:true},
+    {label:'M3',date:'Jul 2027 – Jun 2028',now:false},
+    {label:'M4',date:'Jul 2028 – Feb 2029',now:false},
+    {label:'Match Day',date:'Mar 16, 2029*',now:false},
   ];
   document.getElementById('jWrap').innerHTML=stops.map(s=>`
     <div class="j-stop${s.now?' now':''}">
       <div class="j-dot"></div>
       <div class="j-lbl">${s.label}</div>
       <div class="j-date">${s.date}</div>
-    </div>`).join('');
+    </div>`).join('')+`<div style="font-size:9px;color:var(--sb-dim);opacity:0.6;margin-top:6px;line-height:1.4">*Estimated — NRMP hasn't published the official 2029 date yet; Match Day is always the third Friday of March.</div>`;
 
-  // Countdown
-  const days=Math.max(0,Math.ceil((new Date('2029-03-15')-new Date())/864e5));
+  // Countdown — estimated 2029 Match Day (third Friday of March, NRMP's
+  // consistent pattern); update once NRMP publishes the official date.
+  const days=Math.max(0,Math.ceil((new Date('2029-03-16')-new Date())/864e5));
   document.getElementById('cdNum').textContent=days.toLocaleString();
 
   // Nav
   const navGroups=[
     {label:'Profile',items:['home','dashboard','schedule','studyLog']},
-    {label:'Academic',items:['goals','research','portfolio','shadowing','communityService','conferences','publications','externalPrograms']},
+    {label:'Academic',items:['goals','research','portfolio','shadowing','communityService','conferences','publications','externalPrograms','leadership']},
     {label:'Application',items:['boards','lors','awards','signals','prelim']},
   ];
   document.getElementById('nav').innerHTML=navGroups.map(g=>`
@@ -2359,16 +2252,7 @@ function initSidebar(){
       <i class="ti ti-cloud-check" style="font-size:13px"></i><span>Supabase connected</span>
     </div>
     <div style="padding:0.5rem 1rem 0.75rem;display:flex;flex-direction:column;gap:7px">
-      <button onclick="gistPush()" style="display:flex;align-items:center;gap:9px;width:100%;padding:9px 14px;border-radius:8px;border:1px solid rgba(175,139,87,0.45);background:linear-gradient(135deg,rgba(175,139,87,0.18),rgba(175,139,87,0.08));color:#D4B87A;font-size:12px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;letter-spacing:0.03em;transition:all 0.15s" onmouseover="this.style.background='linear-gradient(135deg,rgba(175,139,87,0.32),rgba(175,139,87,0.16))';this.style.borderColor='rgba(175,139,87,0.7)'" onmouseout="this.style.background='linear-gradient(135deg,rgba(175,139,87,0.18),rgba(175,139,87,0.08))';this.style.borderColor='rgba(175,139,87,0.45)'">
-        <i class="ti ti-cloud-upload" style="font-size:15px"></i>Push to Gist
-      </button>
-      <button onclick="gistPull()" style="display:flex;align-items:center;gap:9px;width:100%;padding:9px 14px;border-radius:8px;border:1px solid rgba(106,138,104,0.45);background:linear-gradient(135deg,rgba(106,138,104,0.18),rgba(106,138,104,0.08));color:#8DB88A;font-size:12px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;letter-spacing:0.03em;transition:all 0.15s" onmouseover="this.style.background='linear-gradient(135deg,rgba(106,138,104,0.32),rgba(106,138,104,0.16))';this.style.borderColor='rgba(106,138,104,0.7)'" onmouseout="this.style.background='linear-gradient(135deg,rgba(106,138,104,0.18),rgba(106,138,104,0.08))';this.style.borderColor='rgba(106,138,104,0.45)'">
-        <i class="ti ti-cloud-download" style="font-size:15px"></i>Pull from Gist
-      </button>
-      <div style="display:flex;gap:6px;margin-top:1px">
-        <button onclick="showSyncModal()" title="Sync Settings" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:7px 8px;border-radius:7px;border:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.04);color:var(--sb-dim);font-size:11px;font-family:'Inter',sans-serif;cursor:pointer;transition:all 0.15s" onmouseover="this.style.background='rgba(255,255,255,0.09)';this.style.color='var(--sb-text)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.color='var(--sb-dim)'">
-          <i class="ti ti-settings" style="font-size:13px"></i>Settings
-        </button>
+      <div style="display:flex;gap:6px">
         <button onclick="exportData()" title="Export Backup" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:7px 8px;border-radius:7px;border:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.04);color:var(--sb-dim);font-size:11px;font-family:'Inter',sans-serif;cursor:pointer;transition:all 0.15s" onmouseover="this.style.background='rgba(255,255,255,0.09)';this.style.color='var(--sb-text)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.color='var(--sb-dim)'">
           <i class="ti ti-download" style="font-size:13px"></i>Export
         </button>
