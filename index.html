@@ -438,6 +438,7 @@ const DEFAULT = {
     {id:'l3',name:'Dr. Kristin Witfill, DO',specialty:'Dermatology / Cosmetic Surgery',institution:'Bay Dermatology / NSU-COM Clinical Faculty',relationship:'Shadowing Supervisor (Pending)',dateRequested:'',dateReceived:'',status:'Pending Shadowing',notes:'NSU-COM Clinical Faculty. Director of Cosmetic Surgery for HCA/USF Morsani derm residency. Call 727-585-8591.'},
   ],
   awards:[],
+  completedExamGroups:[],
   leadership:[
     {id:'ld1',title:'Vice President',organization:'Student National Medical Association (SNMA) — NSU KPCOM Chapter',start:'',end:'',description:''},
     {id:'ld2',title:'Community Service Chair',organization:'Student Association for Obstetrics and Gynecology (SAOG)',start:'',end:'',description:''},
@@ -1691,6 +1692,22 @@ function examGroup(x){
   if(n===null) return null;
   return n<=23 ? 'Exam 1' : 'Exam 2';
 }
+function examGroupKey(system,group){ return system+'::'+group; }
+function isExamGroupDone(system,group){ return (state.completedExamGroups||[]).includes(examGroupKey(system,group)); }
+function toggleExamGroupDone(system,group){
+  if(!state.completedExamGroups) state.completedExamGroups=[];
+  const key=examGroupKey(system,group);
+  const idx=state.completedExamGroups.indexOf(key);
+  if(idx>=0) state.completedExamGroups.splice(idx,1); else state.completedExamGroups.push(key);
+  save();
+  refreshMainPreserveScroll();
+}
+function toggleGroupExpanded(key){
+  if(!window._expandedMasteryGroups) window._expandedMasteryGroups=new Set();
+  const s=window._expandedMasteryGroups;
+  if(s.has(key)) s.delete(key); else s.add(key);
+  refreshMainPreserveScroll();
+}
 function masteryColors(level){
   return {
     'Not Reviewed':{bg:'var(--danger-l)',fg:'var(--danger)'},
@@ -1795,8 +1812,22 @@ function renderStudyLog(){
 
   if(groups.length>1){
     groups.forEach(g=>{
-      html+=`<div style="font-family:'Playfair Display',serif;font-size:14px;font-weight:500;color:var(--text2);margin:1.5rem 0 0.75rem;padding-bottom:6px;border-bottom:1px solid var(--border)">${esc(g)}</div>`;
-      html+=sorted.filter(x=>examGroup(x)===g).map(lectureCard).join('');
+      const key=examGroupKey(filter,g);
+      const done=isExamGroupDone(filter,g);
+      const expanded=window._expandedMasteryGroups && window._expandedMasteryGroups.has(key);
+      const groupItems=sorted.filter(x=>examGroup(x)===g);
+      const gEsc=esc(g).replace(/'/g,"\\'"), fEsc=esc(filter).replace(/'/g,"\\'"), kEsc=esc(key).replace(/'/g,"\\'");
+      html+=`<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:1.5rem 0 0.75rem;padding-bottom:6px;border-bottom:1px solid var(--border)">
+        <div style="font-family:'Playfair Display',serif;font-size:14px;font-weight:500;color:var(--text2);display:flex;align-items:center;gap:8px">
+          ${esc(g)}
+          ${done?`<span class="badge b-ok" style="font-size:10px"><i class="ti ti-check" style="font-size:10px;vertical-align:-1px"></i> Completed</span>`:''}
+        </div>
+        <div style="display:flex;gap:6px;flex-shrink:0">
+          ${done?`<button class="btn btn-outline" style="padding:3px 10px;font-size:11px" onclick="toggleGroupExpanded('${kEsc}')">${expanded?'Hide lectures':`Show ${groupItems.length} lecture${groupItems.length!==1?'s':''}`}</button>`:''}
+          <button class="btn btn-outline" style="padding:3px 10px;font-size:11px;${done?'background:var(--ok-l);color:var(--ok);border-color:var(--ok)':''}" onclick="toggleExamGroupDone('${fEsc}','${gEsc}')">${done?'✓ Exam done':'Mark exam complete'}</button>
+        </div>
+      </div>`;
+      if(!done||expanded) html+=groupItems.map(lectureCard).join('');
     });
     const ungrouped=sorted.filter(x=>!examGroup(x));
     if(ungrouped.length){
