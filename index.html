@@ -326,7 +326,7 @@ const SPECIALTIES = ['Dermatology','Dermatology — Mohs Surgery','Dermatology �
 const CATS = ['Research','Shadowing','Conferences','Boards','LORs','Clinical','Networking','Application'];
 const MASTERY_ACTIVITIES = ['Watched Lecture','Practice Questions (Website)','Reviewed with Classmates','Whiteboard','Study Tables Practice Questions','Notes'];
 const MASTERY_LEVELS = ['Not Reviewed','Minimal Review','Moderate Review','Substantial Review','Complete Review'];
-const SYSTEMS = ['Renal','Endocrine','MSK & Rheumatology','OPP IV','MEP IV','PCM I','Medical Neuroanatomy','Clinical Reasoning I','Neuroanatomy & Nervous System','Nervous System','Human Sexuality'];
+const SYSTEMS = ['Renal','Endocrine','MSK & Rheumatology','OPP IV','MEP IV','PCM I','Clinical Reasoning I','Neuroanatomy','Human Sexuality'];
 const STATUSES = {
   research:['In Progress','Submitted','Under Review','Revision','Accepted','Published','Completed'],
   conference:['Planned','Abstract Submitted','Accepted — Poster','Accepted — Oral','Attended','Declined'],
@@ -570,6 +570,13 @@ function backfillDefaults(){
         if(item&&item.id!==undefined&&!existingIds.has(item.id)) state[k].push(structuredClone(item));
       });
     }
+  }
+  // One-time migration: consolidate old neuro system names into "Neuroanatomy"
+  if(Array.isArray(state.studyLog)){
+    const oldNeuroNames = ['Medical Neuroanatomy','Neuroanatomy & Nervous System','Nervous System'];
+    state.studyLog.forEach(x=>{
+      if(x && oldNeuroNames.includes(x.system)) x.system='Neuroanatomy';
+    });
   }
 }
 
