@@ -326,7 +326,7 @@ const SPECIALTIES = ['Dermatology','Dermatology — Mohs Surgery','Dermatology �
 const CATS = ['Research','Shadowing','Conferences','Boards','LORs','Clinical','Networking','Application'];
 const MASTERY_ACTIVITIES = ['Watched Lecture','Practice Questions (Website)','Reviewed with Classmates','Whiteboard','Study Tables Practice Questions','Notes'];
 const MASTERY_LEVELS = ['Not Reviewed','Minimal Review','Moderate Review','Substantial Review','Complete Review'];
-const SYSTEMS = ['Renal','Endocrine','MSK & Rheumatology','OPP IV','MEP IV','PCM I','Clinical Reasoning I','Neuroanatomy','Human Sexuality'];
+const SYSTEMS = ['Renal','Endocrine','MSK & Rheumatology','OPP IV','MEP IV','PCM I','Clinical Reasoning I','Neuroanatomy','Nervous System','Human Sexuality'];
 const STATUSES = {
   research:['In Progress','Submitted','Under Review','Revision','Accepted','Published','Completed'],
   conference:['Planned','Abstract Submitted','Accepted — Poster','Accepted — Oral','Attended','Declined'],
@@ -349,7 +349,7 @@ const EXAMS_DEFAULT = [
   {id:'e10',course:'MSK & Rheumatology',type:'Final Exam',date:'2026-09-16',time:'9:10 AM',location:'FTL: Morris | TBR: 1803',notes:'',done:false},
   {id:'e11',course:'Medical Neuroanatomy',type:'Midterm Exam',date:'2026-10-13',time:'9:10 AM',location:'FTL: Morris | TBR: 1803',notes:'',done:false},
   {id:'e12',course:'Clinical Reasoning I',type:'Exam',date:'2026-10-23',time:'1:10 PM',location:'FTL: Morris | TBR: 1803',notes:'',done:false},
-  {id:'e13',course:'Neuroanatomy & Nervous System',type:'Integrated Exam',date:'2026-10-29',time:'9:10 AM',location:'FTL: Morris | TBR: 1803',notes:'Neuroanatomy Final + Nervous System Midterm combined into one integrated exam',done:false},
+  {id:'e13',course:'Neuroanatomy & Nervous System',type:'Integrated Exam',date:'2026-10-30',time:'9:10 AM',location:'FTL: Morris | TBR: 1803',notes:'Neuroanatomy Final + Nervous System Midterm combined into one integrated exam',done:false},
   {id:'e14',course:'MEP IV',type:'Exam #2',date:'2026-10-30',time:'5:00 PM (window opens)',location:'Online',notes:'Window: Oct 30 5:00 PM – Nov 1 11:59 PM',done:false},
   {id:'e15',course:'PCM I',type:'CSE 2 — Clinical Skills',date:'2026-11-02',time:'8:10 AM',location:'SP Lab (FTL & TBR)',notes:'Multi-day assessment window: Nov 2–5',done:false},
   {id:'e16',course:'OPP IV',type:'Written Final',date:'2026-11-06',time:'8:10 AM',location:'FTL: Morris | TBR: 1803',notes:'',done:false},
@@ -582,6 +582,62 @@ const DEFAULT = {
     {id:'neuro34',system:'Neuroanatomy',num:34,exam:'Exam 2',lectureTitle:'Blood vessel II',date:'2026-10-23',activities:[],notes:''},
     {id:'neurolab-six',system:'Neuroanatomy',exam:'Exam 2',lectureTitle:'LAB #6: Cerebellum',date:'2026-10-26',activities:[],notes:''},
     {id:'neurolab-seven',system:'Neuroanatomy',exam:'Exam 2',lectureTitle:'LAB #7: Cerebrum and blood supply',date:'2026-10-26',activities:[],notes:''},
+    // Nervous System — Exam 1 (Oct 30): Lectures 1–31; Exam 2 (Dec 1): Lectures 32–55
+    {id:'ns1',system:'Nervous System',num:1,exam:'Exam 1',lectureTitle:'Neurologic History and Examination',date:'2026-10-07',activities:[],notes:''},
+    {id:'ns2',system:'Nervous System',num:2,exam:'Exam 1',lectureTitle:'Retinal/Macular Diseases — Vision Loss',date:'2026-10-07',activities:[],notes:''},
+    {id:'ns3',system:'Nervous System',num:3,exam:'Exam 1',lectureTitle:'Glaucoma and Cataracts',date:'2026-10-08',activities:[],notes:''},
+    {id:'ns4',system:'Nervous System',num:4,exam:'Exam 1',lectureTitle:'Approach to Anisocoria and Diplopia',date:'2026-10-13',activities:[],notes:''},
+    {id:'ns5',system:'Nervous System',num:5,exam:'Exam 1',lectureTitle:'Ocular Pharmacology',date:'2026-10-13',activities:[],notes:''},
+    {id:'ns6',system:'Nervous System',num:6,exam:'Exam 1',lectureTitle:'Physiology of Visual System I',date:'2026-10-13',activities:[],notes:''},
+    {id:'ns7',system:'Nervous System',num:7,exam:'Exam 1',lectureTitle:'Clinical Approach to Dizziness and Vertigo',date:'2026-10-19',activities:[],notes:''},
+    {id:'ns8',system:'Nervous System',num:8,exam:'Exam 1',lectureTitle:'Clinical Approach to Hearing Loss',date:'2026-10-19',activities:[],notes:''},
+    {id:'ns9',system:'Nervous System',num:9,exam:'Exam 1',lectureTitle:'Physiology of Visual System II',date:'2026-10-19',activities:[],notes:''},
+    {id:'ns10',system:'Nervous System',num:10,exam:'Exam 1',lectureTitle:'Physiology of Visual System III',date:'2026-10-19',activities:[],notes:''},
+    {id:'ns11',system:'Nervous System',num:11,exam:'Exam 1',lectureTitle:'Clinical Approach to Pain Management in the Neurologic Patient',date:'2026-10-20',activities:[],notes:''},
+    {id:'ns12',system:'Nervous System',num:12,exam:'Exam 1',lectureTitle:'Neuroimaging',date:'2026-10-20',activities:[],notes:''},
+    {id:'ns13',system:'Nervous System',num:13,exam:'Exam 1',lectureTitle:'Physiology of Vestibular System',date:'2026-10-20',activities:[],notes:''},
+    {id:'ns14',system:'Nervous System',num:14,exam:'Exam 1',lectureTitle:'Physiology of Auditory System',date:'2026-10-20',activities:[],notes:''},
+    {id:'ns15',system:'Nervous System',num:15,exam:'Exam 1',lectureTitle:'Clinical Vascular Disease of Brain I',date:'2026-10-21',activities:[],notes:''},
+    {id:'ns16',system:'Nervous System',num:16,exam:'Exam 1',lectureTitle:'Clinical Vascular Disease of Brain II',date:'2026-10-21',activities:[],notes:''},
+    {id:'ns17',system:'Nervous System',num:17,exam:'Exam 1',lectureTitle:'Pathology of Vascular Disease of Brain',date:'2026-10-21',activities:[],notes:''},
+    {id:'ns18',system:'Nervous System',num:18,exam:'Exam 1',lectureTitle:'Peripheral Neuropathy',date:'2026-10-22',activities:[],notes:''},
+    {id:'ns19',system:'Nervous System',num:19,exam:'Exam 1',lectureTitle:'Radiculopathy, Plexopathy, and Mononeuropathies',date:'2026-10-22',activities:[],notes:''},
+    {id:'ns20',system:'Nervous System',num:20,exam:'Exam 1',lectureTitle:'Pathophysiology of the Peripheral Nervous System',date:'2026-10-22',activities:[],notes:''},
+    {id:'ns21',system:'Nervous System',num:21,exam:'Exam 1',lectureTitle:'Motor Neuron Disease and Neuromuscular Junction Disorders',date:'2026-10-23',activities:[],notes:''},
+    {id:'ns22',system:'Nervous System',num:22,exam:'Exam 1',lectureTitle:'Movement Disorders',date:'2026-10-26',activities:[],notes:''},
+    {id:'ns23',system:'Nervous System',num:23,exam:'Exam 1',lectureTitle:'Approach to Facial Sensory and Motor Deficits (Self-Study #1)',date:'2026-10-26',activities:[],notes:''},
+    {id:'ns24',system:'Nervous System',num:24,exam:'Exam 1',lectureTitle:'Disorders Affecting the Spinal Cord (Self-Study #2)',date:'2026-10-26',activities:[],notes:''},
+    {id:'ns25',system:'Nervous System',num:25,exam:'Exam 1',lectureTitle:'Physiology of Motor System I',date:'2026-10-27',activities:[],notes:''},
+    {id:'ns26',system:'Nervous System',num:26,exam:'Exam 1',lectureTitle:'Physiology of Motor System II',date:'2026-10-27',activities:[],notes:''},
+    {id:'ns27',system:'Nervous System',num:27,exam:'Exam 1',lectureTitle:'Physiology of Motor System III',date:'2026-10-27',activities:[],notes:''},
+    {id:'ns28',system:'Nervous System',num:28,exam:'Exam 1',lectureTitle:'Parkinson Disease',date:'2026-10-28',activities:[],notes:''},
+    {id:'ns29',system:'Nervous System',num:29,exam:'Exam 1',lectureTitle:'Pharmacology of Parkinson Disease and Other Movement Disorders',date:'2026-10-28',activities:[],notes:''},
+    {id:'ns30',system:'Nervous System',num:30,exam:'Exam 1',lectureTitle:'Physiology of Chemical Senses',date:'2026-10-28',activities:[],notes:''},
+    {id:'ns31',system:'Nervous System',num:31,exam:'Exam 1',lectureTitle:'Approach to Altered Cognition — Coma and Brain Death',date:'2026-10-28',activities:[],notes:''},
+    {id:'ns32',system:'Nervous System',num:32,exam:'Exam 2',lectureTitle:'Seizure Disorder in Adults',date:'2026-11-09',activities:[],notes:''},
+    {id:'ns33',system:'Nervous System',num:33,exam:'Exam 2',lectureTitle:'Anticonvulsants and Therapy of Seizure Disorder',date:'2026-11-09',activities:[],notes:''},
+    {id:'ns34',system:'Nervous System',num:34,exam:'Exam 2',lectureTitle:'Pathology of Demyelinating Diseases of CNS',date:'2026-11-09',activities:[],notes:''},
+    {id:'ns35',system:'Nervous System',num:35,exam:'Exam 2',lectureTitle:'Multiple Sclerosis',date:'2026-11-09',activities:[],notes:''},
+    {id:'ns36',system:'Nervous System',num:36,exam:'Exam 2',lectureTitle:'Alzheimer, Lewy Body, and Other Dementias I',date:'2026-11-13',activities:[],notes:''},
+    {id:'ns37',system:'Nervous System',num:37,exam:'Exam 2',lectureTitle:'Alzheimer, Lewy Body, and Other Dementias II',date:'2026-11-13',activities:[],notes:''},
+    {id:'ns38',system:'Nervous System',num:38,exam:'Exam 2',lectureTitle:'Neurology of Sleep Disorders',date:'2026-11-13',activities:[],notes:''},
+    {id:'ns39',system:'Nervous System',num:39,exam:'Exam 2',lectureTitle:'Clinical Approach to the Diagnosis and Management of Headache',date:'2026-11-13',activities:[],notes:''},
+    {id:'ns40',system:'Nervous System',num:40,exam:'Exam 2',lectureTitle:'Cerebral Palsy/Ataxia in Children',date:'2026-11-16',activities:[],notes:''},
+    {id:'ns41',system:'Nervous System',num:41,exam:'Exam 2',lectureTitle:'Disease of Muscle — Muscular Dystrophy',date:'2026-11-16',activities:[],notes:''},
+    {id:'ns42',system:'Nervous System',num:42,exam:'Exam 2',lectureTitle:'Neurological Manifestation of Systemic Diseases',date:'2026-11-16',activities:[],notes:''},
+    {id:'ns43',system:'Nervous System',num:43,exam:'Exam 2',lectureTitle:'Encephalitis',date:'2026-11-16',activities:[],notes:''},
+    {id:'ns44',system:'Nervous System',num:44,exam:'Exam 2',lectureTitle:'Meningitis I',date:'2026-11-17',activities:[],notes:''},
+    {id:'ns45',system:'Nervous System',num:45,exam:'Exam 2',lectureTitle:'Meningitis II',date:'2026-11-17',activities:[],notes:''},
+    {id:'ns46',system:'Nervous System',num:46,exam:'Exam 2',lectureTitle:'Anesthetic Agents and Pharmacology of Anesthesia I',date:'2026-11-17',activities:[],notes:''},
+    {id:'ns47',system:'Nervous System',num:47,exam:'Exam 2',lectureTitle:'Anesthetic Agents and Pharmacology of Anesthesia II',date:'2026-11-17',activities:[],notes:''},
+    {id:'ns48',system:'Nervous System',num:48,exam:'Exam 2',lectureTitle:'Nutrition',date:'2026-11-23',activities:[],notes:''},
+    {id:'ns49',system:'Nervous System',num:49,exam:'Exam 2',lectureTitle:'Neurosurgical Approaches to Brain and Spine Injury',date:'2026-11-23',activities:[],notes:''},
+    {id:'ns50',system:'Nervous System',num:50,exam:'Exam 2',lectureTitle:'Pathology of Neoplasms of the Nervous System',date:'2026-11-23',activities:[],notes:''},
+    {id:'ns51',system:'Nervous System',num:51,exam:'Exam 2',lectureTitle:'Paraneoplastic Syndromes of the Nervous System (Self-Study #3)',date:'2026-11-23',activities:[],notes:''},
+    {id:'ns52',system:'Nervous System',num:52,exam:'Exam 2',lectureTitle:'Myalgic Encephalomyelitis/Chronic Fatigue Syndrome',date:'2026-11-24',activities:[],notes:''},
+    {id:'ns53',system:'Nervous System',num:53,exam:'Exam 2',lectureTitle:'Osteopathic Considerations in the Nervous System (Self-Study #4)',date:'2026-11-24',activities:[],notes:''},
+    {id:'ns54',system:'Nervous System',num:54,exam:'Exam 2',lectureTitle:'Genetics in Neurology',date:'2026-11-24',activities:[],notes:''},
+    {id:'ns55',system:'Nervous System',num:55,exam:'Exam 2',lectureTitle:'Neurology Case Challenges (Self-Study #5)',date:'2026-11-24',activities:[],notes:''},
   ],
   bio:{
     about:`Jataya Jackson is a second-year osteopathic medical student at Nova Southeastern University Kiran C. Patel College of Osteopathic Medicine, Class of 2029. A Tampa native, she holds dual bachelor's degrees in Biomedical Sciences and Public Health from the University of South Florida, along with a Master of Science in Medical Sciences — a multidisciplinary foundation that anchors her commitment to both rigorous clinical training and evidence-based preventive care.\n\nDrawn to dermatology for its visual precision, clear clinical pathways, and meaningful continuity of care, Jataya is passionate about delivering results that are both medically significant and tangible — a specialty where treatment transforms health outcomes and quality of life in ways a patient can see and feel. That commitment to visible, lasting impact extends directly to her research, where she is investigating racial and ethnic disparities in acral lentiginous melanoma diagnosis and time to treatment — working to ensure that dermatologic care serves every patient equitably, regardless of skin tone.`,
@@ -616,7 +672,7 @@ function backfillDefaults(){
   }
   // One-time migration: consolidate old neuro system names into "Neuroanatomy"
   if(Array.isArray(state.studyLog)){
-    const oldNeuroNames = ['Medical Neuroanatomy','Neuroanatomy & Nervous System','Nervous System'];
+    const oldNeuroNames = ['Medical Neuroanatomy','Neuroanatomy & Nervous System'];
     state.studyLog.forEach(x=>{
       if(x && oldNeuroNames.includes(x.system)) x.system='Neuroanatomy';
     });
@@ -2147,7 +2203,7 @@ function openModal(type,id=null){
         ${fld('System','f_stsys','text','list="systemList"',item?.system||'')}
         <datalist id="systemList">${opts(SYSTEMS,item?.system||'')}</datalist>
         ${fld('Lecture title / topic','f_sttitle','text','',item?.lectureTitle||'')}
-        ${fsel('Exam (optional — leave blank to auto-detect for Renal)','f_stexam',['Exam 1','Exam 2'],item?.exam||'')}
+        ${fsel('Exam (optional — leave blank to auto-detect for Renal)','f_stexam',['Exam 1','Exam 2','Midterm','Final'],item?.exam||'')}
         ${fcheck('Which study activities have you completed for this lecture?','f_stact',MASTERY_ACTIVITIES,item?.activities||[])}
         ${ftxt('Additional Notes (optional)','f_stnotes',item?.notes||'')}`,
       save:()=>{
