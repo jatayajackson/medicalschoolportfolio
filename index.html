@@ -582,7 +582,7 @@ const DEFAULT = {
     {id:'neuro34',system:'Neuroanatomy',num:34,exam:'Exam 2',lectureTitle:'Blood vessel II',date:'2026-10-23',activities:[],notes:''},
     {id:'neurolab-six',system:'Neuroanatomy',exam:'Exam 2',lectureTitle:'LAB #6: Cerebellum',date:'2026-10-26',activities:[],notes:''},
     {id:'neurolab-seven',system:'Neuroanatomy',exam:'Exam 2',lectureTitle:'LAB #7: Cerebrum and blood supply',date:'2026-10-26',activities:[],notes:''},
-    // Nervous System — Exam 1 (Oct 30): Lectures 1–31; Exam 2 (Dec 1): Lectures 32–55
+    // Nervous System — Exam 1 (Oct 30): Lectures 1–24; Exam 2 (Dec 1): Lectures 25–55
     {id:'ns1',system:'Nervous System',num:1,exam:'Exam 1',lectureTitle:'Neurologic History and Examination',date:'2026-10-07',activities:[],notes:''},
     {id:'ns2',system:'Nervous System',num:2,exam:'Exam 1',lectureTitle:'Retinal/Macular Diseases — Vision Loss',date:'2026-10-07',activities:[],notes:''},
     {id:'ns3',system:'Nervous System',num:3,exam:'Exam 1',lectureTitle:'Glaucoma and Cataracts',date:'2026-10-08',activities:[],notes:''},
@@ -607,13 +607,13 @@ const DEFAULT = {
     {id:'ns22',system:'Nervous System',num:22,exam:'Exam 1',lectureTitle:'Movement Disorders',date:'2026-10-26',activities:[],notes:''},
     {id:'ns23',system:'Nervous System',num:23,exam:'Exam 1',lectureTitle:'Approach to Facial Sensory and Motor Deficits (Self-Study #1)',date:'2026-10-26',activities:[],notes:''},
     {id:'ns24',system:'Nervous System',num:24,exam:'Exam 1',lectureTitle:'Disorders Affecting the Spinal Cord (Self-Study #2)',date:'2026-10-26',activities:[],notes:''},
-    {id:'ns25',system:'Nervous System',num:25,exam:'Exam 1',lectureTitle:'Physiology of Motor System I',date:'2026-10-27',activities:[],notes:''},
-    {id:'ns26',system:'Nervous System',num:26,exam:'Exam 1',lectureTitle:'Physiology of Motor System II',date:'2026-10-27',activities:[],notes:''},
-    {id:'ns27',system:'Nervous System',num:27,exam:'Exam 1',lectureTitle:'Physiology of Motor System III',date:'2026-10-27',activities:[],notes:''},
-    {id:'ns28',system:'Nervous System',num:28,exam:'Exam 1',lectureTitle:'Parkinson Disease',date:'2026-10-28',activities:[],notes:''},
-    {id:'ns29',system:'Nervous System',num:29,exam:'Exam 1',lectureTitle:'Pharmacology of Parkinson Disease and Other Movement Disorders',date:'2026-10-28',activities:[],notes:''},
-    {id:'ns30',system:'Nervous System',num:30,exam:'Exam 1',lectureTitle:'Physiology of Chemical Senses',date:'2026-10-28',activities:[],notes:''},
-    {id:'ns31',system:'Nervous System',num:31,exam:'Exam 1',lectureTitle:'Approach to Altered Cognition — Coma and Brain Death',date:'2026-10-28',activities:[],notes:''},
+    {id:'ns25',system:'Nervous System',num:25,exam:'Exam 2',lectureTitle:'Physiology of Motor System I',date:'2026-10-27',activities:[],notes:''},
+    {id:'ns26',system:'Nervous System',num:26,exam:'Exam 2',lectureTitle:'Physiology of Motor System II',date:'2026-10-27',activities:[],notes:''},
+    {id:'ns27',system:'Nervous System',num:27,exam:'Exam 2',lectureTitle:'Physiology of Motor System III',date:'2026-10-27',activities:[],notes:''},
+    {id:'ns28',system:'Nervous System',num:28,exam:'Exam 2',lectureTitle:'Parkinson Disease',date:'2026-10-28',activities:[],notes:''},
+    {id:'ns29',system:'Nervous System',num:29,exam:'Exam 2',lectureTitle:'Pharmacology of Parkinson Disease and Other Movement Disorders',date:'2026-10-28',activities:[],notes:''},
+    {id:'ns30',system:'Nervous System',num:30,exam:'Exam 2',lectureTitle:'Physiology of Chemical Senses',date:'2026-10-28',activities:[],notes:''},
+    {id:'ns31',system:'Nervous System',num:31,exam:'Exam 2',lectureTitle:'Approach to Altered Cognition — Coma and Brain Death',date:'2026-10-28',activities:[],notes:''},
     {id:'ns32',system:'Nervous System',num:32,exam:'Exam 2',lectureTitle:'Seizure Disorder in Adults',date:'2026-11-09',activities:[],notes:''},
     {id:'ns33',system:'Nervous System',num:33,exam:'Exam 2',lectureTitle:'Anticonvulsants and Therapy of Seizure Disorder',date:'2026-11-09',activities:[],notes:''},
     {id:'ns34',system:'Nervous System',num:34,exam:'Exam 2',lectureTitle:'Pathology of Demyelinating Diseases of CNS',date:'2026-11-09',activities:[],notes:''},
@@ -675,6 +675,10 @@ function backfillDefaults(){
     const oldNeuroNames = ['Medical Neuroanatomy','Neuroanatomy & Nervous System'];
     state.studyLog.forEach(x=>{
       if(x && oldNeuroNames.includes(x.system)) x.system='Neuroanatomy';
+    });
+    // Nervous System Exam 1 covers L1–L24 only; L25–L31 belong to Exam 2
+    state.studyLog.forEach(x=>{
+      if(x && x.system==='Nervous System' && /^ns\d+$/.test(x.id||'') && x.num>=25 && x.num<=31 && x.exam==='Exam 1') x.exam='Exam 2';
     });
   }
 }
