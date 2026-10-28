@@ -1747,7 +1747,72 @@ function refreshMainPreserveScroll(){
   const pos=main?main.scrollTop:0;
   if(main){ main.innerHTML=TABS[tab].render(); main.scrollTop=pos; }
 }
+// Celebrate the moment the final lecture in an exam group is watched.
+function completedWatchedExamGroups(log){
+  const groups=new Map();
+  for(const lecture of log){
+    const exam=examGroup(lecture);
+    if(!lecture.system || !exam) continue;
+    const key=examGroupKey(lecture.system,exam);
+    if(!groups.has(key)) groups.set(key,[]);
+    groups.get(key).push(lecture);
+  }
+  return new Set([...groups].filter(([,lectures])=>lectures.length>0 &&
+    lectures.every(x=>(x.activities||[]).includes('Watched Lecture'))).map(([key])=>key));
+}
+function celebrateNewlyWatchedExams(before,after){
+  const oldGroups=completedWatchedExamGroups(before);
+  const newGroups=completedWatchedExamGroups(after);
+  const newlyFinished=[...newGroups].filter(key=>!oldGroups.has(key));
+  if(newlyFinished.length) launchExamConfetti(newlyFinished[0]);
+}
+function launchExamConfetti(groupKey){
+  // A non-blocking canvas overlay, removed automatically after the animation.
+  document.getElementById('exam-confetti')?.remove();
+  const canvas=document.createElement('canvas');
+  canvas.id='exam-confetti';
+  canvas.setAttribute('aria-hidden','true');
+  Object.assign(canvas.style,{position:'fixed',inset:'0',width:'100%',height:'100%',
+    pointerEvents:'none',zIndex:'3000'});
+  document.body.appendChild(canvas);
+  const ctx=canvas.getContext('2d');
+  if(!ctx){canvas.remove();return;}
+  const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  const colors=['#AF8B57','#6A8A68','#5A6E7A','#D8B875','#C58E83','#F4EDE0'];
+  const w=window.innerWidth,h=window.innerHeight,ratio=Math.min(window.devicePixelRatio||1,2);
+  canvas.width=Math.floor(w*ratio);canvas.height=Math.floor(h*ratio);
+  ctx.scale(ratio,ratio);
+  const pieces=Array.from({length:reduced?0:150},()=>({
+    x:Math.random()*w,y:-20-Math.random()*h*.65,vx:(Math.random()-.5)*3,
+    vy:2+Math.random()*4,rotation:Math.random()*6.28,spin:(Math.random()-.5)*.15,
+    width:5+Math.random()*7,height:3+Math.random()*7,color:colors[Math.floor(Math.random()*colors.length)]
+  }));
+  const start=performance.now();
+  function frame(now){
+    ctx.clearRect(0,0,w,h);
+    const elapsed=now-start;
+    for(const p of pieces){
+      p.x+=p.vx;p.y+=p.vy;p.vy+=.035;p.rotation+=p.spin;
+      ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rotation);
+      ctx.fillStyle=p.color;ctx.globalAlpha=Math.min(1,(3400-elapsed)/550);
+      ctx.fillRect(-p.width/2,-p.height/2,p.width,p.height);ctx.restore();
+    }
+    if(elapsed<3400 && canvas.isConnected) requestAnimationFrame(frame);
+    else canvas.remove();
+  }
+  if(pieces.length) requestAnimationFrame(frame);else canvas.remove();
+  const announcement=document.createElement('div');
+  announcement.setAttribute('role','status');
+  announcement.textContent=`All lectures watched for ${groupKey.replace('::',' — ')}!`;
+  Object.assign(announcement.style,{position:'fixed',top:'70px',left:'50%',transform:'translateX(-50%)',
+    zIndex:'3001',background:'var(--sidebar)',color:'#F4EDE0',padding:'12px 20px',
+    borderRadius:'10px',boxShadow:'0 5px 24px rgba(0,0,0,.2)',textAlign:'center',
+    fontFamily:'Inter,sans-serif',fontSize:'14px',maxWidth:'90vw',pointerEvents:'none'});
+  document.body.appendChild(announcement);
+  setTimeout(()=>announcement.remove(),3500);
+}
 function toggleStudyActivity(id,activity){
+  const before=state.studyLog;
   state.studyLog=state.studyLog.map(x=>{
     if(x.id!==id) return x;
     const acts=x.activities||[];
@@ -1756,6 +1821,7 @@ function toggleStudyActivity(id,activity){
   });
   save();
   refreshMainPreserveScroll();
+  if(activity==='Watched Lecture') celebrateNewlyWatchedExams(before,state.studyLog);
 }
 function updateStudyNotes(id,value){
   state.studyLog=state.studyLog.map(x=>x.id===id?{...x,notes:value}:x);
@@ -2213,9 +2279,11 @@ function openModal(type,id=null){
       save:()=>{
         if(!val('f_stdate')||!val('f_stsys')||!val('f_sttitle'))return;
         const updated={id:item?.id||uid(),num:val('f_stnum')?parseInt(val('f_stnum')):(item?.num||null),date:val('f_stdate'),system:val('f_stsys'),lectureTitle:val('f_sttitle'),exam:val('f_stexam')||null,activities:fcheckVal('f_stact',MASTERY_ACTIVITIES),notes:val('f_stnotes')};
+        const before=state.studyLog.map(x=>({...x,activities:[...(x.activities||[])]}));
         if(isEdit){state.studyLog=state.studyLog.map(x=>x.id===id?updated:x);}else{state.studyLog.push(updated);}
         state.studyLog.sort((a,b)=>(a.system||'').localeCompare(b.system||'')||new Date(a.date)-new Date(b.date));
         save();closeModal();navigate(tab);
+        celebrateNewlyWatchedExams(before,state.studyLog);
       }
     },
     conference:{
